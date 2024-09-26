@@ -1,0 +1,212 @@
+#root{
+    --black-transparent: rgba(0,0,0,0.5);
+    --orange-gradient: linear-gradient(10deg, #fa0, #ff6a00);
+    --green-gradient: linear-gradient(15deg, #04ea00, #00d17d);
+    --dark-text: #212427;
+  }
+
+  @media only screen and (max-width: 640px){
+    .bookView{
+        height: 60%;
+        width: 100%;
+        background-color: transparent;
+        color: var(--dark-text);
+        border-radius: 32px;
+        display: flex;
+      }
+      
+      .closeButtonContainer{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 20%;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--dark-text);
+      }
+      
+      .closeFormButton{
+        background-color: transparent;
+        color: black;
+      }
+      
+      .modalBookImage{
+        width: 100%;
+        height: 100% !important;
+        object-fit: cover;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .modalBookInfo{
+
+        display: flex;
+        flex-direction: column;
+        padding-left: 2%;
+        z-index: 999;
+        width: 100vw;
+        height: 100%;
+        position: absolute;
+        background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 65%, rgba(255,255,255,0) 100%);;
+      }
+      
+      .bookModalDescription{
+        text-wrap:wrap;
+      }
+      
+      .operationBtnContainer{
+        display: grid;
+        grid-template-columns:  repeat(2, 1fr);
+        margin-right: 5%;
+        gap: 5px 5px;
+      }
+      
+      .addToCartBtn{
+        background: var(--orange-gradient);
+      }
+      
+      .addToFavsBtn{
+        background: var(--green-gradient);
+      }
+
+      .pickerContainer{
+        column-span: 2;
+      }
+      
+  }
+
+
+  @media only screen and (min-width: 641px){
+    .bookView{
+        height: 60%;
+        width: 100%;
+        background-color: transparent;
+        color: var(--dark-text);
+        border-radius: 32px;
+        display: flex;
+      }
+      
+      .closeButtonContainer{
+        display: flex;
+        flex-direction: row;
+        width: 95%;
+        height: 20%;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .closeFormButton{
+        background-color: transparent;
+        color: black;
+      }
+      
+      .modalBookImage{
+        width: 100%;
+        height: 100% !important;
+        object-fit: cover;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .modalBookInfo{
+
+        display: flex;
+        flex-direction: column;
+        padding-left: 2%;
+        z-index: 999;
+        width: 100vw;
+        height: 100%;
+        position: absolute;
+        background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 65%, rgba(255,255,255,0) 100%);;
+      }
+      
+      .bookModalDescription{
+        text-wrap:wrap;
+      }
+      
+      .operationBtnContainer{
+        display: grid;
+        grid-template-columns:  repeat(2, 1fr);
+        margin-right: 5%;
+        gap: 5px 5px;
+      }
+      
+      .addToCartBtn{
+        background: var(--orange-gradient);
+      }
+      
+      .addToFavsBtn{
+        background: var(--green-gradient);
+      }
+
+      .pickerContainer{
+        column-span: 2;
+      }
+      
+  }
+
+  @media only screen and (min-width: 1025px){
+    .bookView{
+      height: 60%;
+      width: 100%;
+      background-color: transparent;
+      color: var(--dark-text);
+      border-radius: 32px;
+      display: flex;
+    }
+    
+    .closeButtonContainer{
+      display: flex;
+      flex-direction: row;
+      width: 95%;
+      height: 20%;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .closeFormButton{
+      background-color: transparent;
+      color: black;
+    }
+    
+    .modalBookImage{
+      width: 100%;
+      height: 100% !important;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .modalBookInfo{
+      font-size: 3rem;
+      display: flex;
+      flex-direction: column;
+      padding-left: 2%;
+      z-index: 999;
+      width: 100vw;
+      height: 100%;
+      position: absolute;
+      background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 65%, rgba(255,255,255,0) 100%);;
+    }
+    
+    .bookModalDescription{
+      text-wrap:wrap;
+    }
+    
+    .operationBtnContainer{
+      display: grid;
+      grid-template-columns:  repeat(2, 1fr);
+      margin-right: 5%;
+      gap: 5px 5px;
+    }
+    
+    .addToCartBtn{
+      background: var(--orange-gradient);
+    }
+    
+    .addToFavsBtn{
+      background: var(--green-gradient);
+    }
+
+    .pickerContainer{
+      column-span: 2;
+    }
+    
+  }

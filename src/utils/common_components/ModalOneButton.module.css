@@ -1,0 +1,43 @@
+#root{
+    --black-transparent: rgba(0,0,0,0.5);
+    --orange-gradient: linear-gradient(10deg, #fa0, #ff6a00);
+    --green-gradient: linear-gradient(15deg, #04ea00, #00d17d);
+    --dark-text: #212427;
+  }
+
+.messageContainer{
+    height: 30%;
+    width: 40%;
+    max-width: 70%;
+    background-color: white;
+    color: var(--dark-text);
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+.button{
+    background: var(--orange-gradient);
+    border: none
+}
+
+@media only screen and (max-width: 640px){
+  .messageContainer{
+    height: auto;
+    width: 100%;
+    background-color: white;
+    color: var(--dark-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+  }
+
+.button{
+    background: var(--orange-gradient);
+    border: none
+}
+}

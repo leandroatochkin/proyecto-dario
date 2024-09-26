@@ -1,0 +1,118 @@
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import Backdrop from '../../utils/common_components/Backdrop';
+import QuantityPicker from '../../utils/common_components/QuantityPicker';
+import { dropIn } from '../../utils/common_functions';
+import ModalOneButton from '../../utils/common_components/ModalOneButton';
+import style from './ItemView.module.css';
+
+
+const ItemView = ({ product, setCurrentOrder, setOpenBuyModal }) => {
+  const [value, setValue] = useState(1);
+  const [pushingItem, setPushingItem] = useState({
+    PD_cod_raz_soc: product.PD_cod_raz_soc,
+    PD_cod_suc: product.PD_cod_suc,
+    PD_cod_pro:product.PD_cod_pro,
+    PD_des_pro:product.PD_des_pro,
+    PD_cod_rub:product.PD_cod_rub,
+    PD_pre_ven:product.PD_pre_ven,
+    PD_ubi_imagen:product.PD_ubi_imagen,
+    PD_est:product.PD_est,
+    quantity: 1,
+  });
+
+  const [openMsg, setOpenMsg] = useState(false);
+
+  useEffect(() => {
+    setPushingItem((prevItem) => ({
+      ...prevItem,
+      quantity: value,
+    }));
+  }, [value]);
+
+  const handleClose = () => {
+    setOpenBuyModal(false);
+  };
+
+  const handleBuyBtn = (product) => {
+    if (product) {
+      setCurrentOrder((prevItems) => [...prevItems, pushingItem]);
+      setOpenMsg(true);
+    }
+  };
+
+
+  return (
+    <Backdrop>
+      <motion.div
+        className={style.bookView}
+        variants={dropIn}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <div
+          className={style.modalBookImage}
+          //style={{ background: `url(${book.coverImageUrl})`, backgroundSize: 'cover' }}
+          //aria-label={`Cover image of ${book.title}`}
+        ></div>
+        <div className={style.modalBookInfo}>
+          <div className={style.closeButtonContainer}>
+            <h1 className={style.dialogueTitle} aria-label={`Title: ${product.PD_des_pro}`} style={{color: '#212427'}}>
+              {product.PD_des_pro.length < 10 ? product.PD_des_pro : product.PD_des_pro.slice(0, 17) + '...'}
+            </h1>
+            <motion.button
+              className={style.closeFormButton}
+              onClick={()=>setOpenBuyModal(false)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Close book details"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-circle-x"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="m15 9-6 6" />
+                <path d="m9 9 6 6" />
+              </svg>
+            </motion.button>
+          </div>
+          <p className={style.bookModalDescription} aria-label={`Description: ${product.PD_des_pro}`}>
+            {product.PD_des_pro}
+          </p>
+          
+          <p>
+            <span style={{ fontWeight: 'bolder' }}>Price: </span> {product.PD_pre_ven}
+          </p>
+          <div className="operation-btn-container">
+            <div className={style.pickerContainer}>
+              <QuantityPicker min={1} max={10} value={value} setValue={setValue} aria-label="Select quantity" />
+            </div>
+            <motion.button
+              className={style.addToCartBtn}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleBuyBtn(product)}
+              //aria-label={`Add ${book.title} to shopping cart`}
+            >
+              Add to cart
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+      {openMsg && <ModalOneButton message={'Item added to your shopping cart'} setFunction={setOpenBuyModal} buttonText={'Ok'}/>}
+    
+    </Backdrop>
+  );
+};
+
+export default ItemView;
