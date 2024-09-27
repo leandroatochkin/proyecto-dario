@@ -1,0 +1,28 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+    width: 100%;
+}
+
+.button{
+    background-color: #e0e0e0;
+    color: #212427;
+    border-radius: 50%;
+    width: auto;
+   height: 100%;
+   display: flex;
+   box-shadow:  -20px -20px 60px #bebebe,
+                    20px 20px 60px #ffffff;
+}
+
+.display{
+    background-color: transparent;
+    color: #212427;
+    border: none;
+    font-size: 2rem;
+    font-weight: bolder;
+    text-align: center;
+    width: 30%;
+}

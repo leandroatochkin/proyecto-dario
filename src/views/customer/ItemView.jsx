@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Backdrop from '../../utils/common_components/Backdrop';
 import QuantityPicker from '../../utils/common_components/QuantityPicker';
-import { dropIn } from '../../utils/common_functions';
+import { capitalize, dropIn } from '../../utils/common_functions';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import style from './ItemView.module.css';
 
 
-const ItemView = ({ product, setCurrentOrder, setOpenBuyModal }) => {
+const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
   const [value, setValue] = useState(1);
   const [pushingItem, setPushingItem] = useState({
     PD_cod_raz_soc: product.PD_cod_raz_soc,
@@ -45,21 +45,21 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal }) => {
   return (
     <Backdrop>
       <motion.div
-        className={style.bookView}
+        className={style.itemView}
         variants={dropIn}
         initial="hidden"
         animate="visible"
         exit="exit"
       >
         <div
-          className={style.modalBookImage}
+          className={style.modalItemImage}
           //style={{ background: `url(${book.coverImageUrl})`, backgroundSize: 'cover' }}
           //aria-label={`Cover image of ${book.title}`}
         ></div>
-        <div className={style.modalBookInfo}>
+        <div className={style.modalItemInfo}>
           <div className={style.closeButtonContainer}>
             <h1 className={style.dialogueTitle} aria-label={`Title: ${product.PD_des_pro}`} style={{color: '#212427'}}>
-              {product.PD_des_pro.length < 10 ? product.PD_des_pro : product.PD_des_pro.slice(0, 17) + '...'}
+              {capitalize(product.PD_des_pro.length < 29 ? product.PD_des_pro : product.PD_des_pro.slice(0, 30) + '...')}
             </h1>
             <motion.button
               className={style.closeFormButton}
@@ -86,12 +86,15 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal }) => {
               </svg>
             </motion.button>
           </div>
-          <p className={style.bookModalDescription} aria-label={`Description: ${product.PD_des_pro}`}>
-            {product.PD_des_pro}
+          <p className={style.itemModalDescription} aria-label={`Description: ${product.PD_des_pro}`}>
+            {capitalize(product.PD_des_pro.length < 29 ? product.PD_des_pro : product.PD_des_pro.slice(0, 30) + '...')}
           </p>
           
           <p>
-            <span style={{ fontWeight: 'bolder' }}>Price: </span> {product.PD_pre_ven}
+            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_pre_ven}
+          </p>
+          <p>
+            <span style={{ fontWeight: 'bolder' }}>{language.quantity}:</span>
           </p>
           <div className="operation-btn-container">
             <div className={style.pickerContainer}>
@@ -104,7 +107,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal }) => {
               onClick={() => handleBuyBtn(product)}
               //aria-label={`Add ${book.title} to shopping cart`}
             >
-              Add to cart
+             {language.add_to_cart} 
             </motion.button>
           </div>
         </div>

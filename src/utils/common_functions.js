@@ -19,4 +19,9 @@ export const dropIn = {
         opacity: 0
     }
   }
+
+export const capitalize = (str) => {
+    str = str.replace(/n\*/gi, (match) => match === 'N*' ? 'Ñ' : 'ñ');
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
   
