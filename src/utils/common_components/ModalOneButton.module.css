@@ -36,8 +36,12 @@
     padding: 2%;
   }
 
+.message{
+  color: #212427;
+}
+
 .button{
-    background: var(--orange-gradient);
+    background: linear-gradient(10deg, #fa0, #ff6a00);
     border: none
 }
 }

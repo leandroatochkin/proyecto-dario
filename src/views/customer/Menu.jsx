@@ -38,6 +38,8 @@ fetchData()
 
 const handleBuy = (order) => {
   createCheckout(order)
+  setCurrentOrder([])
+
 }
 
 const handleRemove = (index) => {

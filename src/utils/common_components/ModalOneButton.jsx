@@ -16,7 +16,7 @@ const ModalOneButton = ({message, setFunction, buttonText}) => {
     animate='visible'
     exit='exit'
     >
-        <h1>{message}</h1>
+        <h1 className={style.message}>{message}</h1>
         <button onClick={() => setFunction(false)} className={style.button}>{buttonText}</button>
     </motion.div>
 </Backdrop>

@@ -112,7 +112,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
           </div>
         </div>
       </motion.div>
-      {openMsg && <ModalOneButton message={'Item added to your shopping cart'} setFunction={setOpenBuyModal} buttonText={'Ok'}/>}
+      {openMsg && <ModalOneButton message={'Artículo añadido al carrito'} setFunction={setOpenBuyModal} buttonText={'Ok'}/>}
     
     </Backdrop>
   );
