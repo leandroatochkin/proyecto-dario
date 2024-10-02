@@ -36,3 +36,46 @@ export const createCheckout = async(order) => {
                 console.log(e)
             }
 }
+
+export const registerUser = async(email, phone) => {
+
+    const userData = {
+        email: email,
+        phone: phone
+    }
+
+    try{
+        const response = await fetch(index.register_user, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+                })
+                const data = await response.json()
+            }
+            catch(e){
+                console.log(e)
+            }
+}
+
+export const checkUser = async(email) => {
+
+    const userData = {
+        email: email,
+    }
+    
+    try{
+        const response = await fetch(index.check_user, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+                })
+                const data = await response.json()
+            }
+            catch(e){
+                console.log(e)
+            }
+}

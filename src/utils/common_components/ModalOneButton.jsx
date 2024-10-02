@@ -6,7 +6,7 @@ import { dropIn } from '../common_functions'
 
 
 
-const ModalOneButton = ({message, setFunction, buttonText}) => {
+const ModalOneButton = ({message, setFunction, buttonText, state}) => {
   return (
 <Backdrop>
     <motion.div 
@@ -17,6 +17,10 @@ const ModalOneButton = ({message, setFunction, buttonText}) => {
     exit='exit'
     >
         <h1 className={style.message}>{message}</h1>
+        {state && 
+        <div>
+          <input type='text' onChange={(e)=>state(e.target.value)}/>
+        </div>}
         <button onClick={() => setFunction(false)} className={style.button}>{buttonText}</button>
     </motion.div>
 </Backdrop>

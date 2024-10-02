@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const db = require('../backend/api/db.cjs')
+const bodyParser = require('body-parser');
 const cors = require('cors')
 
+app.use(bodyParser.json());
 
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -15,11 +17,15 @@ app.use(express.json()); // Parse incoming JSON data
 const productRoute = require('./api/routes/db_productos.cjs')
 const categoryRoute = require('./api/routes/db_rubros.cjs')
 const checkoutRoute = require('./api/routes/create_checkout.cjs')
+const newUserRoute = require('./api/routes/db_new_user.cjs')
+const checkUserRoute = require('./api/routes/check_user.cjs')
 
 
 app.use('/api/productos', productRoute);
 app.use('/api/rubros', categoryRoute);
 app.use('/api/checkout', checkoutRoute);
+app.use('/api/register', newUserRoute);
+app.use('/api/check_user', checkUserRoute)
 
 // Helper function to parse the text data into structured rows
 const parseFileData = (fileData, isRubro) => {

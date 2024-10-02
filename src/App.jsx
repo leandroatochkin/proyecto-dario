@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import Login from './views/customer/Login'
 import Menu from './views/customer/Menu'
 import './App.css'
 import { ES_text } from './utils/text_scripts'
+import {  Route, Routes } from 'react-router-dom'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -10,9 +12,13 @@ function App() {
   useEffect(()=>{console.log(currentOrder)},[currentOrder])
   return (
     <>
-      <div>
-        <Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder} language={language}/>
-        </div>
+      <Routes>
+
+        <Route path="/" element={<Login />}/> 
+        <Route path="/menu" element={<Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder} language={language}/>}/>
+
+      </Routes>
+        
     </>
   )
 }
