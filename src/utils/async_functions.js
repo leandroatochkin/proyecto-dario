@@ -2,14 +2,17 @@ import { jwtDecode } from "jwt-decode";
 import { registerUser, checkUser } from "./db_functions";
 
 
-export const handleCheck = async (response, setNewUser) => {
+export const handleCheck = async (response, setNewUser, setUserId) => {
     try {
       const tokenData = jwtDecode(response);
       console.log("Checking user:", tokenData.email);
   
-      const userExists = await checkUser(tokenData.email);
-  
-      if (userExists) {
+      const {exists, userId} = await checkUser(tokenData.email);
+
+      console.log(userExists)
+        
+      if (exists) {
+        setUserId(userId);
         setNewUser(false);
       } else {
         setNewUser(true);
@@ -25,18 +28,19 @@ export const handleCheck = async (response, setNewUser) => {
     }
   };
   
-  export const handleResponse = async (response, phone, setNewUser, navigate) => {
+  export const handleResponse = async (response, phone, setNewUser, setUserId, navigate) => {
+    const tokenData = jwtDecode(response);
+    const email = tokenData.email;
+
     try {
-      const tokenData = jwtDecode(response);
-      console.log("Handling response for:", tokenData.email);
-  
-      // Register new user with phone if they don't exist
-      await registerUser(tokenData.email, phone);
-      setNewUser(false); // Registration completed
-    //   navigate('/menu')
-    } catch (error) {
-      console.error("Error during user registration:", error);
-      throw error;
+        const registerResponse = await registerUser(email, phone); // Call the registerUser function
+
+        if (registerResponse.success) {
+            setNewUser(false);
+            setUserId(registerResponse.userId); // Set the returned user ID
+            navigate("/menu");
+        }
+    } catch (e) {
+        console.log("Error registering user:", e);
     }
-  };
-  
+};

@@ -4,9 +4,10 @@ import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { ES_text } from '../../utils/text_scripts';
-import { handleResponse, handleCheck } from '../../utils/async_functions';
+import { handleResponse } from '../../utils/async_functions';
 import { checkUser } from '../../utils/db_functions';
 import { jwtDecode } from 'jwt-decode';
+import userStore from '../../utils/store';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,45 +16,39 @@ const Login = () => {
   const [phone, setPhone] = useState('');
   const [data, setData] = useState({});
 
+  // Zustand store for login status
+  const setLoginStatus = userStore((state) => state.setLoginStatus); // Move it outside of any function
+
   const errorMsg = () => console.log('Login error');
 
-  
-
   const decodeResponse = async (response) => {
-    const decodedToken = jwtDecode(response.credential);  // Decode the JWT token
-    const email = decodedToken.email;                     // Extract email from the token
-  
+    const decodedToken = jwtDecode(response.credential);  // Decode Google credential
+    const email = decodedToken.email;
+
     try {
-      const userExists = await checkUser(email);          // Check if the user exists in the DB
-      console.log('User exists:', userExists);            // Log the result for debugging
-  
-      if (userExists) {
-        setNewUser(false);                                // Set newUser to false if user exists
+      const { exists, userId } = await checkUser(email);  // Check if the user exists
+      if (exists) {
+        setNewUser(false);
+        setLoginStatus(true, userId);  // Set login status directly here
+        navigate('/menu');  // Navigate to the menu page
       } else {
         setNewUser(true);
-        setOpenModal(true);   
-        setData(response)                                 // Set newUser to true if user doesn't exist
+        setOpenModal(true);  // Open modal for phone input if user is new
+        setData(response);    // Save response for later registration
       }
     } catch (e) {
-      console.error('Error checking user:', e);           // Log errors, if any
+      console.error('Error checking user:', e);
     }
   };
-  
-  
-  
 
-  
+  // Handle new user registration once the phone number is provided
   useEffect(() => {
-    
     if (newUser === true && data.credential && phone) {
-        console.log(data, phone)
       console.log('Registering new user with phone:', phone);  // Debugging log
-      handleResponse(data.credential, phone, setNewUser);      // Register new user
+      handleResponse(data.credential, phone, setNewUser, setLoginStatus, navigate);  // Register new user
     }
-  }, [data, newUser, phone]);                                        // Trigger this effect when `newUser` or `phone` changes
-  
-  
-  
+  }, [data, newUser, phone]);
+
   return (
     <div className={style.container} aria-label="Login container">
       {openModal && (
@@ -61,8 +56,7 @@ const Login = () => {
           message={ES_text.phone_modal}
           setFunction={setOpenModal}
           buttonText={ES_text.button_enter}
-          stateSetter={setPhone}
-
+          stateSetter={setPhone}  // This sets the phone number
         />
       )}
       <div className={style.login} aria-label="Login form">
