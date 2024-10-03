@@ -59,23 +59,33 @@ export const registerUser = async(email, phone) => {
             }
 }
 
-export const checkUser = async(email) => {
-
+export const checkUser = async (email) => {
     const userData = {
         email: email,
-    }
+    };
     
-    try{
+    try {
         const response = await fetch(index.check_user, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData)
-                })
-                const data = await response.json()
-            }
-            catch(e){
-                console.log(e)
-            }
-}
+            },
+            body: JSON.stringify(userData)
+        });
+
+        // Assuming the backend returns a JSON response with a status field (e.g., user exists or not)
+        const data = await response.json();
+
+        // Check the response from the server to determine if the user exists
+        if (data.exists) {
+            return true; // User exists
+        } else {
+            return false; // User does not exist
+        }
+
+    } catch (e) {
+        console.log('Error checking user:', e);
+        return false; // In case of error, assume user does not exist
+    }
+};
+
