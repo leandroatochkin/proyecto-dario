@@ -1,0 +1,9 @@
+@media only screen and (max-width: 640px){
+.addressLine{
+    color: black;
+}
+
+.addressLine:hover{
+    background-color: aquamarine;
+}
+  }

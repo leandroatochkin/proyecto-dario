@@ -21,21 +21,34 @@ export const getCategories = async() =>{
     }
 }
 
-export const createCheckout = async(order) => {
-    try{
+export const createCheckout = async (order, address) => {
+    try {
+        const payload = {
+            orderData: order.map((product) => ({
+                PD_cod_raz_soc: product.PD_cod_raz_soc,
+                PD_cod_suc: product.PD_cod_suc,
+                PD_cod_pro: product.PD_cod_pro,
+                PD_pre_ven: product.PD_pre_ven,
+                quantity: product.quantity,
+                address: address.address,
+                type: address.type,
+            }))
+        };
+
         const response = await fetch(index.create_checkout, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(order)
-                })
-                const data = await response.json()
-            }
-            catch(e){
-                console.log(e)
-            }
-}
+            },
+            body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+        return data;  // Return the response data if needed
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 export const registerUser = async(email, phone) => {
 

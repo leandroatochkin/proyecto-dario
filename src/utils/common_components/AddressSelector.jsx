@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import Backdrop from './Backdrop';
 import userStore from '../store';
 import { getAddress, addAddress } from '../db_functions';
+import style from './AddressSelector.module.css'
 import { ES_text } from '../text_scripts';
 
-const AddressSelector = ({buttonText1}) => {
-  const [addresses, setAddresses] = useState([{ address: '', type: 'home' }]); // Initialize with one address field
-  const [addAddress, setAddAddress] = useState(false)
-  const [showInput, setShowInput] = useState(false)
+const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
+  const [addresses, setAddresses] = useState([{ address: '', type: 'home' }]);
+  const [openAddAddress, setOpenAddAddress] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+  const [addressesToMap, setAddressesToMap] = useState([]); // Ensure this is an array
   
+  useEffect(() => {
+    console.log('Selected Address:', selectedAddress);
+  }, [selectedAddress]);
 
   const loggedIn = userStore((state) => state.loggedIn);
   const userId = userStore((state) => state.userId);
@@ -27,64 +30,94 @@ const AddressSelector = ({buttonText1}) => {
     }
   };
 
-  const handleSendAddresses =  async () => {
+  const handleSendAddresses = async () => {
     try {
       const response = await addAddress(userId, addresses);
-      console.log(response)
-    } catch(e){console.log(e)}
-  }
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-
-  useEffect(()=>{console.log(addresses)},[addresses])
-
-  console.log('UserId:', userId);
+  useEffect(() => {
+    console.log('Current Addresses:', addresses);
+  }, [addresses]);
 
   const retrieveAddress = async (userId) => {
     try {
-      const retrievedAddresses = await getAddress(userId);
-      if(!retrieveAddress.exists){
-        setAddAddress(true)
-      }else{
-        setAddresses(retrievedAddresses);  // Set the state with retrieved addresses
-      console.log('Retrieved Addresses:', retrievedAddresses);
+      const result = await getAddress(userId);
+      console.log('Retrieved Addresses:', result); // Log the full result
+
+      // Access the addresses from the result object
+      const retrievedAddresses = result.addresses; // This accesses the addresses array
+
+      // Ensure retrievedAddresses is an array
+      if (Array.isArray(retrievedAddresses) && retrievedAddresses.length > 0) {
+        const formattedAddresses = retrievedAddresses.map(item => ({
+          address: item.address,
+          type: item.type || 'home', // Default to 'home' if type is not provided
+        }));
+        setAddressesToMap(formattedAddresses); // Set the formatted addresses
+        console.log('Formatted Addresses to Map:', formattedAddresses); // Log formatted addresses
+      } else {
+        setOpenAddAddress(true);
       }
     } catch (error) {
       console.log('Error fetching addresses:', error);
     }
   };
 
+  const getAddressLabel = (type) => {
+    switch (type) {
+      case 'home':
+        return language.select_home; // Spanish for 'Home'
+      case 'work':
+        return language.select_work; // Spanish for 'Work'
+      case 'other':
+        return language.select_other; // Spanish for 'Other'
+      default:
+        return 'Dirección'; // Default case if the type is unknown
+    }
+  };
+
   useEffect(() => {
-    if (loggedIn && userId) {  // Ensure that we only retrieve if the user is logged in and userId is available
+    if (loggedIn && userId) {
       retrieveAddress(userId);
     }
-  }, [loggedIn, userId]);  // Run when loggedIn or userId changes
+  }, [loggedIn, userId]);
+
 
   return (
     <div>
-      {setAddAddress && 
-      <button onClick={()=>setShowInput(!showInput)}>{buttonText1}</button>
-      }
-      {showInput && 
-      addresses.map((item, index) => (
-        <div key={index}>
-          <input
-            type='text'
-            name='address'
-            value={item.address}
-            onChange={(e) => handleAddressChange(index, 'address', e.target.value)}
-            placeholder='Enter address'
-          />
-          <select
-            name='type'
-            value={item.type} 
-            onChange={(e) => handleAddressChange(index, 'type', e.target.value)}
-          >
-            <option value='home'>{ES_text.select_home}</option>
-            <option value='work'>{ES_text.select_work}</option>
-            <option value='other'>{ES_text.select_other}</option>
-          </select>
-        </div>
+      {addressesToMap.length > 0 && addressesToMap.map((address, index) => (
+        <div key={index} className={style.addressLine} onClick={()=>setSelectedAddress(address)}>{address.address}<span>({getAddressLabel(address.type)})</span>{selectedAddress && selectedAddress.address === address.address && (
+          <span style={{ marginLeft: '8px', color: 'green' }}>✔️</span> // Tick icon
+        )}</div>
+
       ))}
+      <button onClick={() => setShowInput(!showInput)}>{buttonText1}</button>
+
+      {showInput &&
+        addresses.map((item, index) => (
+          <div key={index}>
+            <input
+              type='text'
+              name='address'
+              value={item.address}
+              onChange={(e) => handleAddressChange(index, 'address', e.target.value)}
+              placeholder={ES_text.add_address}
+            />
+            <select
+              name='type'
+              value={item.type}
+              onChange={(e) => handleAddressChange(index, 'type', e.target.value)}
+            >
+              <option value='home'>{ES_text.select_home}</option>
+              <option value='work'>{ES_text.select_work}</option>
+              <option value='other'>{ES_text.select_other}</option>
+            </select>
+          </div>
+        ))}
       <button onClick={addNewAddress}>+</button> {/* Add new address */}
       <button onClick={handleSendAddresses}>enviar</button>
     </div>

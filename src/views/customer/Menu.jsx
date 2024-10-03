@@ -17,8 +17,6 @@ const [products, setProducts] = useState([])
 const [product, setProduct] = useState({})
 const [completeOrder, setCompleteOrder]  = useState(false)
 
-useEffect(()=>{console.log(currentOrder)},[currentOrder])
-
 
 useEffect(()=>{
 const fetchData = async () => {
@@ -36,8 +34,8 @@ fetchData()
 },[])
 
 
-const handleBuy = (order) => {
-  createCheckout(order)
+const handleBuy = (order, address) => {
+  createCheckout(order, address)
   setCurrentOrder([])
 }
 
@@ -68,9 +66,6 @@ return (
     handleRemove={handleRemove}
     buyFunction={handleBuy}
     language={language}
-    renderItem2={()=>{
-      <h1>holaa</h1>
-    }}
     />}
     <motion.button 
     className={style.cartButton} 

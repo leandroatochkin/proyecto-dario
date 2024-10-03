@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { motion } from 'framer-motion'
 import Backdrop from './Backdrop'
 import style from './ShoppingCartModal.module.css'
@@ -20,7 +20,10 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 //     </div>
 //   )}
 
-
+const [selectedAddress, setSelectedAddress] = useState(null);
+useEffect(() => {
+    console.log('Selected Address:', selectedAddress);
+  }, [selectedAddress]);
 
   return (
     <Backdrop>
@@ -50,14 +53,14 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
             {language.empty_shopping_cart}
         </div>       
         }
-        <AddressSelector buttonText1={ES_text.add_address}/>
+        <AddressSelector buttonText1={ES_text.add_address} language={language} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
         <div className={style.buttonsContainer}>
         
         <button 
         onClick={() => setFunction()} 
         className={style.button1}>{buttonText1}</button>
         <button onClick={() => {
-            buyFunction(itemsToMap)
+            buyFunction(itemsToMap, selectedAddress)
             setFunction()
         }} 
         className={style.button2} 
