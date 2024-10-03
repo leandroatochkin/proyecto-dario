@@ -17,7 +17,8 @@ const Login = () => {
   const [data, setData] = useState({});
 
   // Zustand store for login status
-  const setLoginStatus = userStore((state) => state.setLoginStatus); // Move it outside of any function
+  const setLoginStatus = userStore((state) => state.setLoginStatus);
+   // Move it outside of any function
 
   const errorMsg = () => console.log('Login error');
 

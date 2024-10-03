@@ -3,5 +3,7 @@ export const index = {
     request_categories: 'http://localhost:3000/api/rubros',
     create_checkout: 'http://localhost:3000/api/checkout/checkout',
     register_user: 'http://localhost:3000/api/register',
-    check_user: 'http://localhost:3000/api/check_user'
+    check_user: 'http://localhost:3000/api/check_user',
+    add_address:  'http://localhost:3000/api/add_address',
+    get_address:  'http://localhost:3000/api/get_address',
 }

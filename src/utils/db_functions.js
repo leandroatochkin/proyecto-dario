@@ -82,3 +82,49 @@ export const checkUser = async (email) => {
     }
 };
 
+export const addAddress = async(userId, addresses) => {
+
+    const addressData = {
+        userId: userId,
+        addresses: addresses
+    }
+
+    try{
+        const response = await fetch(index.add_address, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(addressData)
+                })
+                const data = await response.json()
+                return data
+            }
+            catch(e){
+                console.log(e)
+                throw e
+            }
+}
+
+export const getAddress = async(userId) => {
+
+    const addressData = {
+        userId: userId
+    }
+
+    try{
+        const response = await fetch(index.get_address, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(addressData)
+                })
+                const data = await response.json()
+                return data
+            }
+            catch(e){
+                console.log(e)
+                throw e
+            }
+}

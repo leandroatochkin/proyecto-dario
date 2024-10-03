@@ -37,7 +37,7 @@ export const handleCheck = async (response, setNewUser, setUserId) => {
 
         if (registerResponse.success) {
             setNewUser(false);
-            setUserId(registerResponse.userId); // Set the returned user ID
+            setUserId(true, registerResponse.userId); // Set the returned user ID
             navigate("/menu");
         }
     } catch (e) {

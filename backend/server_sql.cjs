@@ -19,6 +19,8 @@ const categoryRoute = require('./api/routes/db_rubros.cjs')
 const checkoutRoute = require('./api/routes/create_checkout.cjs')
 const newUserRoute = require('./api/routes/db_new_user.cjs')
 const checkUserRoute = require('./api/routes/check_user.cjs')
+const addAddressRoute = require('./api/routes/db_register_address.cjs')
+const getAddressRoute = require('./api/routes/db_retrieve_addresses.cjs')
 
 
 app.use('/api/productos', productRoute);
@@ -26,6 +28,8 @@ app.use('/api/rubros', categoryRoute);
 app.use('/api/checkout', checkoutRoute);
 app.use('/api/register', newUserRoute);
 app.use('/api/check_user', checkUserRoute)
+app.use('/api/add_address', addAddressRoute)
+app.use('/api/get_address', getAddressRoute)
 
 // Helper function to parse the text data into structured rows
 const parseFileData = (fileData, isRubro) => {

@@ -68,6 +68,9 @@ return (
     handleRemove={handleRemove}
     buyFunction={handleBuy}
     language={language}
+    renderItem2={()=>{
+      <h1>holaa</h1>
+    }}
     />}
     <motion.button 
     className={style.cartButton} 

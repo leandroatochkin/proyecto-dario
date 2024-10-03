@@ -3,9 +3,11 @@ import { motion } from 'framer-motion'
 import Backdrop from './Backdrop'
 import style from './ShoppingCartModal.module.css'
 import { dropIn } from '../common_functions'
+import AddressSelector from './AddressSelector'
+import { ES_text } from '../text_scripts'
 
 
-const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language}) => {
+const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language }) => {
 
 //     example usage for renderItem: renderItem={(product)=>(
 //       <div className={style.li}>
@@ -46,12 +48,11 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
         )) :
         <div className={style.noItems}>
             {language.empty_shopping_cart}
-        </div>
-        
-            
-        
+        </div>       
         }
+        <AddressSelector buttonText1={ES_text.add_address}/>
         <div className={style.buttonsContainer}>
+        
         <button 
         onClick={() => setFunction()} 
         className={style.button1}>{buttonText1}</button>

@@ -7,4 +7,9 @@ export const ES_text = {
     add_to_cart: 'añadir al carrito',
     price: 'precio',
     phone_modal: 'Por favor, ingrese su número de teléfono para continuar (Código de área, sin 0 +  Número de teléfono, sin 15).',
+    add_address: 'Añade una dirección',
+    delivery_address: 'Dirección de envío',
+    select_home: 'Casa',
+    select_work: 'Trabajo',
+    select_other: 'Otro...',
 }

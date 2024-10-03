@@ -14,7 +14,7 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter }) => {
   };
 
   const handleSubmit = () => {
-    stateSetter(inputValue);                              // Pass input back to parent component
+    stateSetter(inputValue);                              // Set the `phone` state
     setFunction(false);                                   // Close the modal
   };
 
@@ -22,14 +22,15 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter }) => {
     <Backdrop>
       <motion.div className={style.messageContainer}>
         <h1 className={style.message}>{message}</h1>
+        {stateSetter && 
         <div>
-          <input type="text" value={inputValue} onChange={handleInputChange} />
-        </div>
-        <button onClick={handleSubmit} className={style.button}>{buttonText}</button>
+        <input type="text" value={inputValue} onChange={handleInputChange} />
+      </div>
+        }
+        <button onClick={stateSetter ? handleSubmit : setFunction(false)} className={style.button}>{buttonText}</button>
       </motion.div>
     </Backdrop>
   );
 };
-
 
 export default ModalOneButton
