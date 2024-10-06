@@ -12,4 +12,6 @@ export const ES_text = {
     select_home: 'Casa',
     select_work: 'Trabajo',
     select_other: 'Otro...',
+    total:  'Total',
+
 }

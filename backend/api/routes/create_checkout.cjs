@@ -2,6 +2,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid');
+
 
 
 const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
@@ -16,9 +18,11 @@ router.post('/checkout', (req, res) => {
       return res.status(400).send('Invalid order data');
   }
 
+  const id = uuidv4()
+
   // Format the order data into a string
   const orderString = orderData
-      .map((product) => `${product.PD_cod_raz_soc},${product.PD_cod_suc},${product.PD_cod_pro},${product.PD_pre_ven},${product.quantity},${product.address},${product.type};`)
+      .map((product) => `${id},${product.PD_cod_raz_soc},${product.PD_cod_suc},${product.PD_cod_pro},${product.PD_pre_ven},${product.quantity},${product.address},${product.type},${product.total};`)
       .join('\n') + '\n';
 
   // Check if the file exists, and if not, create it and append the order

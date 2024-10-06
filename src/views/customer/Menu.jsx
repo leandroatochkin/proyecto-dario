@@ -34,8 +34,8 @@ fetchData()
 },[])
 
 
-const handleBuy = (order, address) => {
-  createCheckout(order, address)
+const handleBuy = (order, address, total) => {
+  createCheckout(order, address, total)
   setCurrentOrder([])
 }
 

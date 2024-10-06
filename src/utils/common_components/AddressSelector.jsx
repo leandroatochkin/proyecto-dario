@@ -5,7 +5,7 @@ import style from './AddressSelector.module.css'
 import { ES_text } from '../text_scripts';
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
-  const [addresses, setAddresses] = useState([{ address: '', type: 'home' }]);
+  const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
   const [openAddAddress, setOpenAddAddress] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [addressesToMap, setAddressesToMap] = useState([]); // Ensure this is an array
@@ -69,11 +69,11 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
 
   const getAddressLabel = (type) => {
     switch (type) {
-      case 'home':
+      case '1':
         return language.select_home; // Spanish for 'Home'
-      case 'work':
+      case '2':
         return language.select_work; // Spanish for 'Work'
-      case 'other':
+      case '3':
         return language.select_other; // Spanish for 'Other'
       default:
         return 'Dirección'; // Default case if the type is unknown
@@ -112,9 +112,9 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
               value={item.type}
               onChange={(e) => handleAddressChange(index, 'type', e.target.value)}
             >
-              <option value='home'>{ES_text.select_home}</option>
-              <option value='work'>{ES_text.select_work}</option>
-              <option value='other'>{ES_text.select_other}</option>
+              <option value='1'>{ES_text.select_home}</option>
+              <option value='2'>{ES_text.select_work}</option>
+              <option value='3'>{ES_text.select_other}</option>
             </select>
           </div>
         ))}

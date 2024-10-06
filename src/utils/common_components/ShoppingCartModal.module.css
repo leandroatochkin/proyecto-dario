@@ -65,4 +65,8 @@
     background: linear-gradient(10deg, #fa0, #ff6a00);
     border: none
 }
+
+.totalText{
+  color: #212427  ;
+}
 }

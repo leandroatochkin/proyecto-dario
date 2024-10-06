@@ -21,9 +21,17 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 //   )}
 
 const [selectedAddress, setSelectedAddress] = useState(null);
+const [total, setTotal] = useState(0)
 useEffect(() => {
     console.log('Selected Address:', selectedAddress);
   }, [selectedAddress]);
+useEffect(()=>{
+const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0);
+setTotal(total)
+},[itemsToMap])
+useEffect(()=>{
+    console.log(total)
+},[total])
 
   return (
     <Backdrop>
@@ -33,7 +41,8 @@ useEffect(() => {
     initial='hidden'
     animate='visible'
     exit='exit'
-    >
+    >   
+   
         {itemsToMap.length > 0 ? itemsToMap.map((item, index)=>(
             <div key={index} className={style.item}>
 
@@ -46,8 +55,10 @@ useEffect(() => {
                 >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                 </button>
+                
             </div>
-            
+
+    
         )) :
         <div className={style.noItems}>
             {language.empty_shopping_cart}
@@ -55,12 +66,15 @@ useEffect(() => {
         }
         <AddressSelector buttonText1={ES_text.add_address} language={language} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
         <div className={style.buttonsContainer}>
-        
+          
+        <div className={style.totalText}>
+            {ES_text.total + ': '}<span style={{fontWeight: 'bolder'}}>{'$' + total}</span>
+        </div>
         <button 
         onClick={() => setFunction()} 
         className={style.button1}>{buttonText1}</button>
         <button onClick={() => {
-            buyFunction(itemsToMap, selectedAddress)
+            buyFunction(itemsToMap, selectedAddress, total)
             setFunction()
         }} 
         className={style.button2} 
