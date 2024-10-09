@@ -5,6 +5,7 @@ import style from './ShoppingCartModal.module.css'
 import { dropIn } from '../common_functions'
 import AddressSelector from './AddressSelector'
 import { ES_text } from '../text_scripts'
+import userStore from '../store'
 
 
 const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language }) => {
@@ -22,6 +23,10 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 
 const [selectedAddress, setSelectedAddress] = useState(null);
 const [total, setTotal] = useState(0)
+
+const userId = userStore((state) => state.userId);
+
+
 useEffect(() => {
     console.log('Selected Address:', selectedAddress);
   }, [selectedAddress]);
@@ -74,7 +79,7 @@ useEffect(()=>{
         onClick={() => setFunction()} 
         className={style.button1}>{buttonText1}</button>
         <button onClick={() => {
-            buyFunction(itemsToMap, selectedAddress, total)
+            buyFunction(userId, itemsToMap, selectedAddress, total)
             setFunction()
         }} 
         className={style.button2} 

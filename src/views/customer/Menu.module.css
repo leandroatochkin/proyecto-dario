@@ -88,4 +88,13 @@
         height: auto;
         width: auto;
     }
+
+    .loader{
+        background: #e0e0e0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

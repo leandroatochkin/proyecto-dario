@@ -3,6 +3,7 @@ const app = express();
 const db = require('../backend/api/db.cjs')
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const path = require('path')
 
 app.use(bodyParser.json());
 
@@ -13,6 +14,8 @@ app.use(cors({
 
 app.use(express.json()); // Parse incoming JSON data
 
+app.use('/images', express.static(path.join('C:/Users/leand/OneDrive/Escritorio/restaurant2/IMAGENES')));
+
 
 const productRoute = require('./api/routes/db_productos.cjs')
 const categoryRoute = require('./api/routes/db_rubros.cjs')
@@ -21,6 +24,7 @@ const newUserRoute = require('./api/routes/db_new_user.cjs')
 const checkUserRoute = require('./api/routes/check_user.cjs')
 const addAddressRoute = require('./api/routes/db_register_address.cjs')
 const getAddressRoute = require('./api/routes/db_retrieve_addresses.cjs')
+const watcherRoutes = require('./api/routes/file_watcher.cjs')
 
 
 app.use('/api/productos', productRoute);
@@ -30,6 +34,7 @@ app.use('/api/register', newUserRoute);
 app.use('/api/check_user', checkUserRoute)
 app.use('/api/add_address', addAddressRoute)
 app.use('/api/get_address', getAddressRoute)
+
 
 // Helper function to parse the text data into structured rows
 const parseFileData = (fileData, isRubro) => {

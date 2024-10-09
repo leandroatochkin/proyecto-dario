@@ -9,7 +9,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const [openAddAddress, setOpenAddAddress] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [addressesToMap, setAddressesToMap] = useState([]); // Ensure this is an array
-  
+  const [inactive, setInactive] = useState(false)
+
   useEffect(() => {
     console.log('Selected Address:', selectedAddress);
   }, [selectedAddress]);
@@ -95,7 +96,13 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
         )}</div>
 
       ))}
-      <button onClick={() => setShowInput(!showInput)}>{buttonText1}</button>
+      <button onClick={() => {
+        setShowInput(!showInput)
+        setInactive(!inactive)
+        }}
+        disabled={inactive === false ?  false : true}
+
+        >{buttonText1}</button>
 
       {showInput &&
         addresses.map((item, index) => (
@@ -112,14 +119,14 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
               value={item.type}
               onChange={(e) => handleAddressChange(index, 'type', e.target.value)}
             >
-              <option value='1'>{ES_text.select_home}</option>
-              <option value='2'>{ES_text.select_work}</option>
-              <option value='3'>{ES_text.select_other}</option>
+              <option value='1'>{language.select_home}</option>
+              <option value='2'>{language.select_work}</option>
+              <option value='3'>{language.select_other}</option>
             </select>
           </div>
         ))}
       <button onClick={addNewAddress}>+</button> {/* Add new address */}
-      <button onClick={handleSendAddresses}>enviar</button>
+      <button onClick={handleSendAddresses}>{language.save}</button>
     </div>
   );
 };

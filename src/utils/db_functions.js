@@ -21,10 +21,11 @@ export const getCategories = async() =>{
     }
 }
 
-export const createCheckout = async (order, address, total) => {
+export const createCheckout = async (userId, order, address, total) => {
     try {
         const payload = {
             orderData: order.map((product) => ({
+                user_Id: userId,
                 PD_cod_raz_soc: product.PD_cod_raz_soc,
                 PD_cod_suc: product.PD_cod_suc,
                 PD_cod_pro: product.PD_cod_pro,
@@ -32,7 +33,8 @@ export const createCheckout = async (order, address, total) => {
                 quantity: product.quantity,
                 address: address.address,
                 type: address.type,
-                total: total
+                total: total,
+                state: 1
             }))
         };
 

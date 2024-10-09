@@ -13,5 +13,5 @@ export const ES_text = {
     select_work: 'Trabajo',
     select_other: 'Otro...',
     total:  'Total',
-
+    save: 'guardar'
 }
