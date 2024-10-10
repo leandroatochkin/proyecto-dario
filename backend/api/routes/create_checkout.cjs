@@ -43,15 +43,36 @@ router.post('/checkout', (req, res) => {
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         db.query(insertQuery, 
-          [product.user_Id, orderId, product.PD_cod_raz_soc, product.PD_cod_suc, product.PD_cod_pro, product.PD_pre_ven, product.quantity, product.address, product.type, product.total, product.state, newOrderNumber], 
+          [product.user_Id, orderId, product.PD_cod_raz_soc, product.PD_cod_suc, product.PD_cod_pro, product.PD_pre_ven, product.quantity, product.address, product.type, product.total, product.state, newOrderNumber.toString()], 
           (err, result) => {
             if (err) {
               console.error("Error inserting order:", err);
               return reject(err);
             }
 
+            const addressType = (address)  => {
+              switch(address){
+                case '1':
+                  return 'CASA';
+                break;
+                case '2':
+                  return 'TRABAJO';
+                break;
+                case '3':
+                  return 'OTRO';
+                break;
+                default:
+                  return '';
+
+              }               
+
+             }
+
+             const getComission = (total, comission) => total / 100 * comission
+
+
             // Step 4: Format the order data for the file with order_number
-            const orderString = `D,${product.PD_cod_raz_soc.toString().padEnd(4, ' ')},${product.PD_cod_suc.toString().padEnd(4, ' ')},${product.PD_cod_pro.toString().padEnd(20, ' ')},${product.PD_pre_ven.toString().padEnd(16, ' ')},${product.quantity.toString().padEnd(10, ' ')},${product.address.padEnd(50, ' ')},${product.type},${product.total.toString().padEnd(16, ' ')},${product.state},${newOrderNumber.toString().padStart(8, ' ')};\n`;
+            const orderString = `D,${product.PD_cod_raz_soc.toString().padEnd(4, ' ')},${product.PD_cod_suc.toString().padEnd(4, ' ')},${product.PD_cod_pro.toString().padEnd(20, ' ')},${product.PD_pre_ven.toString().padEnd(16, ' ')},${product.quantity.toString().padEnd(10, ' ')},${product.address.padEnd(50, ' ')},${addressType(product.type)},${product.total.toString().padEnd(16, ' ')},${product.state},${newOrderNumber.toString().padStart(8, ' ')}, ${product.receptor}, ${getComission(product.PD_pre_ven, 10)};\n`;
 
             resolve(orderString); // Resolve with the formatted string
           });

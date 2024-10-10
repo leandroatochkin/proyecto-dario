@@ -6,6 +6,7 @@ import { capitalize } from '../../utils/common_functions';
 import { motion } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
+import userStore from '../../utils/store';
 
 const Menu = ({ setCurrentOrder, currentOrder, language }) => {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,11 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
   const [openCartModal, setOpenCartModal] = useState(false);
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
-  const [isLoading, setIsLoading] = useState(true);  // New loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  
+
+  const logStatus = userStore((state) => state.loggedIn);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,10 +34,11 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
       setIsLoading(false);  // Set loading to false after fetch completes
     };
     fetchData();
+    setIsLoggedIn(logStatus)
   }, []);
 
-  const handleBuy = (userId, order, address, total) => {
-    createCheckout(userId, order, address, total);
+  const handleBuy = (userId, order, address, total, receptor) => {
+    createCheckout(userId, order, address, total, receptor);
     setCurrentOrder([]);
   };
 
@@ -42,7 +48,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
 
   return (
     <div className={style.background}>
-      <Suspense fallback={<MoonLoader color="#fff" />}>
+      {isLoggedIn ? (<Suspense fallback={<MoonLoader color="#fff" />}>
         {openBuyModal && (
           <ItemView
             product={product}
@@ -61,8 +67,10 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
               <div className={style.li}>
                 <img src={`http://localhost:3000/images/${product.PD_ubi_imagen}`} className={style.listImage} />
                 <div className={style.scInfo}>
-                  <span className={style.h2}>{product.PD_des_pro}</span>
-                  <span className={style.h2}>{product.PD_pre_ven}</span>
+                  <div className={style.liInfo}>
+                  <span className={style.h2}>{capitalize(product.PD_des_pro)}</span>
+                  <span className={style.h2}>{product.PD_pre_ven.slice(0, product.PD_pre_ven.length - 3)}</span>
+                  </div>
                   <span className={style.h2}>{language.quantity}:{product.quantity}</span>
                 </div>
               </div>
@@ -138,7 +146,10 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
             </div>
           ))
         )}
-      </Suspense>
+      </Suspense>) : (
+        <div className={style.notLogged}>{language.please_log_in}</div>
+      )}
+      
     </div>
   );
 };

@@ -13,5 +13,7 @@ export const ES_text = {
     select_work: 'Trabajo',
     select_other: 'Otro...',
     total:  'Total',
-    save: 'guardar'
+    save: 'guardar',
+    receptor_input: 'Recibe:',
+    please_log_in: 'Por favor ingrese con sus datos.'
 }

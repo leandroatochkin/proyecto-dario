@@ -11,9 +11,6 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const [addressesToMap, setAddressesToMap] = useState([]); // Ensure this is an array
   const [inactive, setInactive] = useState(false)
 
-  useEffect(() => {
-    console.log('Selected Address:', selectedAddress);
-  }, [selectedAddress]);
 
   const loggedIn = userStore((state) => state.loggedIn);
   const userId = userStore((state) => state.userId);
@@ -89,9 +86,16 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
 
 
   return (
-    <div>
+    <div className={style.container}>
       {addressesToMap.length > 0 && addressesToMap.map((address, index) => (
-        <div key={index} className={style.addressLine} onClick={()=>setSelectedAddress(address)}>{address.address}<span>({getAddressLabel(address.type)})</span>{selectedAddress && selectedAddress.address === address.address && (
+        <div key={index} 
+        className={style.addressLine} 
+        onClick={()=>setSelectedAddress(address)}>
+        {address.address}
+        <span>({getAddressLabel(address.type)})</span>
+        {selectedAddress 
+        && 
+        selectedAddress.address === address.address && (
           <span style={{ marginLeft: '8px', color: 'green' }}>✔️</span> // Tick icon
         )}</div>
 
@@ -101,23 +105,27 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
         setInactive(!inactive)
         }}
         disabled={inactive === false ?  false : true}
+        className={style.addAddressBtn}
 
         >{buttonText1}</button>
 
       {showInput &&
         addresses.map((item, index) => (
-          <div key={index}>
+          <div key={index} className={style.addressInput}>
             <input
               type='text'
               name='address'
               value={item.address}
               onChange={(e) => handleAddressChange(index, 'address', e.target.value)}
               placeholder={ES_text.add_address}
+              className={style.input}
+              maxLength={'50'}
             />
             <select
               name='type'
               value={item.type}
               onChange={(e) => handleAddressChange(index, 'type', e.target.value)}
+              className={style.select}
             >
               <option value='1'>{language.select_home}</option>
               <option value='2'>{language.select_work}</option>
@@ -125,8 +133,13 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
             </select>
           </div>
         ))}
-      <button onClick={addNewAddress}>+</button> {/* Add new address */}
+      <div className={style.btnContainer}>
+      <button 
+      onClick={addNewAddress}
+      style={!inactive ? {display: 'none'} : {display: 'flex'}}
+      >+</button> {/* Add new address */}
       <button onClick={handleSendAddresses}>{language.save}</button>
+      </div>
     </div>
   );
 };

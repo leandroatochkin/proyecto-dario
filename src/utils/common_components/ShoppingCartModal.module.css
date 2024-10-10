@@ -5,19 +5,6 @@
     --dark-text: #212427;
   }
 
-.messageContainer{
-    height: 30%;
-    width: 40%;
-    max-width: 70%;
-    background-color: white;
-    color: var(--dark-text);
-    border-radius: 32px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
 
 @media only screen and (max-width: 640px){
   .messageContainer{
@@ -30,10 +17,13 @@
     justify-content: center;
     align-items: center;
     padding: 2%;
+    border-radius: 32px;
+    width: 90%;
   }
 
   .noItems{
     color: #212427;
+    font-weight: bolder;
   }
 
   .item{
@@ -69,4 +59,24 @@
 .totalText{
   color: #212427  ;
 }
+
+.inputContainer{
+  display: flex;
+}
+
+.label{
+  color: #212427;
+}
+
+.input{
+  border-radius: 8px;
+  border: none;
+}
+
+.inputWrong{
+  border-radius: 8px;
+  border: 2px solid red;
+}
+
+
 }

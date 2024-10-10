@@ -21,22 +21,34 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 //     </div>
 //   )}
 
+
+
 const [selectedAddress, setSelectedAddress] = useState(null);
 const [total, setTotal] = useState(0)
+const [receptor, setReceptor] = useState('')
+const [inputWrong, setInputWrong] = useState(false)
 
 const userId = userStore((state) => state.userId);
 
 
-useEffect(() => {
-    console.log('Selected Address:', selectedAddress);
-  }, [selectedAddress]);
 useEffect(()=>{
 const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0);
 setTotal(total)
 },[itemsToMap])
-useEffect(()=>{
-    console.log(total)
-},[total])
+
+const handleBtn = () => {
+    if(receptor !== ''){
+        buyFunction(userId, itemsToMap, selectedAddress, total, receptor)
+        setFunction()
+    } else {
+        setInputWrong(true) 
+        alert('Please select an address')
+        
+    }
+  
+}
+
+
 
   return (
     <Backdrop>
@@ -69,7 +81,21 @@ useEffect(()=>{
             {language.empty_shopping_cart}
         </div>       
         }
-        <AddressSelector buttonText1={ES_text.add_address} language={language} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
+        <AddressSelector buttonText1={language.add_address} language={language} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
+        <div className={style.inputContainer}>
+        <label htmlFor='receptor' 
+        className={style.label}
+        >{language.receptor_input}</label>
+        <input name='receptor'
+         onChange={(e)=>{
+            setInputWrong(false)
+            setReceptor(e.target.value)}}
+         required={true}
+         className={inputWrong ? style.inputWrong : style.input}
+         maxLength={'20'}
+        />
+        </div>
+        
         <div className={style.buttonsContainer}>
           
         <div className={style.totalText}>
@@ -78,10 +104,7 @@ useEffect(()=>{
         <button 
         onClick={() => setFunction()} 
         className={style.button1}>{buttonText1}</button>
-        <button onClick={() => {
-            buyFunction(userId, itemsToMap, selectedAddress, total)
-            setFunction()
-        }} 
+        <button onClick={handleBtn} 
         className={style.button2} 
         disabled={itemsToMap.length === 0}>{buttonText2}</button>
         </div>

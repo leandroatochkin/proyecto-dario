@@ -21,7 +21,7 @@ export const getCategories = async() =>{
     }
 }
 
-export const createCheckout = async (userId, order, address, total) => {
+export const createCheckout = async (userId, order, address, total, receptor) => {
     try {
         const payload = {
             orderData: order.map((product) => ({
@@ -34,7 +34,8 @@ export const createCheckout = async (userId, order, address, total) => {
                 address: address.address,
                 type: address.type,
                 total: total,
-                state: 1
+                state: 1,
+                receptor: receptor
             }))
         };
 
@@ -53,30 +54,6 @@ export const createCheckout = async (userId, order, address, total) => {
     }
 };
 
-export const registerUser = async(email, phone) => {
-
-    const userData = {
-        email: email,
-        phone: phone
-    }
-
-    try{
-        const response = await fetch(index.register_user, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData)
-                })
-                const data = await response.json()
-                return data
-            }
-            catch(e){
-                console.log(e)
-                throw e
-            }
-}
-
 export const checkUser = async (email) => {
     const userData = { email: email };
     
@@ -86,15 +63,40 @@ export const checkUser = async (email) => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify(userData),
+            //credentials: 'include'
+        });
+
+        const data = await response.json();
+        return data; // Expected response: { exists: true/false, userId, token }
+
+    } catch (e) {
+        console.error('Error checking user:', e);
+        throw new Error('Error checking user');
+    }
+};
+
+export const registerUser = async (email, phone) => {
+    const userData = {
+        email: email,
+        phone: phone
+    };
+
+    try {
+        const response = await fetch(index.register_user, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(userData)
         });
 
         const data = await response.json();
-        return data; // return true or false based on the server response
+        return data; // Expected response: { success: true, userId, token }
 
     } catch (e) {
-        console.log('Error checking user:', e);
-        throw new Error('Error checking user'); // Catch actual errors here
+        console.error('Error registering user:', e);
+        throw new Error('Error registering user');
     }
 };
 
@@ -144,3 +146,5 @@ export const getAddress = async(userId) => {
                 throw e
             }
 }
+
+

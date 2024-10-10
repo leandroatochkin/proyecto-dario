@@ -1,9 +1,57 @@
 @media only screen and (max-width: 640px){
+
+.container{
+    width: 100%;
+}
+
 .addressLine{
     color: black;
 }
 
+.input{
+    background-color: black;
+    border-radius: 8px;
+    border: none;
+    color: #e0e0e0;
+    height: 20px;
+    width: 70%;
+}
+
+.select{
+    background-color: black;
+    border-radius: 8px;
+    border: none;
+    color: #e0e0e0;
+    height: 20px;
+}
+
+.addressInput{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5%;
+}
+
 .addressLine:hover{
     background-color: aquamarine;
+    border-radius: 8px;
+}
+
+.btnContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.btnContainer > button {
+    background-color: transparent;
+    color: #212427;
+    font-weight: bolder;
+}
+
+.addAddressBtn{
+    background-color: transparent;
+    color: #212427;
+    font-weight: bolder;
 }
   }

@@ -38,7 +38,7 @@
         box-shadow:  -20px -20px 60px #bebebe,
                     20px 20px 60px #ffffff;
         margin-bottom: 5%;
-        width: 90%;
+        width: 100%;
                    
     }
 
@@ -89,7 +89,8 @@
         width: auto;
     }
 
-    .loader{
+    .loader, .notLogged{
+        color: #212427;
         background: #e0e0e0;
         width: 100vw;
         height: 100vh;
@@ -97,4 +98,19 @@
         justify-content: center;
         align-items: center;
     }
+
+    .scInfo{
+        width: 100%;
+    }
+
+    .liInfo{
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .h2{
+        font-weight: bolder;
+    }
+   
 }
