@@ -37,12 +37,10 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
     }
   };
 
-  useEffect(() => {
-    console.log('Current Addresses:', addresses);
-  }, [addresses]);
 
   const retrieveAddress = async (userId) => {
     try {
+      console.log(userId)
       const result = await getAddress(userId);
       console.log('Retrieved Addresses:', result); // Log the full result
 

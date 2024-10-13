@@ -4,12 +4,9 @@
         width: 100vw;
         height: 100%;
         overflow-y: scroll;
-    }
-
-    .cartButton{
-        position: fixed;
-        right: 1%;
-        top: 1%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
     }
 
     .scInfo{
@@ -24,6 +21,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        width: 80%;
     }
 
     .h2{
@@ -76,6 +74,21 @@
         box-shadow:  -20px -20px 60px #bebebe,
         20px 20px 60px #ffffff;
         color: #212427;
+        position: fixed;
+        right: 1%;
+        top: 1%;
+    }
+
+    .logOutBtn{
+        color: #212427;
+        position: fixed;
+        left: 1%;
+        top: 1%;
+        background: linear-gradient(10deg, #fa0, #ff6a00);
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .itemCount{

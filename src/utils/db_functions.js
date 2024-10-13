@@ -68,6 +68,7 @@ export const checkUser = async (email) => {
         });
 
         const data = await response.json();
+        localStorage.setItem('authToken', data.token);
         return data; // Expected response: { exists: true/false, userId, token }
 
     } catch (e) {

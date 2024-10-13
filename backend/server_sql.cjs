@@ -4,18 +4,56 @@ const db = require('../backend/api/db.cjs')
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const path = require('path')
+const xss = require('xss-clean')
+const  helmet = require('helmet')
+const fs = require('fs');
+const https = require('https')
+
+const options = {
+    key: fs.readFileSync('C:/Users/leand/privkey.pem'),  // Replace with the correct path
+    cert: fs.readFileSync('C:/Users/leand/cert.pem'),    // Replace with the correct path
+  };
+
 
 app.use(bodyParser.json());
 
 app.use(cors({
-    origin: 'http://localhost:5173'
-  }));
+    origin: 'https://localhost:5173',
+    credentials: true,  // Allow credentials to be sent
+    methods: ['GET', 'POST'],  // Allow necessary methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
+}));
 
+
+app.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:5173');  // Allow your frontend origin
+    res.setHeader('Access-Control-Allow-Credentials', 'true');  // Required if using credentials
+    next();
+});
+
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            "default-src": ["'self'"],
+            "img-src": ["'self'", "data:", "https://localhost:3000"],
+            "upgrade-insecure-requests": [],
+        },
+    },
+    crossOriginResourcePolicy: false
+}));
+
+
+
+app.use(xss())
 
 app.use(express.json()); // Parse incoming JSON data
 
+app.use('/images', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:5173'); // or '*' to allow all origins
+    next();
+}, express.static(path.join('C:/Users/leand/OneDrive/Escritorio/restaurant2/IMAGENES')));
 
-app.use('/images', express.static(path.join('C:/Users/leand/OneDrive/Escritorio/restaurant2/IMAGENES')));
 
 
 const productRoute = require('./api/routes/db_productos.cjs')
@@ -94,5 +132,4 @@ app.post('/upload/producto', (req, res) => {
 });
 
 
-// Start the server
-app.listen(3000, () => console.log('Server running on port 3000'));
+https.createServer(options, app).listen(3000, ()=>{console.log('Server running on port 3000')})

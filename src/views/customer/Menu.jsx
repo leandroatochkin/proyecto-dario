@@ -1,4 +1,5 @@
 import React, { useEffect, useState, Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ItemView from './ItemView';
 import { getCategories, getProducts, createCheckout } from '../../utils/db_functions';
 import style from './Menu.module.css';
@@ -18,7 +19,13 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
   
 
-  const logStatus = userStore((state) => state.loggedIn);
+  const logStatus = userStore((state) => state.loggedIn)
+  const userId = userStore((state) => state.userId)
+  const setLoginStatus = userStore((state) => state.setLoginStatus)
+
+  
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +53,13 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
     setCurrentOrder(currentOrder.filter((_, i) => i !== index));
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem('authToken')
+    setLoginStatus(null,false)
+    navigate('/login')
+  }
+
+
   return (
     <div className={style.background}>
       {isLoggedIn ? (<Suspense fallback={<MoonLoader color="#fff" />}>
@@ -65,7 +79,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
             itemsToMap={currentOrder}
             renderItem={(product) => (
               <div className={style.li}>
-                <img src={`http://localhost:3000/images/${product.PD_ubi_imagen}`} className={style.listImage} />
+                <img src={`https://localhost:3000/images/${product.PD_ubi_imagen}`} className={style.listImage} />
                 <div className={style.scInfo}>
                   <div className={style.liInfo}>
                   <span className={style.h2}>{capitalize(product.PD_des_pro)}</span>
@@ -81,6 +95,13 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
           />
         )}
 
+        <motion.button
+        className={style.logOutBtn}
+        whileTap={{ scale: '0.95' }}
+        onClick={handleLogOut}
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        </motion.button>
         <motion.button
           className={style.cartButton}
           onClick={() => setOpenCartModal(!openCartModal)}
@@ -131,7 +152,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
                         }}
                       >
                         <img
-                          src={`http://localhost:3000/images/${product.PD_ubi_imagen}`}
+                          src={`https://localhost:3000/images/${product.PD_ubi_imagen}`}
                           className={style.listImage}
                         />
                         <div className={style.itemInfo}>

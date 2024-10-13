@@ -18,19 +18,17 @@ router.post('/', (req, res) => {
         } else {
             // User found, return exists: true and the user ID
             const userId = results[0].id;
+            const payload = {
+                userId: userId,
+                loggedIn: true
+              };
 
-            // Generate JWT token with userId and a 1-day expiration time
-            //const jwtToken = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '3d' });
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-            // Set the JWT token in a secure, HTTP-only cookie
-            //res.cookie('auth_token', jwtToken, {
-            //    httpOnly: true,     // Cookie is accessible only by the web server
-            //    secure: true,       // Set to true in production (requires HTTPS)
-                maxAge: 24 * 60 * 60 * 3000  // 1 day in milliseconds
-           // });
+
 
             // Send response with userId and success
-            return res.status(200).json({ exists: true, userId });
+            return res.status(200).json({ exists: true, userId, token });
         }
     });
 });
