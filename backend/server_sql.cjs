@@ -8,6 +8,7 @@ const xss = require('xss-clean')
 const  helmet = require('helmet')
 const fs = require('fs');
 const https = require('https')
+const parseFileData = require('./parser.cjs')
 
 const options = {
     key: fs.readFileSync('C:/Users/leand/privkey.pem'),  // Replace with the correct path
@@ -52,7 +53,7 @@ app.use(express.json()); // Parse incoming JSON data
 app.use('/images', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://localhost:5173'); // or '*' to allow all origins
     next();
-}, express.static(path.join('C:/Users/leand/OneDrive/Escritorio/restaurant2/IMAGENES')));
+}, express.static(path.join('C:/Malbec/IMAGENES')));
 
 
 
@@ -74,20 +75,10 @@ app.use('/api/check_user', checkUserRoute)
 app.use('/api/add_address', addAddressRoute)
 app.use('/api/get_address', getAddressRoute)
 
-// Helper function to parse the text data into structured rows
-const parseFileData = (fileData, isRubro) => {
-    const rows = fileData.split(';').filter(line => line.trim());
-    return rows.map(row => {
-        const columns = row.split(',').map(col => col.trim());
-        return isRubro 
-            ? { RB_cod_raz: columns[0], RB_cod_suc: columns[1], RB_cod_rub: columns[2], RB_des_rub: columns[3], RB_est: columns[4] }
-            : { PD_cod_raz_soc: columns[0], PD_cod_suc: columns[1], PD_cod_pro: columns[2], PD_des_pro: columns[3], PD_cod_rub: columns[4], PD_pre_ven: parseFloat(columns[5]),  PD_ubi_imagen: columns[6], PD_est: columns[7] };
-    });
-};
 
 // Endpoint to upload rubro data
 app.post('/upload/rubro', (req, res) => {
-    const rubroData = parseFileData(req.body.data, true);
+    const rubroData = parseFileData(req.body.data, 'rubro');
     
     rubroData.forEach(item => {
         const { RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est } = item;
@@ -105,7 +96,7 @@ app.post('/upload/rubro', (req, res) => {
 
 // Endpoint to upload producto data
 app.post('/upload/producto', (req, res) => {
-    const productoData = parseFileData(req.body.data, false);
+    const productoData = parseFileData(req.body.data, 'producto');
     
     productoData.forEach(item => {
         const { PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est } = item;
@@ -129,6 +120,28 @@ app.post('/upload/producto', (req, res) => {
     });
 
     res.send('Producto data uploaded');
+});
+
+app.post('/upload/estado_pedido', (req, res) => {
+    const stateData = parseFileData(req.body.data, 'estado_pedido');
+    
+    stateData.forEach(item => {
+        const { EP_cod_raz_soc, EP_cod_suc, EP_nro_ped, EP_tot_fin, EP_est } = item;
+
+        const query = `UPDATE user_orders 
+            SET state = ?, total = ? 
+            WHERE PD_cod_raz_soc = ? 
+              AND PD_cod_suc = ? 
+              AND order_number = ?`
+
+        db.query(query, [EP_est, EP_tot_fin, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
+            if (err) {
+                console.error(`Failed to insert/update pedido: ${err.message}`);
+            }
+        });
+    });
+
+    res.send('Novedad uploaded');
 });
 
 

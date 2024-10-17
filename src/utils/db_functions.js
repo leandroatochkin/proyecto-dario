@@ -1,5 +1,6 @@
 import { index } from "."
 
+
 export const getProducts = async() =>{
     try{
         const response = await fetch(index.request_products)
@@ -8,6 +9,7 @@ export const getProducts = async() =>{
         return data
     } catch(e){
         console.log(e)
+        return e
     }
 }
 
@@ -18,6 +20,7 @@ export const getCategories = async() =>{
         return data
     } catch(e){
         console.log(e)
+        return e
     }
 }
 

@@ -15,5 +15,8 @@ export const ES_text = {
     total:  'Total',
     save: 'guardar',
     receptor_input: 'Recibe:',
-    please_log_in: 'Por favor ingrese con sus datos.'
+    please_log_in: 'Por favor ingrese con sus datos.',
+    large_screen: 'Esta aplicación no está disponible en pantallas grandes por el momento.',
+
+
 }

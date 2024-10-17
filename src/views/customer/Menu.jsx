@@ -22,8 +22,12 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
   const logStatus = userStore((state) => state.loggedIn)
   const userId = userStore((state) => state.userId)
   const setLoginStatus = userStore((state) => state.setLoginStatus)
+  const setError =  userStore((state) => state.setError)
+  const errorStatus = userStore((state) => state.error)
+  const errorMessage = userStore((state) => state.errorMsg)
 
-  
+
+  useEffect(()=>{console.log(errorStatus, errorMessage)},[])
 
   const navigate = useNavigate()
 
@@ -37,6 +41,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
         setProducts(fetchedProd);
       } catch (e) {
         console.log(e);
+        setError(true, e)
       }
       setIsLoading(false);  // Set loading to false after fetch completes
     };

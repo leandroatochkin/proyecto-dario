@@ -4,6 +4,7 @@ const path = require('path');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db.cjs');
+const sendEmailNotification = require('../../notification_mailer.cjs')
 
 const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
 
@@ -22,7 +23,8 @@ router.post('/checkout', (req, res) => {
   // Prepare a batch insert for the database and file write with order_number
   const insertPromises = orderData.map((product) => {
     return new Promise((resolve, reject) => {
-
+      console.log(product)
+      sendEmailNotification(product)
       // Step 1: Get the current maximum order_number for this location of the business
       const query = `SELECT IFNULL(MAX(order_number), 0) AS max_order_number 
                      FROM user_orders 
@@ -72,7 +74,7 @@ router.post('/checkout', (req, res) => {
 
 
             // Step 4: Format the order data for the file with order_number
-            const orderString = `D,${product.PD_cod_raz_soc.toString().padEnd(4, ' ')},${product.PD_cod_suc.toString().padEnd(4, ' ')},${product.PD_cod_pro.toString().padEnd(20, ' ')},${product.PD_pre_ven.toString().padEnd(16, ' ')},${product.quantity.toString().padEnd(10, ' ')},${product.address.padEnd(50, ' ')},${addressType(product.type)},${product.total.toString().padEnd(16, ' ')},${product.state},${newOrderNumber.toString().padStart(8, ' ')}, ${product.receptor}, ${getComission(product.PD_pre_ven, 10)};\n`;
+            const orderString = `D,${product.PD_cod_raz_soc.toString()},${product.PD_cod_suc.toString()},${newOrderNumber.toString().padStart(10, ' ')},${product.PD_cod_pro.toString().padEnd(20, ' ')},${product.PD_pre_ven.toString().padEnd(16, ' ')},${product.quantity.toString().padEnd(10, ' ')},${product.address.padEnd(50, ' ')},${addressType(product.type).padEnd(20, ' ')},${product.total.toString().padEnd(16, ' ')},${product.state}, ${product.receptor.padEnd(20, ' ')}, ${getComission(product.total, 10)};\n`;
 
             resolve(orderString); // Resolve with the formatted string
           });
@@ -84,7 +86,7 @@ router.post('/checkout', (req, res) => {
   Promise.all(insertPromises)
       .then((orderStrings) => {
           // Concatenate all order strings and append to the file
-          const totalString = `T,${orderData[0].total};\n`;
+          const totalString = `T,    ,    ,          ,                    ,               ,          ,                                                  ,                    ,${orderData[0].total};\n`;
           const fileContent = orderStrings.join('') + totalString;
 
           // Append the order and total to the file

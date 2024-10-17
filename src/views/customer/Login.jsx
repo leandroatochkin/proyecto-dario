@@ -9,6 +9,7 @@ import { checkUser } from '../../utils/db_functions';
 import {jwtDecode} from 'jwt-decode';  // Fix the import of jwtDecode
 import userStore from '../../utils/store';
 import { MoonLoader } from 'react-spinners';  // Import a loader component
+import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ const Login = () => {
 
   return (
     <div className={style.container} aria-label="Login container">
+      <LargeScreenNotice />
       {openModal && (
         <ModalOneButton
           message={ES_text.phone_modal}
