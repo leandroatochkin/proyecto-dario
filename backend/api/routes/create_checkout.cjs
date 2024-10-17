@@ -8,6 +8,24 @@ const sendEmailNotification = require('../../notification_mailer.cjs')
 
 const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
 
+
+const getUserDetails = (userId) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT email, phone, score FROM users WHERE id = ?`;
+    db.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching user details:", err);
+        return reject(err);
+      }
+      if (results.length > 0) {
+        resolve(results[0]); // Return the first (and only) user record
+      } else {
+        reject("User not found");
+      }
+    });
+  });
+};
+
 // Endpoint for order checkout
 router.post('/checkout', (req, res) => {
   const { orderData } = req.body;
@@ -23,8 +41,12 @@ router.post('/checkout', (req, res) => {
   // Prepare a batch insert for the database and file write with order_number
   const insertPromises = orderData.map((product) => {
     return new Promise((resolve, reject) => {
-      console.log(product)
-      sendEmailNotification(product)
+      getUserDetails(product.user_Id)
+      .then((userDetails) => {
+        console.log(userDetails)
+        sendEmailNotification(product,userDetails)
+      });
+      
       // Step 1: Get the current maximum order_number for this location of the business
       const query = `SELECT IFNULL(MAX(order_number), 0) AS max_order_number 
                      FROM user_orders 

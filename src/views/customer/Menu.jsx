@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
 import userStore from '../../utils/store';
+import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 
 const Menu = ({ setCurrentOrder, currentOrder, language }) => {
   const [categories, setCategories] = useState([]);
@@ -67,6 +68,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
 
   return (
     <div className={style.background}>
+      <LargeScreenNotice />
+      <div className={style.container}>
       {isLoggedIn ? (<Suspense fallback={<MoonLoader color="#fff" />}>
         {openBuyModal && (
           <ItemView
@@ -176,6 +179,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
         <div className={style.notLogged}>{language.please_log_in}</div>
       )}
       
+      </div>
     </div>
   );
 };

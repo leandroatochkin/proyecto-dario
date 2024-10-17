@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
 
         // Store both the encrypted data and IV in the database
         db.query('INSERT INTO users (id, email, phone, role) VALUES (?, ?, ?, ?)', 
-            [id, email, JSON.stringify({ iv: phoneIv, data: encryptedPhone }), role || 'customer'], 
+            [id, email, JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'customer'], 
             (err, result) => {
                 if (err) {
                     console.error("Error inserting user:", err);
