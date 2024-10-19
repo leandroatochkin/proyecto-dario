@@ -33,17 +33,20 @@ const userId = userStore((state) => state.userId);
 
 useEffect(()=>{
 const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0).toFixed(4);
-console.log(total)
 setTotal(total)
 },[itemsToMap])
 
 const handleBtn = () => {
-    if(receptor !== ''){
+    if(receptor !== '' && selectedAddress !==  null){
         buyFunction(userId, itemsToMap, selectedAddress, total, receptor)
         setFunction()
     } else {
         setInputWrong(true) 
-        alert('Please select an address')
+        if(selectedAddress === null){
+            alert('Please select an address')
+        } else {
+            alert('Please enter a name')
+        }
         
     }
   

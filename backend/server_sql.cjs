@@ -9,6 +9,8 @@ const  helmet = require('helmet')
 const fs = require('fs');
 const https = require('https')
 const parseFileData = require('./parser.cjs')
+const sendEmailNotification = require('./notification_mailer.cjs');
+const { getUserDetails, getUserIdFromOrder } = require('./utils.cjs');
 
 const options = {
     key: fs.readFileSync('C:/Users/leand/privkey.pem'),  // Replace with the correct path
@@ -124,21 +126,43 @@ app.post('/upload/producto', (req, res) => {
 
 app.post('/upload/estado_pedido', (req, res) => {
     const stateData = parseFileData(req.body.data, 'estado_pedido');
+
+    console.log(stateData)
     
     stateData.forEach(item => {
-        const { EP_cod_raz_soc, EP_cod_suc, EP_nro_ped, EP_tot_fin, EP_est } = item;
+        const { EP_cod_raz_soc, EP_cod_suc, EP_fecha, EP_nro_ped, EP_tot_fin, EP_est } = item;
 
         const query = `UPDATE user_orders 
-            SET state = ?, total = ? 
+            SET state = ?, total = ?, fecha = ?
             WHERE PD_cod_raz_soc = ? 
               AND PD_cod_suc = ? 
-              AND order_number = ?`
+              AND order_number = ?
+              `
 
-        db.query(query, [EP_est, EP_tot_fin, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
+        db.query(query, [EP_est, EP_tot_fin, EP_fecha, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
             if (err) {
                 console.error(`Failed to insert/update pedido: ${err.message}`);
             }
         });
+
+        if (EP_est === 4) {
+            // Use an async function with try-catch for sending notifications
+            const sendNotification = async () => {
+                try {
+                    // Get user details safely with error handling
+                    const userId = await getUserIdFromOrder(EP_cod_raz_soc, EP_cod_suc, EP_nro_ped)
+
+                    const userDetails = await getUserDetails(userId);
+                    // Send the email notification
+                    sendEmailNotification(null, userDetails, false);
+                } catch (error) {
+                    console.error('Failed to send notification:', error);
+                }
+            };
+
+            // Call the async notification function
+            sendNotification();
+        }
     });
 
     res.send('Novedad uploaded');

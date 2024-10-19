@@ -5,55 +5,9 @@ const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db.cjs');
 const sendEmailNotification = require('../../notification_mailer.cjs');
+const {getUserDetails, getProductName, getAddressType, getComission} = require('../../utils.cjs')
 
 const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
-
-const getUserDetails = (userId) => {
-  return new Promise((resolve, reject) => {
-    const query = `SELECT email, phone, score FROM users WHERE id = ?`;
-    db.query(query, [userId], (err, results) => {
-      if (err) {
-        console.error("Error fetching user details:", err);
-        return reject(err);
-      }
-      if (results.length > 0) {
-        resolve(results[0]); // Return the first (and only) user record
-      } else {
-        reject("User not found");
-      }
-    });
-  });
-};
-
-const getProductName = (PD_cod_pro) => {
-  return new Promise((resolve, reject) => {
-    const query = `SELECT PD_des_pro FROM producto WHERE PD_cod_pro = ?`;
-    db.query(query, [PD_cod_pro], (err, results) => {
-      if (err) {
-        console.error("Error fetching product details:", err);
-        return reject(err);
-      }
-      if (results.length > 0) {
-        resolve(results[0].PD_des_pro); // Return product name
-      } else {
-        reject("Product not found");
-      }
-    });
-  });
-};
-
-// Helper function to format the address type
-const addressType = (address) => {
-  switch(address){
-    case '1': return 'CASA';
-    case '2': return 'TRABAJO';
-    case '3': return 'OTRO';
-    default: return '';
-  }               
-};
-
-// Helper function to calculate commission
-const getComission = (total, comission) => (total / 100) * comission;
 
 // Endpoint for order checkout
 router.post('/checkout', async (req, res) => {
@@ -118,7 +72,7 @@ router.post('/checkout', async (req, res) => {
               }
 
               // Build the order string for each product
-              const orderString = `D,${product.PD_cod_raz_soc.toString()},${product.PD_cod_suc.toString()},${newOrderNumber.toString().padStart(10, ' ')},${product.PD_cod_pro.toString().padEnd(20, ' ')},${product.PD_pre_ven.toString().padStart(16, ' ')},${product.quantity.toString().padStart(10, ' ')},${product.address.padEnd(50, ' ')},${addressType(product.type).padEnd(20, ' ')},${product.total.toString().padStart(18, ' ')},${product.receptor.padEnd(20, ' ')},${getComission(product.total, 10).toFixed(4).toString().padStart(16, ' ')},${product.state};\n`;
+              const orderString = `D,${product.PD_cod_raz_soc.toString()},${product.PD_cod_suc.toString()},${newOrderNumber.toString().padStart(10, ' ')},${product.PD_cod_pro.toString().padEnd(20, ' ')},${product.PD_pre_ven.toString().padStart(16, ' ')},${product.quantity.toString().padStart(10, ' ')},${product.address.padEnd(50, ' ')},${getAddressType(product.type).padEnd(20, ' ')},${product.total.toString().padStart(18, ' ')},${product.receptor.padEnd(20, ' ')},${getComission(product.total, 10).toFixed(4).toString().padStart(16, ' ')},${product.state};\n`;
 
               // Accumulate the file content
               fileContent += orderString;
@@ -150,10 +104,10 @@ router.post('/checkout', async (req, res) => {
     sendEmailNotification({
       items: emailItems,
       address: orderData[0].address, // Assuming same address for the entire order
-      type: orderData[0].type,
+      type: getAddressType(orderData[0].type),
       total: orderData[0].total,
       receptor: orderData[0].receptor // Assuming same receptor for the entire order
-    }, userDetails);
+    }, userDetails, true);
 
     // Append the total to the file
     fs.appendFile(orderFilePath, fileContent, (err) => {

@@ -31,7 +31,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const handleSendAddresses = async () => {
     try {
       const response = await addAddress(userId, addresses);
-      console.log(response);
+      return
     } catch (e) {
       console.log(e);
     }
@@ -40,9 +40,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
 
   const retrieveAddress = async (userId) => {
     try {
-      console.log(userId)
+
       const result = await getAddress(userId);
-      console.log('Retrieved Addresses:', result); // Log the full result
 
       // Access the addresses from the result object
       const retrievedAddresses = result.addresses; // This accesses the addresses array
@@ -54,7 +53,6 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
           type: item.type || 'home', // Default to 'home' if type is not provided
         }));
         setAddressesToMap(formattedAddresses); // Set the formatted addresses
-        console.log('Formatted Addresses to Map:', formattedAddresses); // Log formatted addresses
       } else {
         setOpenAddAddress(true);
       }

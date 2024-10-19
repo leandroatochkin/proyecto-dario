@@ -26,9 +26,11 @@ const parseFileData = (fileData, type) => {
             return {
                 EP_cod_raz_soc: columns[0],
                 EP_cod_suc: columns[1],
-                EP_nro_ped: columns[2],
-                EP_tot_fin: parseFloat(columns[3]),
-                EP_est: parseInt(columns[4])
+                EP_fecha: columns[2],
+                EP_nro_ped: columns[3],
+                EP_tot_fin: parseFloat(columns[4]),
+                EP_comision: parseFloat(columns[5]),
+                EP_est: parseInt(columns[6])
             };
         }
     });
