@@ -32,7 +32,8 @@ const userId = userStore((state) => state.userId);
 
 
 useEffect(()=>{
-const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0);
+const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0).toFixed(4);
+console.log(total)
 setTotal(total)
 },[itemsToMap])
 

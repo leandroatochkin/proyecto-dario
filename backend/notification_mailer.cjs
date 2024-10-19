@@ -1,8 +1,7 @@
-require('dotenv').config();
 const nodemailer = require('nodemailer');
 const { decrypt } = require('./utils.cjs');
 
-const sendEmailNotification = (product, contact) => {
+const sendEmailNotification = (orderDetails, contact) => {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -11,7 +10,6 @@ const sendEmailNotification = (product, contact) => {
     },
   });
 
-  // Decrypt phone if it's an encrypted object
   let decryptedPhone;
   try {
     decryptedPhone = decrypt(JSON.parse(contact.phone)); // Parse and decrypt
@@ -20,19 +18,17 @@ const sendEmailNotification = (product, contact) => {
     decryptedPhone = 'Unavailable'; // Fallback in case of decryption failure
   }
 
+
   const mailOptions = {
     from: process.env.MALBEC_EMAIL,
     to: process.env.TEST_EMAIL,
     subject: 'Nuevo Pedido',
-    text: 
-    `Código producto: ${product.PD_cod_pro},
-    Cantidad: ${product.quantity},
-    Domicilio: ${product.address},
-    Tipo de domicilio: ${product.type},
-    Total a abonar: ${product.total},
-    Recibe: ${product.receptor},
-    Contacto: ${decryptedPhone} ${contact.email},
-    `,
+    text: `Productos:\n${orderDetails.items}
+    Domicilio: ${orderDetails.address}
+    Tipo de domicilio: ${orderDetails.type}
+    Total a abonar: ${orderDetails.total}
+    Recibe: ${orderDetails.receptor}
+    Contacto: ${decryptedPhone} ${contact.email}`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

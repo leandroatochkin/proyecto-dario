@@ -19,11 +19,9 @@ router.post('/', (req, res) => {
         try {
             // Loop through the results and decrypt each address
             const decryptedAddresses = results.map(({ address, address_type }) => {
-                console.log('Retrieved address from DB:', address);
 
                 // Parse the encrypted address
                 const parsedAddress = JSON.parse(address);
-                console.log('Parsed address:', parsedAddress);
 
                 // Decrypt the address
                 const decryptedAddress = decrypt(parsedAddress);

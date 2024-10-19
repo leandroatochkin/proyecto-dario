@@ -7,7 +7,6 @@ router.get('/', ( req, res ) => {//get products
     db.query('SELECT * FROM producto', (err, results) => {
       if (err) throw err;
       const result = res.json(results)
-      console.log(result)
     });
   });
 
