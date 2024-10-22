@@ -17,6 +17,6 @@ export const ES_text = {
     receptor_input: 'Recibe:',
     please_log_in: 'Por favor ingrese con sus datos.',
     large_screen: 'Esta aplicación no está disponible en pantallas grandes por el momento.',
-
-
+    please_select_address: 'Por favor ingrese un domicilio.',
+    please_enter_name: 'Por favor ingrese un nombre'
 }

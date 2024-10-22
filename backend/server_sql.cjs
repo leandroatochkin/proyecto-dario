@@ -127,8 +127,6 @@ app.post('/upload/producto', (req, res) => {
 app.post('/upload/estado_pedido', (req, res) => {
     const stateData = parseFileData(req.body.data, 'estado_pedido');
 
-    console.log(stateData)
-    
     stateData.forEach(item => {
         const { EP_cod_raz_soc, EP_cod_suc, EP_fecha, EP_nro_ped, EP_tot_fin, EP_est } = item;
 
@@ -136,8 +134,7 @@ app.post('/upload/estado_pedido', (req, res) => {
             SET state = ?, total = ?, fecha = ?
             WHERE PD_cod_raz_soc = ? 
               AND PD_cod_suc = ? 
-              AND order_number = ?
-              `
+              AND order_number = ?`;
 
         db.query(query, [EP_est, EP_tot_fin, EP_fecha, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
             if (err) {
@@ -146,15 +143,42 @@ app.post('/upload/estado_pedido', (req, res) => {
         });
 
         if (EP_est === 4) {
-            // Use an async function with try-catch for sending notifications
             const sendNotification = async () => {
                 try {
-                    // Get user details safely with error handling
-                    const userId = await getUserIdFromOrder(EP_cod_raz_soc, EP_cod_suc, EP_nro_ped)
+                    // Check if the notification has already been sent
+                    const checkNotificationQuery = `SELECT notification_sent FROM user_orders 
+                        WHERE PD_cod_raz_soc = ? 
+                        AND PD_cod_suc = ? 
+                        AND order_number = ?`;
 
-                    const userDetails = await getUserDetails(userId);
-                    // Send the email notification
-                    sendEmailNotification(null, userDetails, false);
+                    db.query(checkNotificationQuery, [EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], async (err, results) => {
+                        if (err) {
+                            console.error("Error checking notification status:", err);
+                            return;
+                        }
+
+                        if (results.length && !results[0].notification_sent) {
+                            // Notification hasn't been sent, proceed
+                            const userId = await getUserIdFromOrder(EP_cod_raz_soc, EP_cod_suc, EP_nro_ped);
+                            const userDetails = await getUserDetails(userId);
+                            
+                            // Send the email notification
+                            sendEmailNotification(null, userDetails, false);
+
+                            // Update the notification_sent flag
+                            const updateNotificationQuery = `UPDATE user_orders 
+                                SET notification_sent = 1 
+                                WHERE PD_cod_raz_soc = ? 
+                                AND PD_cod_suc = ? 
+                                AND order_number = ?`;
+
+                            db.query(updateNotificationQuery, [EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
+                                if (err) {
+                                    console.error("Failed to update notification flag:", err);
+                                }
+                            });
+                        }
+                    });
                 } catch (error) {
                     console.error('Failed to send notification:', error);
                 }

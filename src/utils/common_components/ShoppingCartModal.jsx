@@ -43,9 +43,9 @@ const handleBtn = () => {
     } else {
         setInputWrong(true) 
         if(selectedAddress === null){
-            alert('Please select an address')
+            alert(language.please_select_address)
         } else {
-            alert('Please enter a name')
+            alert(language.please_enter_name)
         }
         
     }
