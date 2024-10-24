@@ -18,6 +18,10 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter }) => {
     setFunction(false);                                   // Close the modal
   };
 
+  const handleClick = () => {
+    setFunction(false);                                   // Close the modal
+  }
+
   return (
     <Backdrop>
       <motion.div className={style.messageContainer}>
@@ -27,7 +31,7 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter }) => {
         <input type="text" value={inputValue} onChange={handleInputChange} />
       </div>
         }
-        <button onClick={stateSetter ? handleSubmit : setFunction(false)} className={style.button}>{buttonText}</button>
+        <button onClick={stateSetter ? handleSubmit : handleClick} className={style.button}>{buttonText}</button>
       </motion.div>
     </Backdrop>
   );

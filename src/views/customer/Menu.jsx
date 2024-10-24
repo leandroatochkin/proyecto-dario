@@ -17,12 +17,12 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [openErrorModal, setOpenErrorModal] = useState(false);
 
   
 
   const setLoginStatus = userStore((state) => state.setLoginStatus)
   const loginStatus = userStore((state) => state.loggedIn)
-  const setError =  userStore((state) => state.setError)
 
   const navigate = useNavigate()
 
@@ -33,13 +33,11 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
       try {
         const fetchedCat = await getCategories(razSoc);
         const fetchedProd = await getProducts(razSoc);
-        console.log('Categories:', fetchedCat);
-        console.log('Products:', fetchedProd);
         setCategories(fetchedCat);
         setProducts(fetchedProd);
       } catch (e) {
         console.log(e);
-        setError(true, e);
+        setOpenErrorModal(true)
       }
       setIsLoading(false);
     };
@@ -67,11 +65,17 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
     navigate('/')
   }
 
-  useEffect(()=>{console.log(loginStatus)},[])
 
   return (
     <div className={style.background}>
       <LargeScreenNotice />
+      {openErrorModal && (
+                <ModalOneButton
+                    message={language.error_try_again_later}
+                    setFunction={setOpenErrorModal}
+                    buttonText={'ok'}
+                />
+            )}
       <div className={style.container}>
       {loginStatus ? (<Suspense fallback={<MoonLoader color="#fff" />}>
         {openBuyModal && (
@@ -157,7 +161,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
           categories &&
           categories.map((category, index) => (
             <div key={index}>
-              <h2 className={style.h2}>{category.RB_des_rub}</h2>
+              <h2 className={style.h2Rubro}>{category.RB_des_rub}</h2>
               <ul className={style.ul}>
                 {products &&
                   products

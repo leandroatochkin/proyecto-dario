@@ -140,6 +140,12 @@
     .h2{
         font-weight: bolder;
     }
+
+    .h2Rubro{
+        font-weight: bolder;
+        font-family: "Fredoka", roboto;
+        color: #8D1A43;
+    }
    
 }
 @media only screen and (min-width: 641px){

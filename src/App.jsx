@@ -8,12 +8,15 @@ import { ES_text } from './utils/text_scripts';
 import { Route, Routes } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import userStore from './utils/store';
+import { googleLogout } from '@react-oauth/google';
 
 function App() {
    const [currentOrder, setCurrentOrder] = useState([])
     const [isLoading, setIsLoading] = useState(true); // Add loading state
     const [razSoc, setRazSoc] = useState('');
     const [language, setLanguage] = useState(ES_text);
+
+    
 
     const navigate = useNavigate();
     const setLoginStatus = userStore((state) => state.setLoginStatus);
@@ -57,7 +60,7 @@ function App() {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Home setRazSoc={setRazSoc} razSoc={razSoc} />} />
+            <Route path="/" element={<Home setRazSoc={setRazSoc} razSoc={razSoc} language={language}/>} />
             <Route path="/menu" element={<Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder} language={language} razSoc={razSoc} />} />
         </Routes>
     );

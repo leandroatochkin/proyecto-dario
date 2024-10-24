@@ -18,5 +18,6 @@ export const ES_text = {
     please_log_in: 'Por favor ingrese con sus datos.',
     large_screen: 'Esta aplicación no está disponible en pantallas grandes por el momento.',
     please_select_address: 'Por favor ingrese un domicilio.',
-    please_enter_name: 'Por favor ingrese un nombre'
+    please_enter_name: 'Por favor ingrese un nombre',
+    error_try_again_later: 'Hubo un error. Por favor intente más tarde.'
 }

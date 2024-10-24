@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import userStore from '../store';
 import { getAddress, addAddress } from '../db_functions';
-import style from './AddressSelector.module.css'
+import style from './AddressSelector.module.css';
 import { ES_text } from '../text_scripts';
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
   const [openAddAddress, setOpenAddAddress] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [addressesToMap, setAddressesToMap] = useState([]); // Ensure this is an array
-  const [inactive, setInactive] = useState(false)
-
+  const [addressesToMap, setAddressesToMap] = useState([]); // To map addresses
+  const [inactive, setInactive] = useState(false);
 
   const loggedIn = userStore((state) => state.loggedIn);
   const userId = userStore((state) => state.userId);
@@ -31,16 +30,25 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const handleSendAddresses = async () => {
     try {
       const response = await addAddress(userId, addresses);
-      return
+
+      // After successfully adding new addresses, update the addressesToMap to reflect the new ones
+      setAddressesToMap((prevAddresses) => [
+        ...prevAddresses,
+        ...addresses.filter((address) => address.address !== ''), // Only add valid addresses
+      ]);
+
+      // Reset input fields and hide the input area
+      setAddresses([{ address: '', type: '1' }]);
+      setShowInput(false);
+      setInactive(false);
+
     } catch (e) {
       console.log(e);
     }
   };
 
-
   const retrieveAddress = async (userId) => {
     try {
-
       const result = await getAddress(userId);
 
       // Access the addresses from the result object
@@ -64,13 +72,13 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const getAddressLabel = (type) => {
     switch (type) {
       case '1':
-        return language.select_home; // Spanish for 'Home'
+        return language.select_home;
       case '2':
-        return language.select_work; // Spanish for 'Work'
+        return language.select_work;
       case '3':
-        return language.select_other; // Spanish for 'Other'
+        return language.select_other;
       default:
-        return 'Dirección'; // Default case if the type is unknown
+        return 'Dirección';
     }
   };
 
@@ -80,30 +88,31 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
     }
   }, [loggedIn, userId]);
 
-
   return (
     <div className={style.container}>
       {addressesToMap.length > 0 && addressesToMap.map((address, index) => (
         <div key={index} 
-        className={style.addressLine} 
-        onClick={()=>setSelectedAddress(address)}>
-        {address.address}
-        <span>({getAddressLabel(address.type)})</span>
-        {selectedAddress 
-        && 
-        selectedAddress.address === address.address && (
-          <span style={{ marginLeft: '8px', color: 'green' }}>✔️</span> // Tick icon
-        )}</div>
-
+          className={style.addressLine} 
+          onClick={() => setSelectedAddress(address)}
+        >
+          {address.address}
+          <span>({getAddressLabel(address.type)})</span>
+          {selectedAddress && selectedAddress.address === address.address && (
+            <span style={{ marginLeft: '8px', color: 'green' }}>✔️</span> // Tick icon
+          )}
+        </div>
       ))}
-      <button onClick={() => {
-        setShowInput(!showInput)
-        setInactive(!inactive)
-        }}
-        disabled={inactive === false ?  false : true}
-        className={style.addAddressBtn}
 
-        >{buttonText1}</button>
+      <button 
+        onClick={() => {
+          setShowInput(!showInput);
+          setInactive(!inactive);
+        }}
+        disabled={inactive === false ? false : true}
+        className={style.addAddressBtn}
+      >
+        {buttonText1}
+      </button>
 
       {showInput &&
         addresses.map((item, index) => (
@@ -130,11 +139,13 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
           </div>
         ))}
       <div className={style.btnContainer}>
-      <button 
-      onClick={addNewAddress}
-      style={!inactive ? {display: 'none'} : {display: 'flex'}}
-      >+</button> {/* Add new address */}
-      <button onClick={handleSendAddresses}>{language.save}</button>
+        <button 
+          onClick={addNewAddress}
+          style={!inactive ? { display: 'none' } : { display: 'flex' }}
+        >
+          +
+        </button> {/* Add new address */}
+        <button onClick={handleSendAddresses}>{language.save}</button>
       </div>
     </div>
   );
