@@ -59,13 +59,14 @@ app.use('/images', (req, res, next) => {
 
 
 
-const productRoute = require('./api/routes/db_productos.cjs')
-const categoryRoute = require('./api/routes/db_rubros.cjs')
+const productRoute = require('./api/routes/products/db_productos.cjs')
+const categoryRoute = require('./api/routes/products/db_rubros.cjs')
 const checkoutRoute = require('./api/routes/create_checkout.cjs')
-const newUserRoute = require('./api/routes/db_new_user.cjs')
-const checkUserRoute = require('./api/routes/check_user.cjs')
-const addAddressRoute = require('./api/routes/db_register_address.cjs')
-const getAddressRoute = require('./api/routes/db_retrieve_addresses.cjs')
+const newUserRoute = require('./api/routes/users/db_new_user.cjs')
+const checkUserRoute = require('./api/routes/users/check_user.cjs')
+const addAddressRoute = require('./api/routes/users/db_register_address.cjs')
+const getAddressRoute = require('./api/routes/users/db_retrieve_addresses.cjs')
+const getBusinessesRoute = require('./api/routes/businesses/db_retrieve_business.cjs')
 
 
 
@@ -76,6 +77,7 @@ app.use('/api/register', newUserRoute);
 app.use('/api/check_user', checkUserRoute)
 app.use('/api/add_address', addAddressRoute)
 app.use('/api/get_address', getAddressRoute)
+app.use('/api/get_businesses', getBusinessesRoute)
 
 
 // Endpoint to upload rubro data

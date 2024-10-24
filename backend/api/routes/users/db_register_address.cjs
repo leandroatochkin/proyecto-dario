@@ -1,8 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const router = express.Router();
-const { encrypt } = require('../../utils.cjs');
-const db = require('../db.cjs');
+const { encrypt } = require('../../../utils.cjs');
+const db = require('../../db.cjs');
 
 router.post('/', (req, res) => {
     const { userId, addresses } = req.body;

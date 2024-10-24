@@ -10,46 +10,43 @@ import { MoonLoader } from 'react-spinners';
 import userStore from '../../utils/store';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 
-const Menu = ({ setCurrentOrder, currentOrder, language }) => {
+const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
   const [categories, setCategories] = useState([]);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+
   
 
-  const logStatus = userStore((state) => state.loggedIn)
-  const userId = userStore((state) => state.userId)
   const setLoginStatus = userStore((state) => state.setLoginStatus)
+  const loginStatus = userStore((state) => state.loggedIn)
   const setError =  userStore((state) => state.setError)
-  const errorStatus = userStore((state) => state.error)
-  const errorMessage = userStore((state) => state.errorMsg)
-
-
-  useEffect(()=>{console.log(errorStatus, errorMessage)},[])
 
   const navigate = useNavigate()
 
   useEffect(() => {
+    if (!razSoc) return;
     const fetchData = async () => {
-      setIsLoading(true);  // Set loading to true before starting fetch
+      setIsLoading(true);
       try {
-        const fetchedCat = await getCategories();
-        const fetchedProd = await getProducts();
+        const fetchedCat = await getCategories(razSoc);
+        const fetchedProd = await getProducts(razSoc);
+        console.log('Categories:', fetchedCat);
+        console.log('Products:', fetchedProd);
         setCategories(fetchedCat);
         setProducts(fetchedProd);
       } catch (e) {
         console.log(e);
-        setError(true, e)
+        setError(true, e);
       }
-      setIsLoading(false);  // Set loading to false after fetch completes
+      setIsLoading(false);
     };
     fetchData();
-    setIsLoggedIn(logStatus)
-  }, []);
-
+  }, [razSoc]);
+    // Now this runs whenever razSoc changes
+  
   const handleBuy = (userId, order, address, total, receptor) => {
     createCheckout(userId, order, address, total, receptor);
     setCurrentOrder([]);
@@ -61,16 +58,22 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
 
   const handleLogOut = () => {
     localStorage.removeItem('authToken')
-    setLoginStatus(null,false)
+    setLoginStatus(false, null)
     navigate('/login')
   }
 
+  const handleBack = () => {
+    setCurrentOrder([])
+    navigate('/')
+  }
+
+  useEffect(()=>{console.log(loginStatus)},[])
 
   return (
     <div className={style.background}>
       <LargeScreenNotice />
       <div className={style.container}>
-      {isLoggedIn ? (<Suspense fallback={<MoonLoader color="#fff" />}>
+      {loginStatus ? (<Suspense fallback={<MoonLoader color="#fff" />}>
         {openBuyModal && (
           <ItemView
             product={product}
@@ -90,7 +93,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
                 <img src={`https://localhost:3000/images/${product.PD_ubi_imagen}`} className={style.listImage} />
                 <div className={style.scInfo}>
                   <div className={style.liInfo}>
-                  <span className={style.h2}>{capitalize(product.PD_des_pro)}</span>
+                  <span className={style.h2}>{capitalize(product.PD_des_pro).length > 20 ? capitalize(product.PD_des_pro).slice(0, 20) + '...' :  capitalize(product.PD_des_pro)}</span>
                   <span className={style.h2}>{product.PD_pre_ven.slice(0, product.PD_pre_ven.length - 3)}</span>
                   </div>
                   <span className={style.h2}>{language.quantity}:{product.quantity}</span>
@@ -103,6 +106,15 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
           />
         )}
 
+        <div className={style.topBtnContainer}>
+        <motion.button
+        className={style.backBtn}
+        whileTap={{ scale: '0.95' }}
+        onClick={handleBack}
+        >
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-left-dash"><path d="M19 15V9"/><path d="M15 15h-3v4l-7-7 7-7v4h3v6z"/></svg>        
+        </motion.button>
+
         <motion.button
         className={style.logOutBtn}
         whileTap={{ scale: '0.95' }}
@@ -110,6 +122,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
         >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
         </motion.button>
+        </div>
         <motion.button
           className={style.cartButton}
           onClick={() => setOpenCartModal(!openCartModal)}
@@ -165,7 +178,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language }) => {
                         />
                         <div className={style.itemInfo}>
                           <h3 className={style.h3}>
-                            {capitalize(product.PD_des_pro.length > 29 ? product.PD_des_pro.slice(0, 30) + '...' : product.PD_des_pro)}
+                            {capitalize(product.PD_des_pro.length > 29 ? product.PD_des_pro.slice(0, 20) + '...' : product.PD_des_pro)}
                           </h3>
                           <p className={style.p}>{product.PD_pre_ven.slice(0, product.PD_pre_ven.length - 2)}</p>
                         </div>

@@ -1,23 +1,39 @@
 import { index } from "."
 
 
-export const getProducts = async() =>{
+export const getProducts = async(raz_soc) =>{
     try{
-        const response = await fetch(index.request_products)
-        const data = await response.json()
 
-        return data
+        const payload = {raz_social: raz_soc}
+        const response = await fetch(index.request_products, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        return data;
     } catch(e){
         console.log(e)
         return e
     }
 }
 
-export const getCategories = async() =>{
+export const getCategories = async(raz_soc) =>{
+
     try{
-        const response = await fetch(index.request_categories)
-        const data = await response.json()
-        return data
+
+        const payload = {raz_social: raz_soc}
+        const response = await fetch(index.request_categories, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        return data;
     } catch(e){
         console.log(e)
         return e
@@ -151,4 +167,14 @@ export const getAddress = async(userId) => {
             }
 }
 
+export const getBusinesses = async() =>{
+    try{
+        const response = await fetch(index.get_businesses)
+        const data = await response.json()
+        return data
+    } catch(e){
+        console.log(e)
+        return e
+    }
+}
 

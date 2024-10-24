@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db.cjs');
-const { decrypt } = require('../../utils.cjs');
+const db = require('../../db.cjs');
+const { decrypt } = require('../../../utils.cjs');
 
 router.post('/', (req, res) => {
     const { userId } = req.body;

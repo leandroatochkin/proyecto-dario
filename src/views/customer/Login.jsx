@@ -35,7 +35,7 @@ const Login = () => {
       if (exists) {
         setNewUser(false);
         setLoginStatus(true, userId);  // Set login status directly here
-        navigate('/menu');  // Navigate to the menu page
+        navigate('/');  // Navigate to the menu page
       } else {
         setNewUser(true);
         setOpenModal(true);  // Open modal for phone input if user is new
@@ -86,7 +86,7 @@ const Login = () => {
 
       <div className={style.login} aria-label="Login form">
         <div className={style.title} aria-label="Welcome Back!">
-          <h3 className={style.h3}>Welcome Back!</h3>
+          <img src={'/public/images/malbec_logo_transparente.PNG'} className={style.logo}/>
         </div>
         
         {/* Show the loader while the login process is happening */}

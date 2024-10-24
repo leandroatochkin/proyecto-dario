@@ -9,4 +9,6 @@ export const index = {
     check_user: `${host}/api/check_user`,
     add_address:  `${host}/api/add_address`,
     get_address:  `${host}/api/get_address`,
+    get_businesses:  `${host}/api/get_businesses`,
+   
 }
