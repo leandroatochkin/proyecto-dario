@@ -38,10 +38,34 @@
 
 .message{
   color: #212427;
+  font-size: 2rem;
 }
 
 .button{
     background: linear-gradient(10deg, #fa0, #ff6a00);
     border: none
+}
+
+.inputContainer{
+  padding: 2%;
+  display: flex;
+  gap: 2%;
+  justify-content: center;
+}
+
+.inputCorrect{
+  border-radius: 8px;
+  border: none;
+  height: 2rem;
+  font-size: 0.8rem;
+  font-weight: bolder;
+}
+
+.inputIncorrect{
+  border-radius: 8px;
+  border: 2px solid red;
+  height: 2rem;
+  font-size: 0.8rem;
+  font-weight: bolder;
 }
 }
