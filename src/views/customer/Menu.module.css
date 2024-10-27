@@ -106,6 +106,12 @@
         align-items: center;
     }
 
+    .settingsBtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .itemCount{
         background-color: red;
         font-weight: bolder;

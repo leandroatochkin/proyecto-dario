@@ -20,5 +20,8 @@ export const ES_text = {
     please_select_address: 'Por favor ingrese un domicilio.',
     please_enter_name: 'Por favor ingrese un nombre',
     error_try_again_later: 'Hubo un error. Por favor intente más tarde.',
-    log_out: '¿Seguro que quiere salir?'
+    log_out: '¿Seguro que quiere salir?',
+    delete_account_button: 'eliminar cuenta',
+    cancel: 'cancelar',
+    delete_account: '¿Está seguro de que quiere eliminar su cuenta?'
 }

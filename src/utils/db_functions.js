@@ -178,3 +178,25 @@ export const getBusinesses = async() =>{
     }
 }
 
+export const deleteUser = async (userId) => {
+    const payload = {
+        userId: userId
+    };
+
+    try {
+        const response = await fetch(index.delete_user, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        return data; // Expected response: { success: true }
+
+    } catch (e) {
+        console.error('Error deleting user:', e);
+        throw new Error('Error deleting user');
+    }
+};

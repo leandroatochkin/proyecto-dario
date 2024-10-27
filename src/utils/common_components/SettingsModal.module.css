@@ -1,0 +1,38 @@
+@media only screen and (max-width: 640px){
+    .messageContainer{
+      height: auto;
+      width: 90%;
+      border-radius: 32px;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2%;
+    }
+  
+  .message{
+    color: #212427;
+    font-size: 2rem;
+  }
+  
+  .button{
+      background: linear-gradient(10deg, #fa0, #ff6a00);
+      border: none;
+      color: #212427;
+  }
+  
+  .buttonContainer{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: 2%;
+  }
+
+  .buttonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  
+  }

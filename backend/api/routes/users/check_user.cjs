@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET;  // Replace with your actual JWT secr
 router.post('/', (req, res) => {
     const { email } = req.body;
     
-    db.query('SELECT id FROM users WHERE email = ?', [email], (err, results) => {
+    db.query('SELECT id FROM users WHERE email = ? AND deleted_at IS NULL', [email], (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Database query error', error: err });
         }
