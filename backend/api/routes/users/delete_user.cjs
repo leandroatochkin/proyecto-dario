@@ -5,6 +5,10 @@ const db = require('../../db.cjs');
 router.post('/', (req, res) => {
     const { userId } = req.body;
 
+    if (!userId) {
+        return res.status(400).send("userId is required");
+      }
+
     const firstQuery = 'DELETE FROM user_addresses WHERE user_id = ?';
     const secondQuery = 'UPDATE users SET deleted_at = NOW() WHERE id = ?';
      // This query is

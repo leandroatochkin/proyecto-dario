@@ -6,6 +6,10 @@ const JWT_SECRET = process.env.JWT_SECRET;  // Replace with your actual JWT secr
 
 router.post('/', (req, res) => {
     const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).send("email is required");
+      }
     
     db.query('SELECT id FROM users WHERE email = ? AND deleted_at IS NULL', [email], (err, results) => {
         if (err) {

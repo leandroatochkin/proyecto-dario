@@ -93,7 +93,9 @@ app.post('/upload/rubro', (req, res) => {
                        ON DUPLICATE KEY UPDATE RB_des_rub = ?, RB_est = ?`;
         
         db.query(query, [RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est, RB_des_rub, RB_est], (err) => {
-            if (err) throw err;
+            if (err) {
+                return res.status(500).json({ message: 'Database query error', error: err });
+            }
         });
     });
     
@@ -121,6 +123,7 @@ app.post('/upload/producto', (req, res) => {
         db.query(query, [PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est], (err) => {
             if (err) {
                 console.error(`Failed to insert/update producto: ${err.message}`);
+                return res.status(500).json({ message: 'Database query error', error: err });
             }
         });
     });
@@ -143,6 +146,7 @@ app.post('/upload/estado_pedido', (req, res) => {
         db.query(query, [EP_est, EP_tot_fin, EP_fecha, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
             if (err) {
                 console.error(`Failed to insert/update pedido: ${err.message}`);
+                return res.status(500).json({ message: 'Database query error', error: err });
             }
         });
 
@@ -158,7 +162,7 @@ app.post('/upload/estado_pedido', (req, res) => {
                     db.query(checkNotificationQuery, [EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], async (err, results) => {
                         if (err) {
                             console.error("Error checking notification status:", err);
-                            return;
+                            return res.status(500).json({ message: 'Database query error', error: err });
                         }
 
                         if (results.length && !results[0].notification_sent) {
