@@ -85,6 +85,10 @@ app.use('/api/delete_user', deleteUserRoute)
 // Endpoint to upload rubro data
 app.post('/upload/rubro', (req, res) => {
     const rubroData = parseFileData(req.body.data, 'rubro');
+
+    if (!rubroData) {
+        return res.status(400).json({ error: 'no data.' });
+    }
     
     rubroData.forEach(item => {
         const { RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est } = item;
@@ -105,6 +109,10 @@ app.post('/upload/rubro', (req, res) => {
 // Endpoint to upload producto data
 app.post('/upload/producto', (req, res) => {
     const productoData = parseFileData(req.body.data, 'producto');
+
+    if (!productoData) {
+        return res.status(400).json({ error: 'no data.' });
+    }
     
     productoData.forEach(item => {
         const { PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est } = item;
@@ -133,6 +141,10 @@ app.post('/upload/producto', (req, res) => {
 
 app.post('/upload/estado_pedido', (req, res) => {
     const stateData = parseFileData(req.body.data, 'estado_pedido');
+
+    if (!stateData) {
+        return res.status(400).json({ error: 'no data.' });
+    }
 
     stateData.forEach(item => {
         const { EP_cod_raz_soc, EP_cod_suc, EP_fecha, EP_nro_ped, EP_tot_fin, EP_est } = item;

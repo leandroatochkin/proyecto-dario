@@ -43,28 +43,28 @@ Authentication: Explain how authentication is handled, including token generatio
 <h2>Endpoints</h2>
 
 <h3>/api/get_businesses</h3>
--Method: GET
--Description: Retrieves a list of all businesses in the database.
--Response: JSON array of business objects
--Error Codes: 200(ok), 201(no items), 500 (Internal Server Error)
+<p>-Method: GET</p>
+<p>-Description: Retrieves a list of all businesses in the database.</p>
+<p>-Response: JSON array of business objects</p>
+<p>-Error Codes: 200(ok), 201(no items), 500 (Internal Server Error)</p>
 
 <h3>/api/productos</h3>
--Method: POST
--Payload: business internal code (raz_social)
--Description: Retrieves a list of all productos in the database for a specific business.
--Response: JSON array of business products
--Error Codes: 400(no payload), 200(ok), 201(no items), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: business internal code (raz_social)</p>
+<p>-Description: Retrieves a list of all productos in the database for a specific business.</p>
+<p>-Response: JSON array of business products</p>
+<p>-Error Codes: 400(no payload), 200(ok), 201(no items), 500 (Internal Server Error)</p>
 
 <h3>/api/rubros</h3>
--Method: POST
--Payload: business internal code (raz_social)
--Description: Retrieves a list of all categories in the database for a specific business.
--Response: JSON array of business categories
--Error Codes: 400(no payload), 200(ok), 201(no items), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: business internal code (raz_social)</p>
+<p>-Description: Retrieves a list of all categories in the database for a specific business.</p>
+<p>-Response: JSON array of business categories</p>
+<p>-Error Codes: 400(no payload), 200(ok), 201(no items), 500 (Internal Server Error)</p>
 
 <h3>/api/checkout</h3>
--Method: POST
--Payload: order details (user_Id: userId,
+<p>-Method: POST</p>
+<p>-Payload: order details (user_Id: userId,
                          PD_cod_raz_soc: product.PD_cod_raz_soc,
                          PD_cod_suc: product.PD_cod_suc,
                          PD_cod_pro: product.PD_cod_pro,
@@ -74,56 +74,71 @@ Authentication: Explain how authentication is handled, including token generatio
                          type: address.type,
                          total: total,
                          state: 1,
-                         receptor: receptor)
--Description: creates a written line to be processed by the software and uploads the order details to the database.
--Response: confirmation
--Error Codes: 400(invalid or inexistent payload), 200(ok), 500 (Internal Server Error)
+                         receptor: receptor)</p>
+<p>-Description: creates a written line to be processed by the software and uploads the order details to the database.</p>
+<p>-Response: confirmation</p>
+<p>-Error Codes: 400(invalid or inexistent payload), 200(ok), 500 (Internal Server Error)</p>
 
 <h3>/api/register</h3>
--Method: POST
--Payload: email,phone,role 
--Description: registers user
--Response: confirmation
--Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: email,phone,role </p>
+<p>-Description: registers user</p>
+<p>-Response: confirmation</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
 
 <h3>/api/check_user</h3>
--Method: POST
--Payload: email
--Description: checks user existence
--Response: confirmation
--Error Codes: 400(no payload), 200(exists: true||false), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: email</p>
+<p>-Description: checks user existence</p>
+<p>-Response: confirmation</p>
+<p>-Error Codes: 400(no payload), 200(exists: true||false), 500 (Internal Server Error)</p>
 
 <h3>/api/add_address</h3>
--Method: POST
--Payload: userId, address
--Description: adds addresses to the database
--Response: confirmation
--Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: userId, address</p>
+<p>-Description: adds addresses to the database</p>
+<p>-Response: confirmation</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
 
 <h3>/api/get_address</h3>
--Method: POST
--Payload: userId
--Description: retrieves a list of addresses for a specific user
--Response:  JSON array of user addresses
--Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: userId</p>
+<p>-Description: retrieves a list of addresses for a specific user</p>
+<p>-Response:  JSON array of user addresses</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
 
 <h3>/api/delete_user</h3>
--Method: POST
--Payload: userId
--Description: soft deletes specific user user
--Response:  confirmation
--Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: userId</p>
+<p>-Description: soft deletes specific user user</p>
+<p>-Response:  confirmation</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
 
 <h3>/upload/rubro</h3>
--Method: POST
--Payload: parsed rubro data
--Description: uploads categories to the db
--Response:  confirmation
--Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)
+<p>-Method: POST</p>
+<p>-Payload: parsed rubro data</p>
+<p>-Description: uploads categories to the db</p>
+<p>-Response:  confirmation</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
+
+<h3>/upload/producto</h3>
+<p>-Method: POST</p>
+<p>-Payload: parsed producto data</p>
+<p>-Description: uploads productos to the db</p>
+<p>-Response:  confirmation</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
+
+<h3>/upload/estado_pedido</h3>
+<p>-Method: POST</p>
+<p>-Payload: parsed estado_pedido data</p>
+<p>-Description: updates order state in db</p>
+<p>-Response:  confirmation</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
 
 
 
 <h2>App Structure</h2>
+
 ![App structure](documentation_images/MALBEC_MAP.png)
 <p>Detailed map of the app structure</p>
 
