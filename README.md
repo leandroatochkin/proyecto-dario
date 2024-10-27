@@ -1,43 +1,56 @@
-1. Project Overview
-Project Name: Satélite Malbec
+<h1>1. Project Overview</h1>
 
-A web-based application that works alongside DLOFF's propietary software to allows users to order food or other items online for home delivery.
-The app provides a simple interface for the client to update his product list and track each order details and status that will be shipped independently.
+<h2>Project Name: Satélite Malbec</h2>
 
-Stack:
--Frontend: Vite, React, Zustand, React Router, CSS modules, framer-motion
--Backend: Node.js, Express.js
--Database: mySQL
--Authentication: JWT, googleLogin
--Design: Figma
+<p>A web-based application that works alongside DLOFF's propietary software to allows users to order food or other items online for home delivery.<br/>
+The app provides a simple interface for the client to update his product list and track each order details and status that will be shipped independently.</p>
 
-
-
-2. Installation Instructions
-Prerequisites:
-
--A windows PC
--an internet browser
--Node.js
-
-Setup Instructions: 
-1-Copy the files contained in the client bundle into a folder named 'Malbec' in the C: partition.
-2-Copy the shortcut named Malbec to your desktop
-3-Open the Malbec shortcut to run the application
-4-If prompted, give the required permission to the application to run
-5-If not installed, the script will install node.js for you. After, the script will install all the necessary packages for the application to run.
+<h3>Stack:</h3>
+<p><strong>-Frontend:</strong> Vite, React, Zustand, React Router, CSS modules, framer-motion</p>
+<p><strong>-Backend:</strong> Node.js, Express.js</p>
+<p><strong>-Database:</strong> mySQL</p>
+<p><strong>-Authentication:</strong> JWT, googleLogin</p>
+<p><strong>-Design:</strong> Figma</p>
 
 
-3. Usage
-1-Forward your business information to an administrator to be added to the database.
-2-Follow the instructions on the txt files, named INTERFACE-PRODUCTO and INTERFACE-RUBRO to upload your items and categories respectively.
-3-Once uploaded, the users can start ordering items online.
-4-Each time a user places an order, your business will receive an email with the corresponding details.
-5-From now on, you have to use DLOFF's software to process the order and its corresponding fiscal information. When the order is processed by the software, an email will  be sent to the user with the order status.
+
+<h1>2. Installation Instructions</h1>
+
+<h2>Prerequisites:</h1>
+
+<p><strong>-A windows PC</strong></p>
+<p><strong>-an internet browser</strong></p>
+<p><strong>-Node.js</strong></p>
+
+<h2>Setup Instructions:</h2> 
+<p>1-Copy the files contained in the client bundle into a folder named 'Malbec' in the C: partition.</p>
+<p>2-Copy the shortcut named Malbec to your desktop</p>
+<p>3-Open the Malbec shortcut to run the application</p>
+<p>4-If prompted, give the required permission to the application to run</p>
+<p>5-If not installed, the script will install node.js for you. After, the script will install all the necessary packages for the application to run.</p>
+
+
+<h1>3. Usage</h1>
+
+<p>1-Forward your business information to an administrator to be added to the database.</p>
+<p>2-Follow the instructions on the txt files, named INTERFACE-PRODUCTO and INTERFACE-RUBRO to upload your items and categories respectively.</p>
+
+![producto interface](documentation_images/producto_txt.png)
+
+<p>3-Once uploaded, the users can start ordering items online.</p>
+<div style="display: flex">
+
+![home](documentation_images/home_screen.gif)
+![menu](documentation_images/menu_screen.gif)
+![quantity](documentation_images/quantity_selector.gif)
+![cart](documentation_images/shopping-cart.gif)
+
+</div>
+
+<p>4-Each time a user places an order, your business will receive an email with the corresponding details.</p>
+<p>5-From now on, you have to use DLOFF's software to process the order and its corresponding fiscal information. When the order is processed by the software, an email will  be sent to the user with the order status.</p>
 
 <h1>4. API Documentation</h1>
-
-Authentication: Explain how authentication is handled, including token generation, validation, and expiration.
 
 <h2>Endpoints</h2>
 
@@ -243,27 +256,3 @@ Authentication: Explain how authentication is handled, including token generatio
   UNIQUE KEY `unique_active_email` (`email`,`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</p>
 
-5. Contributing
-Guidelines: Explain how others can contribute to your project. This may include coding standards, commit message conventions, and the process for submitting pull requests.
-Code of Conduct: Include any guidelines for maintaining a respectful and collaborative community.
-6. Testing
-Testing Instructions: How to run tests for your project, including any required configurations or dependencies.
-Testing Frameworks Used: Mention any frameworks or libraries used for testing (e.g., Jest, Mocha).
-7. Deployment
-Deployment Instructions: Steps for deploying the application to a production environment, including any hosting services or platforms used.
-Environment Variables: List any required environment variables and their purposes.
-8. Troubleshooting
-Common Issues: Document known issues and their solutions or workarounds.
-Error Handling: Explain how to interpret error messages and resolve common problems.
-9. Licenses and Acknowledgments
-License: Specify the license under which your project is distributed (e.g., MIT, GPL).
-Acknowledgments: Give credit to any libraries, tools, or contributors that significantly influenced your project.
-10. Future Improvements
-Roadmap: Outline potential future features or enhancements you plan to implement.
-Feedback: Encourage users to provide feedback or suggestions for improvement.
-11. Changelog
-Version History: Document significant changes, improvements, and bug fixes across versions of your project.
-Additional Tips:
-Format and Style: Use clear headings, bullet points, and tables to make the documentation easy to read. Markdown is a common format for README files.
-Examples and Screenshots: Where applicable, provide code snippets, examples, and screenshots to illustrate functionality.
-Clarity: Keep your language clear and concise, avoiding jargon where possible.
