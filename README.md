@@ -35,9 +35,8 @@ Setup Instructions:
 4-Each time a user places an order, your business will receive an email with the corresponding details.
 5-From now on, you have to use DLOFF's software to process the order and its corresponding fiscal information. When the order is processed by the software, an email will  be sent to the user with the order status.
 
-4. API Documentation
-Endpoints: Document all the API endpoints, including their methods (GET, POST, DELETE, etc.), parameters, request/response examples, and error codes.
-Data Models: Describe the data structures used, such as database schemas or object models.
+<h1>4. API Documentation</h1>
+
 Authentication: Explain how authentication is handled, including token generation, validation, and expiration.
 
 <h2>Endpoints</h2>
@@ -64,17 +63,17 @@ Authentication: Explain how authentication is handled, including token generatio
 
 <h3>/api/checkout</h3>
 <p>-Method: POST</p>
-<p>-Payload: order details (user_Id: userId,
-                         PD_cod_raz_soc: product.PD_cod_raz_soc,
-                         PD_cod_suc: product.PD_cod_suc,
-                         PD_cod_pro: product.PD_cod_pro,
-                         PD_pre_ven: product.PD_pre_ven,
-                         quantity: product.quantity,
-                         address: address.address,
-                         type: address.type,
-                         total: total,
-                         state: 1,
-                         receptor: receptor)</p>
+<p>-Payload: order details (user_Id: userId,<br/>
+                         PD_cod_raz_soc: product.PD_cod_raz_soc,<br/>
+                         PD_cod_suc: product.PD_cod_suc,<br/>
+                         PD_cod_pro: product.PD_cod_pro,<br/>
+                         PD_pre_ven: product.PD_pre_ven,<br/>
+                         quantity: product.quantity,<br/>
+                         address: address.address,<br/>
+                         type: address.type,<br/>
+                         total: total,<br/>
+                         state: 1,<br/>
+                         receptor: receptor)<br/></p>
 <p>-Description: creates a written line to be processed by the software and uploads the order details to the database.</p>
 <p>-Response: confirmation</p>
 <p>-Error Codes: 400(invalid or inexistent payload), 200(ok), 500 (Internal Server Error)</p>
