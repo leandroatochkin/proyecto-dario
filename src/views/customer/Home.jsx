@@ -57,7 +57,6 @@ const Home = ({ setRazSoc, language, setSchedule }) => {
 
     const handleClick = async (business) => {
         const db_schedule = await getSchedule(business.EM_ID_suc) || []
-        console.log(db_schedule)
         setSchedule(...db_schedule);
         setRazSoc(business.EM_cod_raz_soc);
         navigate('/menu');

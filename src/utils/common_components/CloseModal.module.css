@@ -30,6 +30,11 @@
   font-size: 2rem;
 }
 
+.p{
+    color: #212427;
+    font-size: 0.6rem;
+  }
+
 .button{
     background: linear-gradient(10deg, #fa0, #ff6a00);
     border: none

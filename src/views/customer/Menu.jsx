@@ -27,7 +27,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
   const [openClosedModal, setOpenClosedModal] = useState(false)
   const [accept, setAccept] = useState(false)
 
-  
+
 
 
   const setLoginStatus = userStore((state) => state.setLoginStatus)
@@ -36,7 +36,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
   const navigate = useNavigate()
 
   useEffect(()=>{
-    !isOpen ? setOpenClosedModal(true) :  setOpenClosedModal(false)
+    isOpen ? setOpenClosedModal(false) :  setOpenClosedModal(true)
   },[])
 
   useEffect(() => {
@@ -143,52 +143,61 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
 
         <div className={style.topBtnContainer}>
         <motion.button
-        className={style.backBtn}
-        whileTap={{ scale: '0.95' }}
-        onClick={handleBack}
-        >
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-left-dash"><path d="M19 15V9"/><path d="M15 15h-3v4l-7-7 7-7v4h3v6z"/></svg>        
-        </motion.button>
+  className={style.backBtn}
+  whileTap={{ scale: '0.95' }}
+  onClick={handleBack}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 15V9" />
+    <path d="M15 15h-3v4l-7-7 7-7v4h3v6z" />
+  </svg>
+</motion.button>
 
-        <motion.button
-        className={style.logOutBtn}
-        whileTap={{ scale: '0.95' }}
-        onClick={handleLogOut}
-        >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-        </motion.button>
+<motion.button
+  className={style.logOutBtn}
+  whileTap={{ scale: '0.95' }}
+  onClick={handleLogOut}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <polyline points="16 17 21 12 16 7" />
+    <line x1="21" x2="9" y1="12" y2="12" />
+  </svg>
+</motion.button>
 
-        <motion.button
-                className={style.settingsBtn}
-                whileTap={{ scale: '0.95' }}
-                onClick={()=>setOpenSettingsModal(true)}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-        </motion.button>
+<motion.button
+  className={style.settingsBtn}
+  whileTap={{ scale: '0.95' }}
+  onClick={() => setOpenSettingsModal(true)}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+</motion.button>
         </div>
         <motion.button
-          className={style.cartButton}
-          onClick={() => setOpenCartModal(!openCartModal)}
-          whileTap={{ scale: '0.95' }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-shopping-cart"
-          >
-            <circle cx="8" cy="21" r="1" />
-            <circle cx="19" cy="21" r="1" />
-            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-          </svg>
-          <div className={style.itemCount}>{currentOrder.length}</div>
-        </motion.button>
+  className={style.cartButton}
+  onClick={() => setOpenCartModal(!openCartModal)}
+  whileTap={{ scale: '0.95' }}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="8" cy="21" r="1" />
+    <circle cx="19" cy="21" r="1" />
+    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+  </svg>
+  <div className={style.itemCount}>{currentOrder.length}</div>
+</motion.button>
 
         {/* Show loading animation if data is still being fetched */}
         {isLoading ? (
@@ -197,7 +206,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
           </div>
         ) : (
           // Display categories and products after loading completes
-          categories &&
+          categories.length > 0 ? (
           categories.map((category, index) => (
             <div key={index}>
               <h2 className={style.h2Rubro}>{category.RB_des_rub}</h2>
@@ -214,7 +223,9 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
                           if(isOpen){
                           setOpenBuyModal(true);
                           setProduct(product);
-                          } setOpenClosedModal(true)
+                          } else {
+                            setOpenClosedModal(true)
+                          }
                           
                         }}
                       >
@@ -232,7 +243,13 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
                     ))}
               </ul>
             </div>
-          ))
+          ))) : (
+            <div className={style.emptyDataContainer}>
+              <img src='/public/images/404-error.png' className={style.emptyLogo}/>
+              <a href="https://www.freepik.com/icon/404-error_2431561#fromView=search&page=1&position=23&uuid=77337db2-b66f-4709-bb54-b36d22c844d1">Icon by Good Ware</a>
+              <h3>{language.no_data_yet}</h3>
+            </div>
+          )
         )}
       </Suspense>) : (
         <div className={style.notLogged}>{language.please_log_in}</div>

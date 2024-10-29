@@ -24,5 +24,7 @@ export const ES_text = {
     delete_account_button: 'eliminar cuenta',
     cancel: 'cancelar',
     delete_account: '¿Está seguro de que quiere eliminar su cuenta?',
-    closed_business: 'Este negocio está cerrado. (Pero igual puedes ver el menú)'
+    closed_business: 'Este negocio está cerrado. (Pero igual puedes ver el menú)',
+    schedule: 'horario',
+    no_data_yet: 'Aún no tenemos datos de este negocio. Vuelve pronto :)'
 }

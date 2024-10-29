@@ -60,6 +60,11 @@ The app provides a simple interface for the client to update his product list an
 <p>-Response: JSON array of business objects</p>
 <p>-Error Codes: 200(ok), 201(no items), 500 (Internal Server Error)</p>
 
+<h3>/api/get_current_time</h3>
+<p>-Method: GET</p>
+<p>-Description: retrieves server time</p>
+<p>-Response:  current time</p>
+
 <h3>/api/productos</h3>
 <p>-Method: POST</p>
 <p>-Payload: business internal code (raz_social)</p>
@@ -124,6 +129,13 @@ The app provides a simple interface for the client to update his product list an
 <p>-Payload: userId</p>
 <p>-Description: soft deletes specific user user</p>
 <p>-Response:  confirmation</p>
+<p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
+
+<h3>/api/get_schedule</h3>
+<p>-Method: POST</p>
+<p>-Payload: id</p>
+<p>-Description: retrieves opening, closing and pausing time of a specific branch of a business</p>
+<p>-Response:  schedule</p>
 <p>-Error Codes: 400(no payload), 200(ok), 500 (Internal Server Error)</p>
 
 <h3>/upload/rubro</h3>
