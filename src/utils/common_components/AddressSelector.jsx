@@ -145,7 +145,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
         >
           +
         </button> {/* Add new address */}
-        <button onClick={handleSendAddresses}>{language.save}</button>
+        {/*-----------------------------------------------------------------------*/}
+        <button onClick={handleSendAddresses} style={!showInput ? {display: 'none'} : {display: 'block'}}>{language.save}</button>
       </div>
     </div>
   );

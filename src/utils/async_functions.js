@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { registerUser, checkUser } from "./db_functions";
+import { index } from ".";
 
 
 export const handleCheck = async (response, setNewUser, setUserId) => {
@@ -28,7 +29,7 @@ export const handleCheck = async (response, setNewUser, setUserId) => {
     }
   };
   
-  export const handleResponse = async (response, phone, setNewUser, setUserId, navigate) => {
+export const handleResponse = async (response, phone, setNewUser, setUserId, navigate) => {
     const tokenData = jwtDecode(response);
     const email = tokenData.email;
 
@@ -44,3 +45,14 @@ export const handleCheck = async (response, setNewUser, setUserId) => {
         console.log("Error registering user:", e);
     }
 };
+
+export const getServerTime =  async () => {
+  try{
+    const response = await fetch(index.get_current_time)
+    const data = await response.json()
+    return data
+} catch(e){
+    console.log(e)
+    return e
+}
+}

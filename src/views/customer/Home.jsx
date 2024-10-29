@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Home.module.css';
-import { getBusinesses } from '../../utils/db_functions';
+import { getBusinesses, getSchedule } from '../../utils/db_functions';
 import userStore from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 
-const Home = ({ setRazSoc, razSoc, language }) => {
+const Home = ({ setRazSoc, language, setSchedule }) => {
     const [businesses, setBusinesses] = useState(null);
     const [loading, setLoading] = useState(true);
     const [openErrorModal, setOpenErrorModal] = useState(false);
+
+
     const navigate = useNavigate();
+
+
 
     const loginStatus = userStore((state) => state.loggedIn); // Get login status
 
@@ -51,8 +55,11 @@ const Home = ({ setRazSoc, razSoc, language }) => {
         return groupedBusinesses;
     };
 
-    const handleClick = (raz_soc) => {
-        setRazSoc(raz_soc);
+    const handleClick = async (business) => {
+        const db_schedule = await getSchedule(business.EM_ID_suc) || []
+        console.log(db_schedule)
+        setSchedule(...db_schedule);
+        setRazSoc(business.EM_cod_raz_soc);
         navigate('/menu');
     };
 
@@ -110,7 +117,7 @@ const Home = ({ setRazSoc, razSoc, language }) => {
                                     <motion.div
                                         key={idx}
                                         className={style.businessName}
-                                        onClick={() => handleClick(business.EM_cod_raz_soc)}
+                                        onClick={() => handleClick(business)}
                                         whileTap={{ scale: '0.95' }}
                                         role="button"
                                         tabIndex="0"

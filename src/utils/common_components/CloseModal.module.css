@@ -1,0 +1,42 @@
+#root{
+    --black-transparent: rgba(0,0,0,0.5);
+    --orange-gradient: linear-gradient(10deg, #fa0, #ff6a00);
+    --green-gradient: linear-gradient(15deg, #04ea00, #00d17d);
+    --dark-text: #212427;
+  }
+
+
+.button{
+    background: var(--orange-gradient);
+    border: none
+}
+
+@media only screen and (max-width: 640px){
+  .messageContainer{
+    height: auto;
+    width: 90%;
+    background-color: white;
+    border-radius: 32px;
+    color: var(--dark-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+  }
+
+.message{
+  color: #212427;
+  font-size: 2rem;
+}
+
+.button{
+    background: linear-gradient(10deg, #fa0, #ff6a00);
+    border: none
+}
+
+.image{
+    height: 40%;
+    width: 40%;
+}
+}

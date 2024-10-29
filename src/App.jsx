@@ -8,19 +8,25 @@ import { ES_text } from './utils/text_scripts';
 import { Route, Routes } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import userStore from './utils/store';
-import { googleLogout } from '@react-oauth/google';
+import { convertTimeToMinutes } from './utils/common_functions';
+import { getServerTime } from './utils/async_functions';
 
 function App() {
-   const [currentOrder, setCurrentOrder] = useState([])
+    const [currentOrder, setCurrentOrder] = useState([])
     const [isLoading, setIsLoading] = useState(true); // Add loading state
     const [razSoc, setRazSoc] = useState('');
+    const [schedule, setSchedule] = useState([])
     const [language, setLanguage] = useState(ES_text);
+    const [isOpen, setIsOpen] = useState(false)
+    const [timeOffset, setTimeOffset] = useState(0);
 
     
 
     const navigate = useNavigate();
     const setLoginStatus = userStore((state) => state.setLoginStatus);
     const loginStatus = userStore((state) => state.loginStatus);
+
+    const getCurrentTime = () => new Date(Date.now() + timeOffset);
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -52,6 +58,31 @@ function App() {
         setIsLoading(false); // Update loading state after check
     }, [navigate, setLoginStatus]);
 
+    useEffect(() => {
+        if (schedule && schedule.EM_hora_ap && schedule.EM_hora_cierre) {
+            const openingTime = convertTimeToMinutes(schedule.EM_hora_ap);
+            const closingTime = convertTimeToMinutes(schedule.EM_hora_cierre);
+
+            const now = getCurrentTime();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+            setIsOpen(currentMinutes >= openingTime && currentMinutes <= closingTime);
+        }
+    }, [schedule, timeOffset]);
+
+    useEffect(() => {
+        const fetchServerTime = async () => {
+            const serverTime = await getServerTime();
+            const clientTime = Date.now();
+            const offset = serverTime - clientTime;
+            setTimeOffset(offset);
+        };
+
+        fetchServerTime();
+        const intervalId = setInterval(fetchServerTime, 3600000);
+
+        return () => clearInterval(intervalId);
+    }, []);
     // Render loading state or routes based on isLoading
     if (isLoading) {
         return <div>Loading...</div>; // Optional loading indicator
@@ -60,8 +91,8 @@ function App() {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Home setRazSoc={setRazSoc} razSoc={razSoc} language={language}/>} />
-            <Route path="/menu" element={<Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder} language={language} razSoc={razSoc} />} />
+            <Route path="/" element={<Home setRazSoc={setRazSoc} razSoc={razSoc} language={language} setSchedule={setSchedule}/>} />
+            <Route path="/menu" element={<Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder} language={language} razSoc={razSoc} isOpen={isOpen} schedule={schedule}/>} />
         </Routes>
     );
 }

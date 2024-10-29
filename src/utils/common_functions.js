@@ -24,4 +24,10 @@ export const capitalize = (str) => {
     str = str.replace(/n\*/gi, (match) => match === 'N*' ? 'Ñ' : 'ñ');
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }
+
+export const convertTimeToMinutes = (time) => {
+    const hours = parseInt(time.slice(0, -2), 10); // Get the hours
+    const minutes = parseInt(time.slice(-2), 10); // Get the last two digits as minutes
+    return hours * 60 + minutes;
+};
   

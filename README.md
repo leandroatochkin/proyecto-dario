@@ -154,6 +154,9 @@ The app provides a simple interface for the client to update his product list an
 ![App structure](documentation_images/MALBEC_MAP.png)
 <p>Detailed map of the app structure</p>
 
+![Order Circuit](documentation_images/order_circuit.png)
+<p>How Malbec works in conjuction with Baco</p>
+
 <h2>mySQL Database Schema</h2>
 
 ![Producto Table](documentation_images/producto_table.png)

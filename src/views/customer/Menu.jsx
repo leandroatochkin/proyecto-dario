@@ -12,8 +12,9 @@ import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import ModalTwoButton from '../../utils/common_components/ModalTwoButtons';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import SettingsModal from '../../utils/common_components/SettingsModal';
+import ClosedModal from '../../utils/common_components/ClosedModal';
 
-const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
+const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedule }) => {
   const [categories, setCategories] = useState([]);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);
@@ -23,14 +24,20 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [openLogOutModal, setOpenLogOutModal] = useState(false);
   const [openSettingsModal, setOpenSettingsModal] = useState(false)
+  const [openClosedModal, setOpenClosedModal] = useState(false)
   const [accept, setAccept] = useState(false)
 
-  useEffect(()=>{console.log(accept)},[accept])
+  
+
 
   const setLoginStatus = userStore((state) => state.setLoginStatus)
   const loginStatus = userStore((state) => state.loggedIn)
 
   const navigate = useNavigate()
+
+  useEffect(()=>{
+    !isOpen ? setOpenClosedModal(true) :  setOpenClosedModal(false)
+  },[])
 
   useEffect(() => {
     if (!razSoc) return;
@@ -86,6 +93,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
   return (
     <div className={style.background}>
       <LargeScreenNotice />
+      {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} language={language} schedule={schedule}/>)}
       {openLogOutModal && (
         <ModalTwoButton message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'}/>
       )}
@@ -203,8 +211,11 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc }) => {
                         key={index}
                         className={style.li}
                         onClick={() => {
+                          if(isOpen){
                           setOpenBuyModal(true);
                           setProduct(product);
+                          } setOpenClosedModal(true)
+                          
                         }}
                       >
                         <img

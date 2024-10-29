@@ -23,5 +23,6 @@ export const ES_text = {
     log_out: '¿Seguro que quiere salir?',
     delete_account_button: 'eliminar cuenta',
     cancel: 'cancelar',
-    delete_account: '¿Está seguro de que quiere eliminar su cuenta?'
+    delete_account: '¿Está seguro de que quiere eliminar su cuenta?',
+    closed_business: 'Este negocio está cerrado. (Pero igual puedes ver el menú)'
 }

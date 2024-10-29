@@ -68,6 +68,8 @@ const deleteUserRoute = require('./api/routes/users/delete_user.cjs')
 const addAddressRoute = require('./api/routes/users/db_register_address.cjs')
 const getAddressRoute = require('./api/routes/users/db_retrieve_addresses.cjs')
 const getBusinessesRoute = require('./api/routes/businesses/db_retrieve_business.cjs')
+const getScheduleRoute = require('./api/routes/businesses/db_retrieve_schedule.cjs')
+const getCurrentTime = require('./api/routes/other/server_time.cjs')
 
 
 
@@ -80,6 +82,8 @@ app.use('/api/add_address', addAddressRoute)
 app.use('/api/get_address', getAddressRoute)
 app.use('/api/get_businesses', getBusinessesRoute)
 app.use('/api/delete_user', deleteUserRoute)
+app.use('/api/get_schedule', getScheduleRoute)
+app.use('/api/get_current_time', getCurrentTime)
 
 
 // Endpoint to upload rubro data
@@ -109,6 +113,8 @@ app.post('/upload/rubro', (req, res) => {
 // Endpoint to upload producto data
 app.post('/upload/producto', (req, res) => {
     const productoData = parseFileData(req.body.data, 'producto');
+
+    console.log(productoData)
 
     if (!productoData) {
         return res.status(400).json({ error: 'no data.' });
@@ -158,7 +164,7 @@ app.post('/upload/estado_pedido', (req, res) => {
         db.query(query, [EP_est, EP_tot_fin, EP_fecha, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
             if (err) {
                 console.error(`Failed to insert/update pedido: ${err.message}`);
-                return res.status(500).json({ message: 'Database query error', error: err });
+                return res.status(500).json({ message: 'Database query error', error: err });  
             }
         });
 
