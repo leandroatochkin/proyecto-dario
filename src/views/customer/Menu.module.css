@@ -78,6 +78,7 @@
         position: fixed;
         right: 1%;
         top: 1%;
+        z-index: 5;
     }
 
     .topBtnContainer{
@@ -86,6 +87,7 @@
         top: 1%;
         display: flex;
         gap: 2%;
+        z-index: 5;
     }
 
     .logOutBtn{

@@ -6,6 +6,7 @@ import userStore from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
+import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 
 const Home = ({ setRazSoc, language, setSchedule }) => {
     const [businesses, setBusinesses] = useState(null);
@@ -90,6 +91,7 @@ const Home = ({ setRazSoc, language, setSchedule }) => {
 
     return (
         <div className={style.container} role="main" aria-labelledby="business-list-heading">
+            <LargeScreenNotice />
             {openErrorModal && (
                 <ModalOneButton
                     message={language.error_try_again_later}
@@ -109,14 +111,15 @@ const Home = ({ setRazSoc, language, setSchedule }) => {
                     Object.keys(businesses).map((letter, index) => (
                         <div key={index}>
                             <h2 className={style.h2} id={`letter-${letter}`}>
-                                {letter}
+                                {'•'+letter}
                             </h2>
                             {Array.isArray(businesses[letter]) ? (
                                 businesses[letter].map((business, idx) => (
-                                    <motion.div
+                                    <motion.div 
                                         key={idx}
                                         className={style.businessName}
                                         onClick={() => handleClick(business)}
+                                        initial={{ scale: '1' }}
                                         whileTap={{ scale: '0.95' }}
                                         role="button"
                                         tabIndex="0"

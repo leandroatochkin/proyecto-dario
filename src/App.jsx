@@ -10,6 +10,7 @@ import { jwtDecode } from 'jwt-decode';
 import userStore from './utils/store';
 import { convertTimeToMinutes } from './utils/common_functions';
 import { getServerTime } from './utils/async_functions';
+import { consoleMsg } from './utils/text_scripts';
 
 function App() {
     const [currentOrder, setCurrentOrder] = useState([])
@@ -17,10 +18,10 @@ function App() {
     const [razSoc, setRazSoc] = useState('');
     const [schedule, setSchedule] = useState([])
     const [language, setLanguage] = useState(ES_text);
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
     const [timeOffset, setTimeOffset] = useState(0);
 
-    
+    useEffect(()=>console.log(consoleMsg),[])
 
     const navigate = useNavigate();
     const setLoginStatus = userStore((state) => state.setLoginStatus);
@@ -62,13 +63,32 @@ function App() {
         if (schedule && schedule.EM_hora_ap && schedule.EM_hora_cierre) {
             const openingTime = convertTimeToMinutes(schedule.EM_hora_ap);
             const closingTime = convertTimeToMinutes(schedule.EM_hora_cierre);
-
+            let breakTimeStart = null;
+            let breakTimeEnd = null;
+    
+            if (schedule.EM_corte !== 0) {
+                breakTimeStart = convertTimeToMinutes(schedule.EM_corte.slice(0, -4));
+                breakTimeEnd = convertTimeToMinutes(schedule.EM_corte.slice(-4));
+            }
+    
             const now = getCurrentTime();
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-            setIsOpen(currentMinutes >= openingTime && currentMinutes <= closingTime);
+    
+            const calculateIsOpen = () => {
+                if (schedule.EM_corte === 0) {
+                    return currentMinutes >= openingTime && currentMinutes <= closingTime;
+                } else {
+                    return (
+                        (currentMinutes >= openingTime && currentMinutes < breakTimeStart) ||
+                        (currentMinutes >= breakTimeEnd && currentMinutes <= closingTime)
+                    );
+                }
+            };
+    
+            setIsOpen(calculateIsOpen());
         }
     }, [schedule, timeOffset]);
+    
 
     useEffect(() => {
         const fetchServerTime = async () => {
@@ -85,7 +105,10 @@ function App() {
     }, []);
     // Render loading state or routes based on isLoading
     if (isLoading) {
-        return <div>Loading...</div>; // Optional loading indicator
+        return(
+        <div className={style.loader}>
+        <MoonLoader color="red" size={60} />
+      </div>)
     }
 
     return (

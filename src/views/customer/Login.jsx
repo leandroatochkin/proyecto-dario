@@ -105,6 +105,10 @@ const Login = () => {
           </div>
         )}
       </div>
+      <footer className={style.footer}>
+        <p>code by <a href='https://github.com/leandroatochkin'>leandroatochkin</a></p>
+        <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>Andrés Actis</a></p>
+      </footer>
     </div>
   );
 };

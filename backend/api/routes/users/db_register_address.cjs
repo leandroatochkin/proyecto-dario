@@ -7,6 +7,8 @@ const db = require('../../db.cjs');
 router.post('/', (req, res) => {
     const { userId, addresses } = req.body;
 
+    const isValidAddress = (address) => /^[a-zA-Z0-9\s.,#\-\/]+$/.test(address);
+
     // Check if addresses array is present and contains at least one address
     if (!addresses || addresses.length === 0) {
         return res.status(400).json({ error: 'At least one address is required.' });
@@ -17,6 +19,12 @@ router.post('/', (req, res) => {
         // Check for missing address field
         if (!address) {
             return Promise.reject({ error: 'Address is required for all entries.' });
+        }
+        
+        // Validate the address format
+        const validAddress = isValidAddress(address);
+        if (!validAddress) {
+            return Promise.reject({ error: 'Invalid address format.' });
         }
 
         const id = uuidv4();
@@ -29,7 +37,8 @@ router.post('/', (req, res) => {
 
         // Store both the encrypted data and IV in the database
         return new Promise((resolve, reject) => {
-            db.query('INSERT INTO user_addresses (id, user_id, address, address_type) VALUES (?, ?, ?, ?)', 
+            db.query(
+                'INSERT INTO user_addresses (id, user_id, address, address_type) VALUES (?, ?, ?, ?)', 
                 [id, userId, JSON.stringify({ iv: addressIv, encryptedData }), addressType], 
                 (err, result) => {
                     if (err) {
@@ -55,4 +64,3 @@ router.post('/', (req, res) => {
 });
 
 module.exports = router;
-

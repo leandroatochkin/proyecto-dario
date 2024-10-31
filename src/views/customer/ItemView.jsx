@@ -64,8 +64,8 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
             <motion.button
               className={style.closeFormButton}
               onClick={()=>setOpenBuyModal(false)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              initial={{ scale: '1' }}
+              whileTap={{ scale: '0.95' }}
               aria-label="Close book details"
             >
               <svg
@@ -102,8 +102,8 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
             </div>
             <motion.button
               className={style.addToCartBtn}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              initial={{ scale: '1' }}
+              whileTap={{ scale: '0.95' }}
               onClick={() => handleBuyBtn(product)}
               //aria-label={`Add ${book.title} to shopping cart`}
             >

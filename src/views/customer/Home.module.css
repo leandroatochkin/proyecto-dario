@@ -99,7 +99,7 @@
         background: #e0e0e0;
     }
 
-    .login{
+    .indexContainer, .logoContainer{
         display: none;
     }
 }

@@ -45,6 +45,7 @@ const handleDeleteUser = (userId)  => {
             <div className={style.buttonContainer}>
             <motion.button
             className={style.button}
+            initial={{ scale: '1' }}
             whileTap={{scale: '0.95'}}
             onClick={()=>setFunction(false)}
             >
@@ -52,6 +53,7 @@ const handleDeleteUser = (userId)  => {
             </motion.button>
             <motion.button
             className={style.button}
+            initial={{ scale: '1' }}
             whileTap={{scale: '0.95'}}
             onClick={()=>handleDeleteUser(userId)}
             >

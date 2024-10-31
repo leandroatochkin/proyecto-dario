@@ -3,6 +3,7 @@ import userStore from '../store';
 import { getAddress, addAddress } from '../db_functions';
 import style from './AddressSelector.module.css';
 import { ES_text } from '../text_scripts';
+import { motion } from 'framer-motion';
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
@@ -14,7 +15,11 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const loggedIn = userStore((state) => state.loggedIn);
   const userId = userStore((state) => state.userId);
 
+  const isValidAddress = (address) => /^[a-zA-Z0-9\s.,#\-\/]+$/.test(address);
+
   const handleAddressChange = (index, field, value) => {
+    if (field === 'address' && !isValidAddress(value)) return; // Ignore invalid characters
+
     const newAddresses = [...addresses];
     newAddresses[index][field] = value;
     setAddresses(newAddresses);
@@ -28,13 +33,21 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   };
 
   const handleSendAddresses = async () => {
-    try {
-      const response = await addAddress(userId, addresses);
+    // Filter out invalid addresses before sending
+    const validAddresses = addresses.filter((address) => isValidAddress(address.address) && address.address !== '');
+    
+    if (validAddresses.length === 0) {
+      console.log("No valid addresses to send.");
+      return;
+    }
 
-      // After successfully adding new addresses, update the addressesToMap to reflect the new ones
+    try {
+      const response = await addAddress(userId, validAddresses);
+
+      // Update addressesToMap to reflect the new ones
       setAddressesToMap((prevAddresses) => [
         ...prevAddresses,
-        ...addresses.filter((address) => address.address !== ''), // Only add valid addresses
+        ...validAddresses
       ]);
 
       // Reset input fields and hide the input area
@@ -51,16 +64,14 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
     try {
       const result = await getAddress(userId);
 
-      // Access the addresses from the result object
-      const retrievedAddresses = result.addresses; // This accesses the addresses array
+      const retrievedAddresses = result.addresses; 
 
-      // Ensure retrievedAddresses is an array
       if (Array.isArray(retrievedAddresses) && retrievedAddresses.length > 0) {
         const formattedAddresses = retrievedAddresses.map(item => ({
           address: item.address,
-          type: item.type || 'home', // Default to 'home' if type is not provided
+          type: item.type || 'home', 
         }));
-        setAddressesToMap(formattedAddresses); // Set the formatted addresses
+        setAddressesToMap(formattedAddresses); 
       } else {
         setOpenAddAddress(true);
       }
@@ -98,21 +109,23 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
           {address.address}
           <span>({getAddressLabel(address.type)})</span>
           {selectedAddress && selectedAddress.address === address.address && (
-            <span style={{ marginLeft: '8px', color: 'green' }}>✔️</span> // Tick icon
+            <span style={{ marginLeft: '8px', color: 'green' }}>✔️</span> 
           )}
         </div>
       ))}
 
-      <button 
+      <motion.button 
         onClick={() => {
           setShowInput(!showInput);
           setInactive(!inactive);
         }}
         disabled={inactive === false ? false : true}
         className={style.addAddressBtn}
+        style={{ transform: "scale(1)" }}
+        whileTap={{ scale: '0.95' }}
       >
         {buttonText1}
-      </button>
+      </motion.button>
 
       {showInput &&
         addresses.map((item, index) => (
@@ -139,14 +152,20 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
           </div>
         ))}
       <div className={style.btnContainer}>
-        <button 
+        <motion.button 
           onClick={addNewAddress}
-          style={!inactive ? { display: 'none' } : { display: 'flex' }}
+          style={!inactive ? { display: 'none' } : { display: 'flex', transform: "scale(1)" }}
+          whileTap={{ scale: '0.95' }}
         >
           +
-        </button> {/* Add new address */}
-        {/*-----------------------------------------------------------------------*/}
-        <button onClick={handleSendAddresses} style={!showInput ? {display: 'none'} : {display: 'block'}}>{language.save}</button>
+        </motion.button>
+        
+        <motion.button 
+          onClick={handleSendAddresses} 
+          style={!showInput ? {display: 'none'} : {display: 'block', transform: "scale(1)"}}
+          whileTap={{ scale: '0.95' }}
+        >{language.save}
+        </motion.button>
       </div>
     </div>
   );

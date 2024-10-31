@@ -23,6 +23,7 @@ const ModalTwoButton = ({ message, setOpenModal, setAccept, buttonText1, buttonT
         <motion.button 
         onClick={handleClickOk} 
         className={style.button}
+        initial={{ scale: '1' }}
         whileTap={{scale: '0.95'}}
         >
           {buttonText1}
@@ -30,6 +31,7 @@ const ModalTwoButton = ({ message, setOpenModal, setAccept, buttonText1, buttonT
         <motion.button 
         onClick={handleClickCancel} 
         className={style.button}
+        initial={{ scale: '1' }}
         whileTap={{scale: '0.95'}}
         >
           {buttonText2}

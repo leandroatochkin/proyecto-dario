@@ -38,7 +38,7 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error }
 
   return (
     <Backdrop>
-      <motion.div className={style.messageContainer}>
+      <div className={style.messageContainer}>
         <h1 className={style.message}>{message}</h1>
         {stateSetter && 
         <div className={style.inputContainer}>
@@ -62,10 +62,15 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error }
           />
         </div>
         }
-        <button onClick={stateSetter ? handleSubmit : handleClick} className={style.button}>
+        <motion.button 
+        onClick={stateSetter ? handleSubmit : handleClick} 
+        className={style.button}
+        initial={{ scale: '1' }}
+        whileTap={{ scale: '0.95' }}
+        >
           {buttonText}
-        </button>
-      </motion.div>
+        </motion.button>
+      </div>
     </Backdrop>
   );
 };

@@ -144,6 +144,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
         <div className={style.topBtnContainer}>
         <motion.button
   className={style.backBtn}
+  initial={{ scale: '1' }}
   whileTap={{ scale: '0.95' }}
   onClick={handleBack}
 >
@@ -155,6 +156,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
 
 <motion.button
   className={style.logOutBtn}
+  initial={{ scale: '1' }}
   whileTap={{ scale: '0.95' }}
   onClick={handleLogOut}
 >
@@ -167,6 +169,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
 
 <motion.button
   className={style.settingsBtn}
+  initial={{ scale: '1' }}
   whileTap={{ scale: '0.95' }}
   onClick={() => setOpenSettingsModal(true)}
 >
@@ -179,6 +182,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
         <motion.button
   className={style.cartButton}
   onClick={() => setOpenCartModal(!openCartModal)}
+  initial={{ scale: '1' }}
   whileTap={{ scale: '0.95' }}
 >
   <svg
@@ -197,7 +201,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
     <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
   </svg>
   <div className={style.itemCount}>{currentOrder.length}</div>
-</motion.button>
+        </motion.button>
 
         {/* Show loading animation if data is still being fetched */}
         {isLoading ? (
@@ -216,9 +220,11 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
                     .filter((product) => product.PD_cod_rub === category.RB_cod_rub)
                     .map((product, index) => (
                       <motion.li
+                      initial={{ scale: '1' }}
                         whileTap={{ scale: '0.95' }}
                         key={index}
                         className={style.li}
+                        style={product.PD_est === 'B' ? {display: 'none'} : {display: 'flex'}}
                         onClick={() => {
                           if(isOpen){
                           setOpenBuyModal(true);

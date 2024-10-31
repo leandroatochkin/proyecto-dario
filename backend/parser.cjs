@@ -1,7 +1,7 @@
 const parseFileData = (fileData, type) => {
     const rows = fileData.split(';').filter(line => line.trim());
     return rows.map(row => {
-        const columns = row.split(',').map(col => col.trim());
+        const columns = row.split('|').map(col => col.trim());
         
         if (type === 'rubro') {
             return {

@@ -41,7 +41,7 @@ router.post('/checkout', async (req, res) => {
       const productName = await getProductName(product.PD_cod_pro);
 
       // Accumulate the product details for the email
-      emailItems += `Producto: ${productName}, Código: ${product.PD_cod_pro}, Cantidad: ${product.quantity}, Precio unitario: ${product.PD_pre_ven}, Total: ${product.PD_pre_ven * product.quantity}\n`;
+      emailItems += `Producto: ${productName}| Código: ${product.PD_cod_pro}| Cantidad: ${product.quantity}| Precio unitario: ${product.PD_pre_ven}| Total: ${product.PD_pre_ven * product.quantity}\n`;
 
       // Step 1: Get the current maximum order_number for this location of the business
       const query = `SELECT IFNULL(MAX(order_number), 0) AS max_order_number 
@@ -72,7 +72,7 @@ router.post('/checkout', async (req, res) => {
               }
 
               // Build the order string for each product
-              const orderString = `D,${product.PD_cod_raz_soc.toString()},${product.PD_cod_suc.toString()},${newOrderNumber.toString().padStart(10, ' ')},${product.PD_cod_pro.toString().padEnd(20, ' ')},${product.PD_pre_ven.toString().padStart(16, ' ')},${product.quantity.toString().padStart(10, ' ')},${product.address.padEnd(50, ' ')},${getAddressType(product.type).padEnd(20, ' ')},${product.total.toString().padStart(18, ' ')},${product.receptor.padEnd(20, ' ')},${getComission(product.total, 10).toFixed(4).toString().padStart(16, ' ')},${product.state};\n`;
+              const orderString = `D|${product.PD_cod_raz_soc.toString()}|${product.PD_cod_suc.toString()}|${newOrderNumber.toString().padStart(10, ' ')}|${product.PD_cod_pro.toString().padEnd(20, ' ')}|${product.PD_pre_ven.toString().padStart(16, ' ')}|${product.quantity.toString().padStart(10, ' ')}|${product.address.padEnd(50, ' ')}|${getAddressType(product.type).padEnd(20, ' ')}|${product.total.toString().padStart(16, ' ')}|${product.receptor.padEnd(20, ' ')}|${getComission(product.total, 10).toFixed(4).toString().padStart(16, ' ')}|${product.state};\n`;
 
               // Accumulate the file content
               fileContent += orderString;
@@ -96,7 +96,7 @@ router.post('/checkout', async (req, res) => {
     const formattedTotal = Number(orderData[0].total).toFixed(4);
     const formattedCommission = Number(getComission(orderData[0].total, 10)).toFixed(4);
 
-    const totalString = `T,${orderData[0].PD_cod_raz_soc.toString()},${orderData[0].PD_cod_suc.toString()},${newOrderNumber.toString().padStart(10, ' ')},                    ,                ,          ,                                                  ,                    ,${formattedTotal.toString().padStart(18, ' ')},                    ,${formattedCommission.toString().padStart(16, ' ')},${orderData[0].state};\n`;
+    const totalString = `T|${orderData[0].PD_cod_raz_soc.toString()}|${orderData[0].PD_cod_suc.toString()}|${newOrderNumber.toString().padStart(10, ' ')}|                    |                |          |                                                  |                    |${formattedTotal.toString().padStart(16, ' ')}|                    |${formattedCommission.toString().padStart(16, ' ')}|${orderData[0].state};\n`;
 
     // Append the total string to the file content
     fileContent += totalString;

@@ -111,39 +111,58 @@ app.post('/upload/rubro', (req, res) => {
 });
 
 // Endpoint to upload producto data
-app.post('/upload/producto', (req, res) => {
-    const productoData = parseFileData(req.body.data, 'producto');
+app.post('/upload/producto', async (req, res) => {
+    try {
+        const productoData = parseFileData(req.body.data, 'producto');
 
-    console.log(productoData)
+        const queries = productoData.map(item => {
+            const { PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est } = item;
 
-    if (!productoData) {
-        return res.status(400).json({ error: 'no data.' });
-    }
-    
-    productoData.forEach(item => {
-        const { PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est } = item;
-
-        const query = `
-            INSERT INTO producto 
-            (PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
-            ON DUPLICATE KEY UPDATE 
-                PD_des_pro = VALUES(PD_des_pro), 
-                PD_cod_rub = VALUES(PD_cod_rub), 
-                PD_pre_ven = VALUES(PD_pre_ven), 
-                PD_ubi_imagen = VALUES(PD_ubi_imagen), 
-                PD_est = VALUES(PD_est)`;
-
-        db.query(query, [PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est], (err) => {
-            if (err) {
-                console.error(`Failed to insert/update producto: ${err.message}`);
-                return res.status(500).json({ message: 'Database query error', error: err });
+            // Validate data lengths and types
+            if (typeof PD_cod_rub !== 'string' || PD_cod_rub.length > 10) { // Adjust length accordingly
+                console.error(`Invalid PD_cod_rub: ${PD_cod_rub}`);
+                return Promise.reject(new Error(`Invalid PD_cod_rub: ${PD_cod_rub}`));
             }
-        });
-    });
+            if (typeof PD_est !== 'string' || PD_est.length > 5) { // Adjust length accordingly
+                console.error(`Invalid PD_est: ${PD_est}`);
+                return Promise.reject(new Error(`Invalid PD_est: ${PD_est}`));
+            }
+            if (isNaN(PD_pre_ven)) {
+                console.error(`Invalid PD_pre_ven: ${PD_pre_ven}`);
+                return Promise.reject(new Error(`Invalid PD_pre_ven: ${PD_pre_ven}`));
+            }
 
-    res.send('Producto data uploaded');
+            const query = `
+                INSERT INTO producto 
+                (PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
+                ON DUPLICATE KEY UPDATE 
+                    PD_des_pro = VALUES(PD_des_pro), 
+                    PD_cod_rub = VALUES(PD_cod_rub), 
+                    PD_pre_ven = VALUES(PD_pre_ven), 
+                    PD_ubi_imagen = VALUES(PD_ubi_imagen), 
+                    PD_est = VALUES(PD_est)`;
+
+            return new Promise((resolve, reject) => {
+                db.query(query, [PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est], (err) => {
+                    if (err) {
+                        console.error(`Failed to insert/update producto: ${err.message}`);
+                        return reject(err);
+                    }
+                    resolve();
+                });
+            });
+        });
+
+        await Promise.all(queries);
+        res.send('Producto data uploaded');
+    } catch (err) {
+        console.error(`Error uploading producto data: ${err.message}`);
+        res.status(500).json({ message: 'Database query error', error: err.message });
+    }
 });
+
+
 
 app.post('/upload/estado_pedido', (req, res) => {
     const stateData = parseFileData(req.body.data, 'estado_pedido');
@@ -170,7 +189,9 @@ app.post('/upload/estado_pedido', (req, res) => {
 
         if (EP_est === 4) {
             const sendNotification = async () => {
+
                 try {
+                    console.log('email sent to user')
                     // Check if the notification has already been sent
                     const checkNotificationQuery = `SELECT notification_sent FROM user_orders 
                         WHERE PD_cod_raz_soc = ? 
