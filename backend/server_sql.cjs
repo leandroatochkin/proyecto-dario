@@ -70,6 +70,7 @@ const getAddressRoute = require('./api/routes/users/db_retrieve_addresses.cjs')
 const getBusinessesRoute = require('./api/routes/businesses/db_retrieve_business.cjs')
 const getScheduleRoute = require('./api/routes/businesses/db_retrieve_schedule.cjs')
 const getCurrentTime = require('./api/routes/other/server_time.cjs')
+const deleteAddressRoute = require('./api/routes/users/db_delete_address.cjs')
 
 
 
@@ -84,6 +85,7 @@ app.use('/api/get_businesses', getBusinessesRoute)
 app.use('/api/delete_user', deleteUserRoute)
 app.use('/api/get_schedule', getScheduleRoute)
 app.use('/api/get_current_time', getCurrentTime)
+app.use('/api/delete_address', deleteAddressRoute)
 
 
 // Endpoint to upload rubro data

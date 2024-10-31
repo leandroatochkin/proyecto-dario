@@ -185,7 +185,7 @@ export const deleteUser = async (userId) => {
 
     try {
         const response = await fetch(index.delete_user, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -217,5 +217,29 @@ export const getSchedule = async(branchId) =>{
     } catch(e){
         console.log(e)
         return e
+    }
+};
+
+export const deleteAddress = async (userId, addressId) => {
+    const payload = {
+        userId: userId,
+        addressId: addressId
+    };
+
+    try {
+        const response = await fetch(index.delete_address, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+ 
+        const data = await response.json();
+        return data; // Expected response: { success: true }
+
+    } catch (e) {
+        console.error('Error deleting user:', e);
+        throw new Error('Error deleting user');
     }
 };

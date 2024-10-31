@@ -36,10 +36,25 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
 
   const handleBuyBtn = (product) => {
     if (product) {
-      setCurrentOrder((prevItems) => [...prevItems, pushingItem]);
-      setOpenMsg(true);
+      setCurrentOrder((prevItems) => {
+        // Check if the item is already in the cart
+        const existingItemIndex = prevItems.findIndex(item => item.PD_cod_pro === pushingItem.PD_cod_pro);
+  
+        if (existingItemIndex !== -1) {
+          // Item exists, so update the quantity
+          const updatedItems = [...prevItems];
+          updatedItems[existingItemIndex].quantity += pushingItem.quantity;
+          return updatedItems;
+        } else {
+          // Item does not exist, so add it to the cart
+          return [...prevItems, pushingItem];
+        }
+      });
+  
+      setOpenMsg(true); // Show confirmation message
     }
   };
+  
 
 
   return (

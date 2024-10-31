@@ -26,7 +26,9 @@ export const ES_text = {
     delete_account: '¿Está seguro de que quiere eliminar su cuenta?',
     closed_business: 'Este negocio está cerrado. (Pero igual puedes ver el menú)',
     schedule: 'horario',
-    no_data_yet: 'Aún no tenemos datos de este negocio. Vuelve pronto :)'
+    no_data_yet: 'Aún no tenemos datos de este negocio. Vuelve pronto :)',
+    delete_address: '¿Está seguro de que quiere eliminar este domicilio?',
+    delete: 'borrar'
 }
 
 export const consoleMsg = `

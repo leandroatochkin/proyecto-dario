@@ -7,7 +7,7 @@ router.post('/', (req, res) => {
     const { userId } = req.body;
 
     // Query to get all addresses for the user
-    db.query('SELECT address, address_type FROM user_addresses WHERE user_id = ?', userId, (err, results) => {
+    db.query('SELECT id, address, address_type FROM user_addresses WHERE user_id = ?', userId, (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Database query error', error: err });
         }
@@ -18,7 +18,8 @@ router.post('/', (req, res) => {
 
         try {
             // Loop through the results and decrypt each address
-            const decryptedAddresses = results.map(({ address, address_type }) => {
+            const decryptedAddresses = results.map(({ id, address, address_type }) => {
+
 
                 // Parse the encrypted address
                 const parsedAddress = JSON.parse(address);
@@ -27,6 +28,7 @@ router.post('/', (req, res) => {
                 const decryptedAddress = decrypt(parsedAddress);
 
                 return {
+                    id: id,
                     address: decryptedAddress,
                     type: address_type
                 };

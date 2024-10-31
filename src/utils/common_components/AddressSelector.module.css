@@ -29,14 +29,33 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
     width: 100%;
     gap: 5%;
+}
+
+.addressLine{
+    display: flex;
+    align-items: center;
+}
+
+.addressData{
+    min-width: 30%;
+    width: auto;
+    display: flex;
 }
 
 .addressLine:hover{
     background-color: aquamarine;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.selectedAddressRow{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .btnContainer{

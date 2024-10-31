@@ -28,6 +28,7 @@ const [total, setTotal] = useState(0)
 const [receptor, setReceptor] = useState('')
 const [inputWrong, setInputWrong] = useState(false)
 
+
 const userId = userStore((state) => state.userId);
 
 

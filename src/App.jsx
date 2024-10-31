@@ -11,6 +11,7 @@ import userStore from './utils/store';
 import { convertTimeToMinutes } from './utils/common_functions';
 import { getServerTime } from './utils/async_functions';
 import { consoleMsg } from './utils/text_scripts';
+import { MoonLoader } from 'react-spinners';
 
 function App() {
     const [currentOrder, setCurrentOrder] = useState([])
@@ -106,7 +107,7 @@ function App() {
     // Render loading state or routes based on isLoading
     if (isLoading) {
         return(
-        <div className={style.loader}>
+        <div >
         <MoonLoader color="red" size={60} />
       </div>)
     }
