@@ -11,6 +11,7 @@ const https = require('https')
 const parseFileData = require('./parser.cjs')
 const sendEmailNotification = require('./notification_mailer.cjs');
 const { getUserDetails, getUserIdFromOrder } = require('./utils.cjs');
+const session = require('express-session');
 
 const options = {
     key: fs.readFileSync('C:/Users/leand/privkey.pem'),  // Replace with the correct path
@@ -20,8 +21,19 @@ const options = {
 
 app.use(bodyParser.json());
 
+const allowedOrigins = ['https://localhost:5173', 'https://jqkccp38-5173.brs.devtunnels.ms'];
+
 app.use(cors({
-    origin: 'https://localhost:5173',
+    origin: (origin, callback) => {
+        // Allow requests with no origin, like mobile apps or curl requests
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);  // Allow the origin
+        } else {
+            callback(new Error('Not allowed by CORS'));  // Reject other origins
+        }
+    },
     credentials: true,  // Allow credentials to be sent
     methods: ['GET', 'POST'],  // Allow necessary methods
     allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
@@ -30,7 +42,6 @@ app.use(cors({
 
 app.use((req, res, next) => {
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:5173');  // Allow your frontend origin
     res.setHeader('Access-Control-Allow-Credentials', 'true');  // Required if using credentials
     next();
 });
@@ -43,7 +54,20 @@ app.use(helmet({
             "upgrade-insecure-requests": [],
         },
     },
-    crossOriginResourcePolicy: false
+    crossOriginResourcePolicy: false,
+    crossOriginOpenerPolicy: { policy: 'same-origin' }, // Ensure same-origin policy
+    crossOriginResourcePolicy: { policy: 'cross-origin' }
+}));
+
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: true, // Ensures cookie is sent only over HTTPS
+        httpOnly: true,
+        sameSite: 'None' // Required for cross-origin cookies in recent browser versions
+    }
 }));
 
 
@@ -53,7 +77,7 @@ app.use(xss())
 app.use(express.json()); // Parse incoming JSON data
 
 app.use('/images', (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:5173'); // or '*' to allow all origins
+    res.setHeader('Access-Control-Allow-Origin', '*'); // or '*' to allow all origins
     next();
 }, express.static(path.join('C:/Malbec/IMAGENES')));
 
@@ -71,6 +95,7 @@ const getBusinessesRoute = require('./api/routes/businesses/db_retrieve_business
 const getScheduleRoute = require('./api/routes/businesses/db_retrieve_schedule.cjs')
 const getCurrentTime = require('./api/routes/other/server_time.cjs')
 const deleteAddressRoute = require('./api/routes/users/db_delete_address.cjs')
+const getBusinessNumber = require('./api/routes/businesses/db_retrieve_business_id.cjs')
 
 
 
@@ -86,6 +111,8 @@ app.use('/api/delete_user', deleteUserRoute)
 app.use('/api/get_schedule', getScheduleRoute)
 app.use('/api/get_current_time', getCurrentTime)
 app.use('/api/delete_address', deleteAddressRoute)
+app.use('/api/get_business_number',  getBusinessNumber)
+
 
 
 // Endpoint to upload rubro data
@@ -168,6 +195,8 @@ app.post('/upload/producto', async (req, res) => {
 
 app.post('/upload/estado_pedido', (req, res) => {
     const stateData = parseFileData(req.body.data, 'estado_pedido');
+
+    console.log(stateData)
 
     if (!stateData) {
         return res.status(400).json({ error: 'no data.' });

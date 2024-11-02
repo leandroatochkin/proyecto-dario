@@ -37,6 +37,8 @@
 .addressLine{
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .addressData{
@@ -52,10 +54,10 @@
 }
 
 .selectedAddressRow{
-    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 50%;
 }
 
 .btnContainer{

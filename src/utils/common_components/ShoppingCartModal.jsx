@@ -26,6 +26,7 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 const [selectedAddress, setSelectedAddress] = useState(null);
 const [total, setTotal] = useState(0)
 const [receptor, setReceptor] = useState('')
+const [comentary, setCommentary] = useState('')
 const [inputWrong, setInputWrong] = useState(false)
 
 
@@ -39,7 +40,7 @@ setTotal(total)
 
 const handleBtn = () => {
     if(receptor !== '' && selectedAddress !==  null){
-        buyFunction(userId, itemsToMap, selectedAddress, total, receptor)
+        buyFunction(userId, itemsToMap, selectedAddress, total, receptor, comentary)
         setFunction()
     } else {
         setInputWrong(true) 
@@ -106,12 +107,20 @@ const handleBtn = () => {
          maxLength={'20'}
         />
         </div>
-        
+        <div className={style.inputContainer}>
+        <label htmlFor='commentary' 
+        className={style.label}
+        >{language.commentary_input}</label>
+        <input className={style.input} type='textarea' name='commentary' placeholder={language.commentary_input_example} onChange={(e)=>setCommentary(e.target.value)} maxLength={50}/>
+        </div>
+
+
         <div className={style.buttonsContainer}>
           
         <div className={style.totalText}>
             {ES_text.total + ': '}<span style={{fontWeight: 'bolder'}}>{'$' + total}</span>
         </div>
+        
         <button 
         onClick={() => setFunction()} 
         className={style.button1}>{buttonText1}</button>

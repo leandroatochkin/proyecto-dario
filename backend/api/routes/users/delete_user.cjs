@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db.cjs');
 
-router.delete('/', (req, res) => {
+router.post('/', (req, res) => {
     const { userId } = req.body;
 
     if (!userId) {

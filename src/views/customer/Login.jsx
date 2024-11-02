@@ -2,69 +2,124 @@ import React, { useState, useEffect } from 'react';
 import style from './login.module.css';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import { GoogleLogin } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ES_text } from '../../utils/text_scripts';
 import { handleResponse } from '../../utils/async_functions';
-import { checkUser } from '../../utils/db_functions';
-import {jwtDecode} from 'jwt-decode';  // Fix the import of jwtDecode
+import { checkUser, getBusinessesNumber } from '../../utils/db_functions';
+import { jwtDecode } from 'jwt-decode';
 import userStore from '../../utils/store';
-import { MoonLoader } from 'react-spinners';  // Import a loader component
+import { MoonLoader } from 'react-spinners';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id'); // Get 'id' from query params
   const [openModal, setOpenModal] = useState(false);
   const [newUser, setNewUser] = useState(null);
   const [phone, setPhone] = useState('');
   const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);  // Initial loading state
-  const [loginLoading, setLoginLoading] = useState(false);  // Login action loading state
+  const [loading, setLoading] = useState(true);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [business, setBusiness] = useState({
+                                            codRazSoc:null,
+                                            businessName: null
+                                          });
+  const [businessLoading, setBusinessLoading] = useState(true);
+
+
 
   // Zustand store for login status
   const setLoginStatus = userStore((state) => state.setLoginStatus);
 
-  const errorMsg = () => console.log('Login error');
+  // Fetch business number based on id
+  useEffect(() => {
+  const fetchBusinessNumber = async () => {
+    if (id) {
+      try {
+        const result = await getBusinessesNumber(id);
+        
+        setBusiness(prevState => ({
+          ...prevState,
+          codRazSoc: result[0].EM_cod_raz_soc,
+          businessName: result[0].EM_nom_fant
+        }));
 
+
+        console.log(result)
+      } catch (error) {
+        console.error("Error fetching business number:", error);
+      } finally {
+        setBusinessLoading(false); // Mark business loading as complete
+      }
+    } else {
+      setBusinessLoading(false); // No id, still set loading to false
+    }
+  };
+
+  fetchBusinessNumber();
+}, [id]);
+
+
+  // Handle Google login response
   const decodeResponse = async (response) => {
-    setLoginLoading(true);  // Set loading state to true when starting the login process
-    const decodedToken = jwtDecode(response.credential);  // Decode Google credential
+    setLoginLoading(true);
+    const decodedToken = jwtDecode(response.credential);
     const email = decodedToken.email;
 
     try {
-      const { exists, userId } = await checkUser(email);  // Check if the user exists
+      const { exists, userId } = await checkUser(email);
       if (exists) {
         setNewUser(false);
-        setLoginStatus(true, userId);  // Set login status directly here
-        navigate('/');  // Navigate to the menu page
+        setLoginStatus(true, userId);
+        if(business.codRazSoc){
+          navigateToMenuIfId()
+        } else {
+          navigate('/')
+        }; // Navigate to the menu if there's an ID after login
       } else {
         setNewUser(true);
-        setOpenModal(true);  // Open modal for phone input if user is new
-        setData(response);    // Save response for later registration
+        setOpenModal(true);
+        setData(response); // Save response for later registration
       }
     } catch (e) {
       console.error('Error checking user:', e);
     } finally {
-      setLoginLoading(false);  // Set login state to false after processing
+      setLoginLoading(false);
     }
   };
 
-  // Handle new user registration once the phone number is provided
+  //Navigate to /menu only if there's a valid id and business number
+  const navigateToMenuIfId = () => {
+    if (id && business) {
+      navigate('/menu', { state: { razSoc: business.codRazSoc, businessNameFromLogIn: business.businessName} });
+    }
+  };
+
+  // Handle new user registration
   useEffect(() => {
-    if (newUser === true && data.credential && phone) {
-      handleResponse(data.credential, phone, setNewUser, setLoginStatus, navigate);  // Register new user
+    if (newUser && data.credential && phone) {
+      handleResponse(data.credential, phone, setNewUser, setLoginStatus, setLoading, navigate, setBusinessNum, id, navigateToMenuIfId);
     }
   }, [data, newUser, phone]);
 
-  // Simulate fetching/loading initial screen data
+  // Check if a user has been created and navigate to menu
+  useEffect(() => {
+    if (newUser === false && businessNum) {
+      navigateToMenuIfId(); // Navigate to menu if the user is no longer new and there's a business number
+    }
+  }, [newUser, business]);
+
+  // Simulate initial loading
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false);  // Set to false after screen is ready
-    }, 1000);  // Delay for showing loader (for demo purposes)
+      setLoading(false);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
-    // Show initial loader while the screen is loading
     return (
       <div className={style.loaderContainer}>
         <MoonLoader color="#4A90E2" size={50} aria-label="Loading spinner" />
@@ -80,16 +135,16 @@ const Login = () => {
           message={ES_text.phone_modal}
           setFunction={setOpenModal}
           buttonText={ES_text.button_enter}
-          stateSetter={setPhone}  // This sets the phone number
+          stateSetter={setPhone}  // Set the phone number
         />
       )}
 
       <div className={style.login} aria-label="Login form">
         <div className={style.title} aria-label="Welcome Back!">
-          <img src={'/public/images/malbec_logo_transparente.PNG'} className={style.logo}/>
+          <img src={'/public/images/malbec_logo_transparente.PNG'} className={style.logo} alt="Malbec Logo" />
         </div>
-        
-        {/* Show the loader while the login process is happening */}
+
+        {/* Show loader while the login process is happening */}
         {loginLoading ? (
           <div className={style.loaderContainer}>
             <MoonLoader color="red" size={60} aria-label="Loading spinner" />
@@ -98,16 +153,17 @@ const Login = () => {
           <div className={style.loginBtnContainer} aria-label="Google login button container">
             <GoogleLogin
               onSuccess={decodeResponse}
-              onError={errorMsg}
+              onError={() => console.log('Login error')}
               scope="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
               aria-label="Google login button"
             />
           </div>
         )}
       </div>
+
       <footer className={style.footer}>
         <p>code by <a href='https://github.com/leandroatochkin'>leandroatochkin</a></p>
-        <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>Andrés Actis</a></p>
+        <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>Blick Media Lab</a></p>
       </footer>
     </div>
   );

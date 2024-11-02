@@ -28,7 +28,9 @@ export const ES_text = {
     schedule: 'horario',
     no_data_yet: 'Aún no tenemos datos de este negocio. Vuelve pronto :)',
     delete_address: '¿Está seguro de que quiere eliminar este domicilio?',
-    delete: 'borrar'
+    delete: 'borrar',
+    commentary_input:'Comentarios',
+    commentary_input_example: 'P.e.: Sin sal...'
 }
 
 export const consoleMsg = `

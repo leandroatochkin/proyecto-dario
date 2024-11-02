@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ItemView from './ItemView';
 import { getCategories, getProducts, createCheckout } from '../../utils/db_functions';
 import style from './Menu.module.css';
@@ -14,7 +14,7 @@ import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import SettingsModal from '../../utils/common_components/SettingsModal';
 import ClosedModal from '../../utils/common_components/ClosedModal';
 
-const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedule }) => {
+const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, schedule, businessName }) => {
   const [categories, setCategories] = useState([]);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);
@@ -26,6 +26,13 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
   const [openSettingsModal, setOpenSettingsModal] = useState(false)
   const [openClosedModal, setOpenClosedModal] = useState(false)
   const [accept, setAccept] = useState(false)
+ 
+
+  const location = useLocation();
+  const { razSoc } = location.state || {}
+  const {businessNameFromLogIn} =  location.state || {}
+
+
 
 
 
@@ -40,12 +47,11 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
   },[])
 
   useEffect(() => {
-    if (!razSoc) return;
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const fetchedCat = await getCategories(razSoc);
-        const fetchedProd = await getProducts(razSoc);
+        const fetchedCat = await getCategories(razSoc? razSoc : codRazSoc);
+        const fetchedProd = await getProducts(razSoc? razSoc : codRazSoc);
         setCategories(fetchedCat);
         setProducts(fetchedProd);
       } catch (e) {
@@ -58,8 +64,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
   }, [razSoc]);
     // Now this runs whenever razSoc changes
   
-  const handleBuy = (userId, order, address, total, receptor) => {
-    createCheckout(userId, order, address, total, receptor);
+  const handleBuy = (userId, order, address, total, receptor, commentary) => {
+    createCheckout(userId, order, address, total, receptor, commentary);
     setCurrentOrder([]);
   };
 
@@ -202,7 +208,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, razSoc, isOpen, schedul
   </svg>
   <div className={style.itemCount}>{currentOrder.length}</div>
         </motion.button>
-
+  <h1 className={style.businessTitle}>{businessName || businessNameFromLogIn}</h1>
         {/* Show loading animation if data is still being fetched */}
         {isLoading ? (
           <div className={style.loader}>

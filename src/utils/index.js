@@ -13,5 +13,6 @@ export const index = {
     delete_user:   `${host}/api/delete_user`,
     get_schedule: `${host}/api/get_schedule`,
     get_current_time:  `${host}/api/get_current_time`,
-    delete_address:   `${host}/api/delete_address`
+    delete_address:   `${host}/api/delete_address`,
+    get_business_number:  `${host}/api/get_business_number`
 }

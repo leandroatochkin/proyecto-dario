@@ -29,22 +29,37 @@ export const handleCheck = async (response, setNewUser, setUserId) => {
     }
   };
   
-export const handleResponse = async (response, phone, setNewUser, setUserId, navigate) => {
+  export const handleResponse = async (response, phone, setNewUser, setUserId, setLoading, navigate, setBusinessNum, id, navigateToMenuIfId) => {
     const tokenData = jwtDecode(response);
     const email = tokenData.email;
 
     try {
-        const registerResponse = await registerUser(email, phone); // Call the registerUser function
-
+        setLoading(true); // Start loading
+        const registerResponse = await registerUser(email, phone); // Register the user
+        
         if (registerResponse.success) {
             setNewUser(false);
             setUserId(true, registerResponse.userId); // Set the returned user ID
-            navigate("/menu");
+            setBusinessNum(id); // Set the businessNum or id for navigation
+            
         }
+
+        if(id){
+          navigateToMenuIfId()
+          console.log('id')
+        } else {
+          console.log('no id')
+          navigate("/");
+        }
+
     } catch (e) {
         console.log("Error registering user:", e);
+    } finally {
+        setLoading(false); // Stop loading once done
     }
 };
+
+
 
 export const getServerTime =  async () => {
   try{

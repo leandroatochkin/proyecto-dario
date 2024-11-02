@@ -20,7 +20,10 @@ const ClosedModal = ({setFunction, language, schedule}) => {
         
         <img src='/public/images/clock.png' className={style.image}/>
         <p className={style.p}><span style={{fontWeight: 'bolder'}}>{language.schedule}:</span>
-        {schedule ? schedule.EM_hora_ap.slice(0, -2)+':'+schedule.EM_hora_ap.slice(2, 4)+'hs. - ' + schedule.EM_hora_cierre.slice(0, -2)+':'+schedule.EM_hora_cierre.slice(2, 4) + 'hs.' : ''}</p>
+        {!schedule.EM_corte ?
+         schedule.EM_hora_ap.slice(0, -2)+':'+schedule.EM_hora_ap.slice(2, 4)+'hs. - ' + schedule.EM_hora_cierre.slice(0, -2)+':'+schedule.EM_hora_cierre.slice(2, 4) + 'hs.' 
+         : 
+         schedule.EM_hora_ap.slice(0, -2)+':'+schedule.EM_hora_ap.slice(2, 4)+'hs. - '+ schedule.EM_corte.slice(0,-6)+':' + schedule.EM_corte.slice(0,-4) + 'hs. y de' + schedule.EM_corte.slice(-4,-2)+':'+schedule.EM_corte.slice(-2)+'hs. - ' + schedule.EM_hora_cierre.slice(0, -2)+':'+schedule.EM_hora_cierre.slice(2, 4) + 'hs.'}</p>
 
         <motion.button 
         onClick={handleClick} 

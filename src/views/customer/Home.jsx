@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 
-const Home = ({ setRazSoc, language, setSchedule }) => {
+const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
     const [businesses, setBusinesses] = useState(null);
     const [loading, setLoading] = useState(true);
     const [openErrorModal, setOpenErrorModal] = useState(false);
@@ -59,7 +59,8 @@ const Home = ({ setRazSoc, language, setSchedule }) => {
     const handleClick = async (business) => {
         const db_schedule = await getSchedule(business.EM_ID_suc) || []
         setSchedule(...db_schedule);
-        setRazSoc(business.EM_cod_raz_soc);
+        setCodRazSoc(business.EM_cod_raz_soc);
+        setBusinessName(business.EM_nom_fant)
         navigate('/menu');
     };
 

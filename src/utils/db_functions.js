@@ -40,7 +40,7 @@ export const getCategories = async(raz_soc) =>{
     }
 }
 
-export const createCheckout = async (userId, order, address, total, receptor) => {
+export const createCheckout = async (userId, order, address, total, receptor, commentary) => {
     try {
         const payload = {
             orderData: order.map((product) => ({
@@ -54,7 +54,8 @@ export const createCheckout = async (userId, order, address, total, receptor) =>
                 type: address.type,
                 total: total,
                 state: 1,
-                receptor: receptor
+                receptor: receptor,
+                commentary: commentary
             }))
         };
 
@@ -79,6 +80,7 @@ export const checkUser = async (email) => {
     try {
         const response = await fetch(index.check_user, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -87,7 +89,7 @@ export const checkUser = async (email) => {
         });
 
         const data = await response.json();
-        localStorage.setItem('authToken', data.token);
+        //localStorage.setItem('authToken', data.token);
         return data; // Expected response: { exists: true/false, userId, token }
 
     } catch (e) {
@@ -105,6 +107,7 @@ export const registerUser = async (email, phone) => {
     try {
         const response = await fetch(index.register_user, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -178,6 +181,25 @@ export const getBusinesses = async() =>{
     }
 }
 
+export const getBusinessesNumber = async(id) =>{
+    try{
+
+        const payload = {id: id}
+        const response = await fetch(index.get_business_number, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        return data;
+    } catch(e){
+        console.log(e)
+        return e
+    }
+}
+
 export const deleteUser = async (userId) => {
     const payload = {
         userId: userId
@@ -185,7 +207,7 @@ export const deleteUser = async (userId) => {
 
     try {
         const response = await fetch(index.delete_user, {
-            method: 'DELETE',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },

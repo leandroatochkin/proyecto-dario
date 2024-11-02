@@ -41,7 +41,7 @@ router.post('/checkout', async (req, res) => {
       const productName = await getProductName(product.PD_cod_pro);
 
       // Accumulate the product details for the email
-      emailItems += `Producto: ${productName}| Código: ${product.PD_cod_pro}| Cantidad: ${product.quantity}| Precio unitario: ${product.PD_pre_ven}| Total: ${product.PD_pre_ven * product.quantity}\n`;
+      emailItems += `Producto: ${productName}| Código: ${product.PD_cod_pro}| Cantidad: ${product.quantity}| Precio unitario: ${product.PD_pre_ven}| Total: ${product.PD_pre_ven * product.quantity}| Comentarios: ${product.commentary}\n`;
 
       // Step 1: Get the current maximum order_number for this location of the business
       const query = `SELECT IFNULL(MAX(order_number), 0) AS max_order_number 
@@ -60,11 +60,11 @@ router.post('/checkout', async (req, res) => {
 
           // Step 3: Insert the new order into the user_orders table with the new order_number
           const insertQuery = `INSERT INTO user_orders 
-            (user_id, order_id, PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_pre_ven, quantity, address, type, total, state, order_number)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            (user_id, order_id, PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_pre_ven, quantity, address, type, total, state, order_number, commentary)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
           db.query(insertQuery, 
-            [product.user_Id, orderId, product.PD_cod_raz_soc, product.PD_cod_suc, product.PD_cod_pro, product.PD_pre_ven, product.quantity, product.address, product.type, product.total, product.state, newOrderNumber.toString()], 
+            [product.user_Id, orderId, product.PD_cod_raz_soc, product.PD_cod_suc, product.PD_cod_pro, product.PD_pre_ven, product.quantity, product.address, product.type, product.total, product.state, newOrderNumber.toString(), product.commentary], 
             (err, result) => {
               if (err) {
                 console.error("Error inserting order:", err);

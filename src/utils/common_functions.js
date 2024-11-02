@@ -18,7 +18,7 @@ export const dropIn = {
         y: '100vh',
         opacity: 0
     }
-  }
+}
 
 export const capitalize = (str) => {
     str = str.replace(/n\*/gi, (match) => match === 'N*' ? 'Ñ' : 'ñ');
@@ -30,4 +30,17 @@ export const convertTimeToMinutes = (time) => {
     const minutes = parseInt(time.slice(-2), 10); // Get the last two digits as minutes
     return hours * 60 + minutes;
 };
+
+export const getAddressLabel = (language, type) => {
+    switch (type) {
+      case '1':
+        return language.select_home;
+      case '2':
+        return language.select_work;
+      case '3':
+        return language.select_other;
+      default:
+        return 'Dirección';
+    }
+  };
   

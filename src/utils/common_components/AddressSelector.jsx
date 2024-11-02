@@ -4,6 +4,7 @@ import { getAddress, addAddress, deleteAddress } from '../db_functions';
 import style from './AddressSelector.module.css';
 import { ES_text } from '../text_scripts';
 import { motion } from 'framer-motion';
+import { getAddressLabel } from '../common_functions';
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
@@ -96,18 +97,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
     }
   }
 
-  const getAddressLabel = (type) => {
-    switch (type) {
-      case '1':
-        return language.select_home;
-      case '2':
-        return language.select_work;
-      case '3':
-        return language.select_other;
-      default:
-        return 'Dirección';
-    }
-  };
+
 
   useEffect(() => {
     if (loggedIn && userId) {
@@ -126,7 +116,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
         >
           <div className={style.addressData}>
           {address.address}
-          <span>({getAddressLabel(address.type)})</span>
+          <span>({getAddressLabel(language, address.type)})</span>
           </div>
           
           {selectedAddress && selectedAddress.address === address.address && (

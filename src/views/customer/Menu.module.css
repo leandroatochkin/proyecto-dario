@@ -25,10 +25,6 @@
         width: 80%;
     }
 
-    .h2{
-        color: #212427;
-    }
-
     .li{
         height: 7vh;
         display: flex;
@@ -114,6 +110,10 @@
         align-items: center;
     }
 
+    .businessTitle{
+        color: #212427;
+    }
+
     .itemCount{
         background-color: red;
         font-weight: bolder;
@@ -147,6 +147,7 @@
 
     .h2{
         font-weight: bolder;
+        color: #212427;
     }
 
     .h2Rubro{
