@@ -76,7 +76,6 @@ const Login = ({language}) => {
 
     try {
       const { exists, userId, valid, emailVerified, token } = await loginUser(email, password);
-      console.log(exists, userId, valid, emailVerified, token)
 
       if(!valid){
         alert('Invalid credentials')
