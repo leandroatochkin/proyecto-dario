@@ -42,8 +42,10 @@
     
     .loginBtnContainer{
         width: 100%;
+        height: auto;
         color-scheme: light;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
     }
@@ -62,7 +64,11 @@
         font-weight: bolder;
     }
 
-
+    .createAccSpan{
+        margin-left: 1%;
+        color: #fa0;
+        font-weight: bolder;
+    }
 
     .input{
         border-radius: 8px;

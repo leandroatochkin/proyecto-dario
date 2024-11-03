@@ -15,7 +15,7 @@ const isValidPassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$
 //Contains at least one special character (e.g., !@#$%^&*())
 
 router.post('/', (req, res) => {
-    const { email, phone, password, role } = req.body;
+    const { email, phone, password, role, isGoogle } = req.body;
 
     // Validate required fields
     if (!email || !phone || !password) {
@@ -51,8 +51,8 @@ router.post('/', (req, res) => {
 
                 // Update the user record instead of inserting a new one
                 db.query(
-                    'UPDATE users SET phone = ?, password = ?, role = ?, deleted_at = NULL WHERE id = ?',
-                    [JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), ({iv: passwordIv, encryptedData: encryptedPassword}), role || 'customer', id],
+                    'UPDATE users SET phone = ?, password = ?, role = ?, is_google = ? deleted_at = NULL WHERE id = ?',
+                    [JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), JSON.stringify({iv: passwordIv, encryptedData: encryptedPassword}), role || 'user', isGoogle, id],
                     (err) => {
                         if (err) {
                             console.error("Error reactivating user:", err);
@@ -75,8 +75,8 @@ router.post('/', (req, res) => {
         const { iv: passwordIv, encryptedData: encryptedPassword } = encrypt(password);
 
         db.query(
-            'INSERT INTO users (id, email, phone, role, password) VALUES (?, ?, ?, ?, ?)', 
-            [id, email, JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'customer',  JSON.stringify({ iv: passwordIv, encryptedData: encryptedPassword })], 
+            'INSERT INTO users (id, email, phone, role, password, is_google) VALUES (?, ?, ?, ?, ?, ?)', 
+            [id, email, JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'customer',  JSON.stringify({ iv: passwordIv, encryptedData: encryptedPassword }), isGoogle], 
             (err) => {
                 if (err) {
                     // Handle duplicate entry error in case of race condition

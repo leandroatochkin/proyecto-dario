@@ -6,15 +6,15 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import App from './App.jsx'
 import './index.css'
 
-// const google_id = import.meta.env.VITE_GOOGLE_ID
+const google_id = import.meta.env.VITE_GOOGLE_ID
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* <GoogleOAuthProvider clientId={google_id}> */}
+    <GoogleOAuthProvider clientId={google_id}>
     <BrowserRouter>
     <App />
     </BrowserRouter>
-    {/* </GoogleOAuthProvider> */}
+    </GoogleOAuthProvider>
   </StrictMode>,
 )

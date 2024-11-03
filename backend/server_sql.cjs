@@ -21,7 +21,7 @@ const options = {
 
 app.use(bodyParser.json());
 
-const allowedOrigins = ['https://localhost:5173', 'https://jqkccp38-5173.brs.devtunnels.ms'];
+const allowedOrigins = ['https://localhost:5173', 'https://b219-2800-2222-4000-276-195f-4171-e8b7-a8a9.ngrok-free.app'];
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -55,7 +55,7 @@ app.use(helmet({
         },
     },
     crossOriginResourcePolicy: false,
-    crossOriginOpenerPolicy: { policy: 'same-origin' }, // Ensure same-origin policy
+    crossOriginOpenerPolicy: false, //{ policy: 'same-origin-allow-popups' }, // Ensure same-origin policy
     crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 

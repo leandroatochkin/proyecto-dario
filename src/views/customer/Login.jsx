@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import style from './login.module.css';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
-//import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ES_text } from '../../utils/text_scripts';
 import { handleResponse, sendVerification } from '../../utils/async_functions';
@@ -11,6 +10,7 @@ import userStore from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import { passwordRegex, emailRegex, phoneRegex } from '../../utils/common_functions';
+import CustomGoogleLoginBtn from '../../utils/common_components/CustomGoogleLoginBtn';
 
 
 const Login = ({language}) => {
@@ -33,6 +33,7 @@ const Login = ({language}) => {
   const [password,  setPassword] = useState('')
   const [newAccountMode, setNewAccountMode] = useState(false)
   const [repeatPassword, setRepeatPassword] = useState('')
+  const [isGoogleLogin, setIsGoogleLogin] = useState(false)
 
 
 
@@ -74,8 +75,19 @@ const Login = ({language}) => {
     setLoginLoading(true);
 
     try {
-      const { exists, userId, token } = await loginUser(email, password);
-      if (exists) {
+      const { exists, userId, valid, emailVerified, token } = await loginUser(email, password);
+      console.log(exists, userId, valid, emailVerified, token)
+
+      if(!valid){
+        alert('Invalid credentials')
+        return
+      }
+
+      if(exists && valid && !emailVerified){
+        alert('Please verify your email address')
+        return
+      }
+      if (exists && emailVerified && valid) {
         setNewUser(false);
         setLoginStatus(true, userId);
         if(business.codRazSoc){
@@ -101,13 +113,12 @@ const Login = ({language}) => {
   
       if (phone !== '' && phoneRegex.test(phone)) {
         try {
-          const response = await registerUser(email, password, phone);
+          const response = await registerUser(email, password, phone, false);
 
   
           if (response.success) {
             setNewUser(false);
             setLoginStatus(true, response.userId);
-            console.log(email, response.userId)
             sendVerification(email, response.userId)
   
             // Navigate immediately after successful registration
@@ -125,6 +136,46 @@ const Login = ({language}) => {
       alert('Invalid input');
     }
   };
+
+  const handleGoogleLoginRegister  = async (email) => {
+    try {
+      const userExists = await checkUser(email)
+      if (userExists) {
+        setNewUser(false)
+        console.log(userExists)
+        setLoginStatus(true, userExists.userId)
+        console.log(userExists)
+        if (business.codRazSoc) {
+          navigateToMenuIfId();
+        } else {
+          console.log('here')
+          navigate('/');
+        } 
+      }  else {
+        setOpenModal(true);
+        if (phone !== '' && phoneRegex.test(phone)){
+          const response = await registerUser(email, null, phone, true)
+          if (response.success) {
+            setNewUser(false);
+            setLoginStatus(true, response.userId);
+  
+            // Navigate immediately after successful registration
+            if (business.codRazSoc) {
+              navigateToMenuIfId();
+            } else {
+              navigate('/');
+            }
+          }
+        }
+      }
+
+
+    }catch(e){
+      console.error('Error checking user:', e);
+    }
+  
+  }
+
   
   //Navigate to /menu only if there's a valid id and business number
   const navigateToMenuIfId = () => {
@@ -187,12 +238,7 @@ const Login = ({language}) => {
           </div>
         ) : (
           <div className={style.formContainer} aria-label="Google login button container">
-            {/* <GoogleLogin
-              onSuccess={decodeResponse}
-              onError={() => console.log('Login error')}
-              scope="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
-              aria-label="Google login button"
-            /> */}
+            
             <div>
               <legend className={style.legend} aria-label="Login form legend">login</legend>
                 <div  className={style.inputContainer}>
@@ -204,7 +250,13 @@ const Login = ({language}) => {
               <button type='submit' onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
               <div className={!phone ? style.verificationMsgHidden : style.verificationMsg}>{language.verification_message}</div>
             </div>
-            <p className={!phone ? style.createAccP : style.createAccPHidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}>{language.create_account}</span></p>
+
+            <p className={!phone ? style.createAccP : style.createAccPHidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.create_account_button}</span></p>
+
+            <div className={style.loginBtnContainer}>
+            <p className={style.createAccP}>{language.or_else}</p>
+            <CustomGoogleLoginBtn handleGoogleLoginRegister={handleGoogleLoginRegister} setIsGoogleLogin={setIsGoogleLogin}/>
+            </div>
           </div>
         )}
       </div>

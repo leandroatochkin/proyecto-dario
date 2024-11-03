@@ -117,6 +117,7 @@ export const loginUser = async (email, password) => {
 
         const data = await response.json();
         //localStorage.setItem('authToken', data.token);
+        console.log(data)
         return data; // Expected response: { success: true }
 
     } catch (e) {
@@ -125,11 +126,14 @@ export const loginUser = async (email, password) => {
     }
 };
 
-export const registerUser = async (email, password, phone) => {
+export const registerUser = async (email, password, phone, isGoogle) => {
     const userData = {
         email: email,
         password: password,
-        phone: phone };
+        phone: phone,
+        role: 'user',
+        isGoogle: isGoogle,
+     };
 
     try {
         const response = await fetch(index.register_user, {
