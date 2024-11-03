@@ -1,0 +1,47 @@
+#root{
+    --black-transparent: rgba(0,0,0,0.5);
+    --orange-gradient: linear-gradient(10deg, #fa0, #ff6a00);
+    --green-gradient: linear-gradient(15deg, #04ea00, #00d17d);
+    --dark-text: #212427;
+    --yellow-text: #edfa61
+  }
+
+@media only screen and (max-width: 640px){
+    .container{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #e0e0e0;
+        color: #212427;
+    }
+
+    .image{
+        width: 60%;
+        margin-bottom: 20%;
+    }
+
+    .button{
+        background: linear-gradient(10deg, #fa0, #ff6a00);
+        border: none;
+    }
+
+}
+
+@media only screen and (min-width: 641px){
+    .background{
+        background: #e0e0e0;
+        width: 100vw;
+        height: 100vh;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+.container{display: none;}
+   
+}

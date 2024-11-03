@@ -30,7 +30,13 @@ export const ES_text = {
     delete_address: '¿Está seguro de que quiere eliminar este domicilio?',
     delete: 'borrar',
     commentary_input:'Comentarios',
-    commentary_input_example: 'P.e.: Sin sal...'
+    commentary_input_example: 'P.e.: Sin sal...',
+    create_account_preface: '¿Todavía no tienes una cuenta?',
+    create_account: 'Crea una.',
+    create_account_button: 'crear cuenta',
+    thanks_for_verifying: 'Gracias por verificar tu cuenta!',
+    verification_message: 'Se enviará un correo al mail proporcionado. En caso de no recibirlo, por favor, revisa tu carpeta de spam.',
+
 }
 
 export const consoleMsg = `

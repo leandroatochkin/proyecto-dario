@@ -96,6 +96,9 @@ const getScheduleRoute = require('./api/routes/businesses/db_retrieve_schedule.c
 const getCurrentTime = require('./api/routes/other/server_time.cjs')
 const deleteAddressRoute = require('./api/routes/users/db_delete_address.cjs')
 const getBusinessNumber = require('./api/routes/businesses/db_retrieve_business_id.cjs')
+const loginRoute = require('./api/routes/users/login_user.cjs')
+const sendVerificationEmailRoute = require('./api/routes/users/send_email_verification.cjs')
+const verifyEmailRoute = require('./api/routes/users/verify_email.cjs')
 
 
 
@@ -112,6 +115,9 @@ app.use('/api/get_schedule', getScheduleRoute)
 app.use('/api/get_current_time', getCurrentTime)
 app.use('/api/delete_address', deleteAddressRoute)
 app.use('/api/get_business_number',  getBusinessNumber)
+app.use('/api/login', loginRoute)
+app.use('/api/send_verification_email', sendVerificationEmailRoute)
+app.use('/api/verify_email', verifyEmailRoute)
 
 
 

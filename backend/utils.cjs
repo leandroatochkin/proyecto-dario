@@ -18,13 +18,22 @@ function encrypt(text) {
     return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
 }
 
-function decrypt(encryptedData) {
-    const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), Buffer.from(encryptedData.iv, 'hex'));
-    let decrypted = decipher.update(Buffer.from(encryptedData.encryptedData, 'hex'));
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString();
-}
+// function decrypt(encryptedData) {
+//     const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), Buffer.from(encryptedData.iv, 'hex'));
+//     let decrypted = decipher.update(Buffer.from(encryptedData.encryptedData, 'hex'));
+//     decrypted = Buffer.concat([decrypted, decipher.final()]);
+//     return decrypted.toString();
+// }
 
+function decrypt(encryptedData) {
+  const iv = Buffer.from(encryptedData.iv, 'hex');
+  const data = Buffer.from(encryptedData.encryptedData, 'hex');
+
+  const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+  let decrypted = decipher.update(data);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+}
 
 const getUserDetails = (userId) => {
   return new Promise((resolve, reject) => {

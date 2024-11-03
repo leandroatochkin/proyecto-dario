@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Login from './views/customer/Login';
 import Menu from './views/customer/Menu';
 import Home from './views/customer/Home';
+import VerifiedEmail from './views/customer/VerifiedEmail';
 import './App.css';
 import { ES_text } from './utils/text_scripts';
 import { Route, Routes } from 'react-router-dom';
@@ -118,11 +119,13 @@ function App() {
 
     return (
         <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login language={ES_text} />} />
             <Route path="/" element={<Home setCodRazSoc={setCodRazSoc} setRazSoc={setRazSoc} razSoc={razSoc} language={language} setSchedule={setSchedule} setBusinessName={setBusinessName}/>} />
             <Route path="/menu" element={<Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder} language={language} codRazSoc={codRazSoc} razSoc={razSoc} isOpen={isOpen} schedule={schedule} businessName={businessName}/>} />
+            <Route path="/verification" element={<VerifiedEmail language={language}/>}/>                                                                                                                        
         </Routes>
     );
 }
 
 export default App;
+                                                                        

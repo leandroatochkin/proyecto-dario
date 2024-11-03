@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import style from './login.module.css';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
-import { GoogleLogin } from '@react-oauth/google';
+//import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ES_text } from '../../utils/text_scripts';
-import { handleResponse } from '../../utils/async_functions';
-import { checkUser, getBusinessesNumber } from '../../utils/db_functions';
+import { handleResponse, sendVerification } from '../../utils/async_functions';
+import { checkUser, getBusinessesNumber, loginUser, registerUser } from '../../utils/db_functions';
 import { jwtDecode } from 'jwt-decode';
 import userStore from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
+import { passwordRegex, emailRegex, phoneRegex } from '../../utils/common_functions';
 
-const Login = () => {
+
+const Login = ({language}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -27,6 +29,11 @@ const Login = () => {
                                             businessName: null
                                           });
   const [businessLoading, setBusinessLoading] = useState(true);
+  const [email, setEmail] = useState('')
+  const [password,  setPassword] = useState('')
+  const [newAccountMode, setNewAccountMode] = useState(false)
+  const [repeatPassword, setRepeatPassword] = useState('')
+
 
 
 
@@ -63,13 +70,11 @@ const Login = () => {
 
 
   // Handle Google login response
-  const decodeResponse = async (response) => {
+  const handleLogin = async () => {
     setLoginLoading(true);
-    const decodedToken = jwtDecode(response.credential);
-    const email = decodedToken.email;
 
     try {
-      const { exists, userId } = await checkUser(email);
+      const { exists, userId, token } = await loginUser(email, password);
       if (exists) {
         setNewUser(false);
         setLoginStatus(true, userId);
@@ -81,7 +86,7 @@ const Login = () => {
       } else {
         setNewUser(true);
         setOpenModal(true);
-        setData(response); // Save response for later registration
+        setData(token); // Save response for later registration
       }
     } catch (e) {
       console.error('Error checking user:', e);
@@ -90,6 +95,37 @@ const Login = () => {
     }
   };
 
+  const handleRegister = async () => {
+    if (password === repeatPassword && passwordRegex.test(password) && emailRegex.test(email)) {
+      setOpenModal(true);
+  
+      if (phone !== '' && phoneRegex.test(phone)) {
+        try {
+          const response = await registerUser(email, password, phone);
+
+  
+          if (response.success) {
+            setNewUser(false);
+            setLoginStatus(true, response.userId);
+            console.log(email, response.userId)
+            sendVerification(email, response.userId)
+  
+            // Navigate immediately after successful registration
+            if (business.codRazSoc) {
+              navigateToMenuIfId();
+            } else {
+              navigate('/');
+            }
+          }
+        } catch (e) {
+          console.error('Error registering user:', e);
+        }
+      } 
+    } else {
+      alert('Invalid input');
+    }
+  };
+  
   //Navigate to /menu only if there's a valid id and business number
   const navigateToMenuIfId = () => {
     if (id && business) {
@@ -98,15 +134,15 @@ const Login = () => {
   };
 
   // Handle new user registration
-  useEffect(() => {
-    if (newUser && data.credential && phone) {
-      handleResponse(data.credential, phone, setNewUser, setLoginStatus, setLoading, navigate, setBusinessNum, id, navigateToMenuIfId);
-    }
-  }, [data, newUser, phone]);
+  // useEffect(() => {
+  //   if (newUser && data.credential && phone) {
+  //     handleResponse(data.credential, phone, setNewUser, setLoginStatus, setLoading, navigate, setBusinessNum, id, navigateToMenuIfId);
+  //   }
+  // }, [data, newUser, phone]);
 
   // Check if a user has been created and navigate to menu
   useEffect(() => {
-    if (newUser === false && businessNum) {
+    if (newUser === false && business) {
       navigateToMenuIfId(); // Navigate to menu if the user is no longer new and there's a business number
     }
   }, [newUser, business]);
@@ -150,13 +186,25 @@ const Login = () => {
             <MoonLoader color="red" size={60} aria-label="Loading spinner" />
           </div>
         ) : (
-          <div className={style.loginBtnContainer} aria-label="Google login button container">
-            <GoogleLogin
+          <div className={style.formContainer} aria-label="Google login button container">
+            {/* <GoogleLogin
               onSuccess={decodeResponse}
               onError={() => console.log('Login error')}
               scope="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
               aria-label="Google login button"
-            />
+            /> */}
+            <div>
+              <legend className={style.legend} aria-label="Login form legend">login</legend>
+                <div  className={style.inputContainer}>
+
+                <input type='text' name='email' placeholder='email' onChange={(e)=>setEmail(e.target.value)} className={style.input}/>
+                <input type='password' name='password'  placeholder='password'onChange={(e)=>setPassword(e.target.value)} className={style.input}/>
+                <input type='password' name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.input : style.inputHidden}/>
+                </div>
+              <button type='submit' onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
+              <div className={!phone ? style.verificationMsgHidden : style.verificationMsg}>{language.verification_message}</div>
+            </div>
+            <p className={!phone ? style.createAccP : style.createAccPHidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}>{language.create_account}</span></p>
           </div>
         )}
       </div>

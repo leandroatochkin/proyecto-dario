@@ -98,11 +98,38 @@ export const checkUser = async (email) => {
     }
 };
 
-export const registerUser = async (email, phone) => {
+export const loginUser = async (email, password) => {
+    const userData = { 
+        email: email,
+        password: password };
+
+    
+    try {
+        const response = await fetch(index.login_user, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+            //credentials: 'include'
+        });
+
+        const data = await response.json();
+        //localStorage.setItem('authToken', data.token);
+        return data; // Expected response: { success: true }
+
+    } catch (e) {
+        console.error('Error checking user:', e);
+        throw new Error('Error checking user');
+    }
+};
+
+export const registerUser = async (email, password, phone) => {
     const userData = {
         email: email,
-        phone: phone
-    };
+        password: password,
+        phone: phone };
 
     try {
         const response = await fetch(index.register_user, {
@@ -250,6 +277,29 @@ export const deleteAddress = async (userId, addressId) => {
 
     try {
         const response = await fetch(index.delete_address, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+ 
+        const data = await response.json();
+        return data; // Expected response: { success: true }
+
+    } catch (e) {
+        console.error('Error deleting user:', e);
+        throw new Error('Error deleting user');
+    }
+};
+
+export const verifyEmail = async (userId) => {
+    const payload = {
+        userId: userId,
+    };
+
+    try {
+        const response = await fetch(index.verify_email, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

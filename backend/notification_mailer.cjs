@@ -57,6 +57,39 @@ const sendEmailNotification = (orderDetails, contact, business) => {
       }
     });
   };
+
+const sendEmailVerification = (email, link) => {
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.MALBEC_EMAIL,
+        pass: process.env.MALBEC_EMAIL_PASS,
+      },
+    });
   
-  module.exports = sendEmailNotification;
+
+    // Only build mailOptionsToBusiness if it's a business notification
+
+ 
+  
+    const mailOptions = {
+      from: process.env.MALBEC_EMAIL,
+      to: email,
+      subject: 'Verificar correo',
+      text: `Por favor, haga click en el siguiente enlace para verificar su correo: ${link}. No conteste este mail.`,
+    };
+  
+    // Send the appropriate email based on the business flag
+
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error sending email:', error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+  };
+  
+  module.exports = {sendEmailNotification, sendEmailVerification};
   

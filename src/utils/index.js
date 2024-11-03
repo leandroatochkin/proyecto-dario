@@ -1,4 +1,4 @@
-const host = `https://localhost:3000`
+const host = import.meta.env.VITE_BACKEND_HOST
 
 
 export const index = {
@@ -14,5 +14,8 @@ export const index = {
     get_schedule: `${host}/api/get_schedule`,
     get_current_time:  `${host}/api/get_current_time`,
     delete_address:   `${host}/api/delete_address`,
-    get_business_number:  `${host}/api/get_business_number`
+    get_business_number:  `${host}/api/get_business_number`,
+    login_user:   `${host}/api/login`,
+    send_verification_email:   `${host}/api/send_verification_email`,
+    verify_email:   `${host}/api/verify_email`
 }

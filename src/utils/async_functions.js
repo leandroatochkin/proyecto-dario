@@ -71,3 +71,28 @@ export const getServerTime =  async () => {
     return e
 }
 }
+
+export const sendVerification = async (email, userId) => {
+const userData = {
+  email: email,
+  userId: userId
+ };
+
+try {
+  const response = await fetch(index.send_verification_email, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData)
+  });
+
+  const data = await response.json();
+  return data; // Expected response: { success: true, userId, token }
+
+} catch (e) {
+  console.error('Error registering user:', e);
+  throw new Error('Error registering user');
+}
+}

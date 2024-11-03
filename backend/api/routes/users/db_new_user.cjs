@@ -7,12 +7,19 @@ const db = require('../../db.cjs');
 // Helper function to validate email and phone
 const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
 const isValidPhone = (phone) => /^[0-9]+$/.test(phone);
+const isValidPassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?]).{8,}$/.test(password) 
+//At least 8 characters long
+//Contains at least one uppercase letter
+//Contains at least one lowercase letter
+//Contains at least one digit
+//Contains at least one special character (e.g., !@#$%^&*())
+
 router.post('/', (req, res) => {
-    const { email, phone, role } = req.body;
+    const { email, phone, password, role } = req.body;
 
     // Validate required fields
-    if (!email || !phone) {
-        return res.status(400).json({ error: 'Email and phone are required.' });
+    if (!email || !phone || !password) {
+        return res.status(400).json({ error: 'Email, phone and password are required.' });
     }
 
     // Validate email and phone formats
@@ -21,6 +28,10 @@ router.post('/', (req, res) => {
     }
     if (!isValidPhone(phone)) {
         return res.status(400).json({ error: 'Invalid phone format.' });
+    }
+
+    if (!isValidPassword(password)) {
+        return res.status(400).json({ error: 'Invalid password format.' });
     }
 
     // Check if email already exists
@@ -36,11 +47,12 @@ router.post('/', (req, res) => {
             if (result[0].deleted_at !== null) {
                 const id = result[0].id; // Use the existing user ID for reactivation
                 const { iv: phoneIv, encryptedData: encryptedPhone } = encrypt(phone);
+                const { iv: passwordIv, encryptedData: encryptedPassword } = encrypt(password);
 
                 // Update the user record instead of inserting a new one
                 db.query(
-                    'UPDATE users SET phone = ?, role = ?, deleted_at = NULL WHERE id = ?',
-                    [JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'customer', id],
+                    'UPDATE users SET phone = ?, password = ?, role = ?, deleted_at = NULL WHERE id = ?',
+                    [JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), ({iv: passwordIv, encryptedData: encryptedPassword}), role || 'customer', id],
                     (err) => {
                         if (err) {
                             console.error("Error reactivating user:", err);
@@ -60,10 +72,11 @@ router.post('/', (req, res) => {
         // Proceed with user creation if email does not exist
         const id = uuidv4();
         const { iv: phoneIv, encryptedData: encryptedPhone } = encrypt(phone);
+        const { iv: passwordIv, encryptedData: encryptedPassword } = encrypt(password);
 
         db.query(
-            'INSERT INTO users (id, email, phone, role) VALUES (?, ?, ?, ?)', 
-            [id, email, JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'customer'], 
+            'INSERT INTO users (id, email, phone, role, password) VALUES (?, ?, ?, ?, ?)', 
+            [id, email, JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'customer',  JSON.stringify({ iv: passwordIv, encryptedData: encryptedPassword })], 
             (err) => {
                 if (err) {
                     // Handle duplicate entry error in case of race condition

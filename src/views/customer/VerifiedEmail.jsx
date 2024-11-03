@@ -1,0 +1,51 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
+import style from './VerifiedEmail.module.css'
+import { verifyEmail } from '../../utils/db_functions';
+import { motion } from 'framer-motion';
+
+
+
+const VerifiedEmail = ({language}) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get('id');
+    const [verified, setVerified] = useState(false);
+
+    useEffect(()=>{
+        try{
+            const setVerification = async () => await verifyEmail(id)
+            setVerification()
+            setVerified(true)
+        } catch(e){
+            console.log(e);
+        }
+
+    },[id])
+
+    const handleClick = () =>{
+        if(verified){
+            navigate('/login');
+        }
+        
+    }
+    
+
+
+  return (
+    <div className={style.container}>
+        <LargeScreenNotice language={language} />
+        <h1>{language.thanks_for_verifying}</h1>
+        <img src='/public/images/verification.png' className={style.image}/>
+        <motion.button
+        initial={{ scale: '1' }}
+        whileTap={{scale: '0.95'}} 
+        onClick={handleClick} 
+        className={style.button}>ok</motion.button>
+    </div>
+  )
+}
+
+export default VerifiedEmail

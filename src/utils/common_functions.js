@@ -44,3 +44,9 @@ export const getAddressLabel = (language, type) => {
     }
   };
   
+export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?]).{8,}$/
+
+export const emailRegex = /^\S+@(gmail|outlook|hotmail|yahoo)\.[a-zA-Z]{2,3}$/
+
+export  const phoneRegex = /^[0-9]+$/
+
