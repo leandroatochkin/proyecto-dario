@@ -183,12 +183,6 @@ const Login = ({language}) => {
     }
   };
 
-  // Handle new user registration
-  // useEffect(() => {
-  //   if (newUser && data.credential && phone) {
-  //     handleResponse(data.credential, phone, setNewUser, setLoginStatus, setLoading, navigate, setBusinessNum, id, navigateToMenuIfId);
-  //   }
-  // }, [data, newUser, phone]);
 
   // Check if a user has been created and navigate to menu
   useEffect(() => {

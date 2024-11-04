@@ -155,6 +155,9 @@
         font-family: "Fredoka", roboto;
         color: #8D1A43;
     }
+    .businessTitleHidden{
+        display: none;
+    }
 
     .emptyDataContainer{
         height: 100vh;

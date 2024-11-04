@@ -208,7 +208,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   </svg>
   <div className={style.itemCount}>{currentOrder.length}</div>
         </motion.button>
-  <h1 className={style.businessTitle}>{businessName || businessNameFromLogIn}</h1>
+  <h1 className={ categories.length > 0 ? style.businessTitle : style.businessTitleHidden}>{businessName || businessNameFromLogIn}</h1>
         {/* Show loading animation if data is still being fetched */}
         {isLoading ? (
           <div className={style.loader}>
