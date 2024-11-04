@@ -85,6 +85,13 @@
   width: 100%;
 }
 
+.hidden{
+  display: none;
+}
+.p{
+  color: #212427;
+}
+
 .label{
   color: #212427;
 }

@@ -37,7 +37,9 @@ export const ES_text = {
     thanks_for_verifying: 'Gracias por verificar tu cuenta!',
     verification_message: 'Se enviará un correo al mail proporcionado. En caso de no recibirlo, por favor, revisa tu carpeta de spam.',
     or_else: 'o también',
-    continue: 'continuar'
+    continue: 'continuar',
+    has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.',
+    none: 'ninguno'
 }
 
 export const consoleMsg = `

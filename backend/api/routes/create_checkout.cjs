@@ -4,7 +4,7 @@ const path = require('path');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db.cjs');
-const sendEmailNotification = require('../../notification_mailer.cjs');
+const {sendEmailNotification} = require('../../notification_mailer.cjs');
 const {getUserDetails, getProductName, getAddressType, getComission} = require('../../utils.cjs')
 
 const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
@@ -12,7 +12,7 @@ const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt');
 // Endpoint for order checkout
 router.post('/checkout', async (req, res) => {
   const { orderData } = req.body;
-
+  console.log(orderData)
   // Check if orderData is defined and is an array
   if (!orderData || !Array.isArray(orderData)) {
     return res.status(400).send('Invalid order data');
@@ -72,7 +72,7 @@ router.post('/checkout', async (req, res) => {
               }
 
               // Build the order string for each product
-              const orderString = `D|${product.PD_cod_raz_soc.toString()}|${product.PD_cod_suc.toString()}|${newOrderNumber.toString().padStart(10, ' ')}|${product.PD_cod_pro.toString().padEnd(20, ' ')}|${product.PD_pre_ven.toString().padStart(16, ' ')}|${product.quantity.toString().padStart(10, ' ')}|${product.address.padEnd(50, ' ')}|${getAddressType(product.type).padEnd(20, ' ')}|${product.total.toString().padStart(16, ' ')}|${product.receptor.padEnd(20, ' ')}|${getComission(product.total, 10).toFixed(4).toString().padStart(16, ' ')}|${product.state};\n`;
+const orderString = `D|${product.PD_cod_raz_soc.toString()}|${product.PD_cod_suc.toString()}|${newOrderNumber.toString().padStart(10, ' ')}|${product.PD_cod_pro.toString().padEnd(20, ' ')}|${product.PD_pre_ven.toString().padStart(16, ' ')}|${product.quantity.toString().padStart(10, ' ')}|${product.address.toString().padEnd(50, ' ')}|${getAddressType(product.type).padEnd(20, ' ')}|${product.total.toString().padStart(16, ' ')}|${product.receptor.toString().padEnd(20, ' ')}|${getComission(product.total, 10).toString().padStart(16, ' ')}|${product.state};\n`;
 
               // Accumulate the file content
               fileContent += orderString;
@@ -93,8 +93,8 @@ router.post('/checkout', async (req, res) => {
     console.log('Last used newOrderNumber:', newOrderNumber); // This will log the latest value
 
     // Continue with the rest of the file and email logic as before
-    const formattedTotal = Number(orderData[0].total).toFixed(4);
-    const formattedCommission = Number(getComission(orderData[0].total, 10)).toFixed(4);
+    const formattedTotal = Number(orderData[0].total);
+    const formattedCommission = Number(getComission(orderData[0].total, 10));
 
     const totalString = `T|${orderData[0].PD_cod_raz_soc.toString()}|${orderData[0].PD_cod_suc.toString()}|${newOrderNumber.toString().padStart(10, ' ')}|                    |                |          |                                                  |                    |${formattedTotal.toString().padStart(16, ' ')}|                    |${formattedCommission.toString().padStart(16, ' ')}|${orderData[0].state};\n`;
 

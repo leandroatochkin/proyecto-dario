@@ -15,11 +15,13 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
     PD_cod_pro:product.PD_cod_pro,
     PD_des_pro:product.PD_des_pro,
     PD_cod_rub:product.PD_cod_rub,
-    PD_pre_ven:product.PD_pre_ven,
+    PD_pre_ven:product.PD_pre_ven/10000,
     PD_ubi_imagen:product.PD_ubi_imagen,
     PD_est:product.PD_est,
     quantity: 1,
   });
+
+  console.log(pushingItem)
 
   const [openMsg, setOpenMsg] = useState(false);
 
@@ -106,7 +108,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
           </p>
           
           <p>
-            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_pre_ven}
+            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_pre_ven / 10000}
           </p>
           <p>
             <span style={{ fontWeight: 'bolder' }}>{language.quantity}:</span>

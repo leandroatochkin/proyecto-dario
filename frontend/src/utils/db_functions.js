@@ -41,6 +41,7 @@ export const getCategories = async(raz_soc) =>{
 }
 
 export const createCheckout = async (userId, order, address, total, receptor, commentary) => {
+
     try {
         const payload = {
             orderData: order.map((product) => ({
@@ -58,7 +59,7 @@ export const createCheckout = async (userId, order, address, total, receptor, co
                 commentary: commentary
             }))
         };
-
+        console.log(payload)
         const response = await fetch(index.create_checkout, {
             method: 'POST',
             headers: {
@@ -215,6 +216,25 @@ export const getBusinessesNumber = async(id) =>{
 
         const payload = {id: id}
         const response = await fetch(index.get_business_number, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        return data;
+    } catch(e){
+        console.log(e)
+        return e
+    }
+}
+
+export const getBusinessesDetails = async(razSoc) =>{
+    try{
+
+        const payload = {razSoc: razSoc}
+        const response = await fetch(index.get_business_details, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

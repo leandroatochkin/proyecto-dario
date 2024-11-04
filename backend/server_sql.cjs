@@ -21,7 +21,7 @@ const options = {
 
 app.use(bodyParser.json());
 
-const allowedOrigins = ['https://localhost:5173', 'https://b219-2800-2222-4000-276-195f-4171-e8b7-a8a9.ngrok-free.app'];
+const allowedOrigins = ['https://localhost:5173', 'https://b219-2800-2222-4000-276-195f-4171-e8b7-a8a9.ngrok-free.app', 'https://localhost:4173'];
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -95,10 +95,11 @@ const getBusinessesRoute = require('./api/routes/businesses/db_retrieve_business
 const getScheduleRoute = require('./api/routes/businesses/db_retrieve_schedule.cjs')
 const getCurrentTime = require('./api/routes/other/server_time.cjs')
 const deleteAddressRoute = require('./api/routes/users/db_delete_address.cjs')
-const getBusinessNumber = require('./api/routes/businesses/db_retrieve_business_id.cjs')
+const getBusinessNumber = require('./api/routes/businesses/db_retrieve_business_data.cjs')
 const loginRoute = require('./api/routes/users/login_user.cjs')
 const sendVerificationEmailRoute = require('./api/routes/users/send_email_verification.cjs')
 const verifyEmailRoute = require('./api/routes/users/verify_email.cjs')
+const getBusinessDetails = require('./api/routes/businesses/db_retrieve_business_details.cjs')
 
 
 
@@ -118,6 +119,7 @@ app.use('/api/get_business_number',  getBusinessNumber)
 app.use('/api/login', loginRoute)
 app.use('/api/send_verification_email', sendVerificationEmailRoute)
 app.use('/api/verify_email', verifyEmailRoute)
+app.use('/api/get_business_details', getBusinessDetails)
 
 
 

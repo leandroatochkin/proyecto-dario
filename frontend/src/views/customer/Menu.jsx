@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ItemView from './ItemView';
-import { getCategories, getProducts, createCheckout } from '../../utils/db_functions';
+import { getCategories, getProducts, createCheckout, getBusinessesNumber, getBusinessesDetails } from '../../utils/db_functions';
 import style from './Menu.module.css';
 import { capitalize } from '../../utils/common_functions';
 import { motion } from 'framer-motion';
@@ -26,6 +26,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [openSettingsModal, setOpenSettingsModal] = useState(false)
   const [openClosedModal, setOpenClosedModal] = useState(false)
   const [accept, setAccept] = useState(false)
+  const [hasDelivery, setHasDelivery] = useState(null)
  
 
   const location = useLocation();
@@ -33,6 +34,19 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const {businessNameFromLogIn} =  location.state || {}
 
 
+  useEffect(() => {
+    const retrieveBusinessDetails = async () => {
+      try {
+        const businessDetails = await getBusinessesDetails(razSoc || codRazSoc);
+        setHasDelivery(businessDetails[0].EM_delivery);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  
+    retrieveBusinessDetails();
+  }, []);
+  
 
 
 
@@ -65,6 +79,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
     // Now this runs whenever razSoc changes
   
   const handleBuy = (userId, order, address, total, receptor, commentary) => {
+    console.log(userId, order, address, total, receptor, commentary);
     createCheckout(userId, order, address, total, receptor, commentary);
     setCurrentOrder([]);
   };
@@ -135,7 +150,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                 <div className={style.scInfo}>
                   <div className={style.liInfo}>
                   <span className={style.h2}>{capitalize(product.PD_des_pro).length > 20 ? capitalize(product.PD_des_pro).slice(0, 20) + '...' :  capitalize(product.PD_des_pro)}</span>
-                  <span className={style.h2}>{product.PD_pre_ven.slice(0, product.PD_pre_ven.length - 3)}</span>
+                  <span className={style.h2}>{product.PD_pre_ven / 10000}</span>
                   </div>
                   <span className={style.h2}>{language.quantity}:{product.quantity}</span>
                 </div>
@@ -144,6 +159,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             handleRemove={handleRemove}
             buyFunction={handleBuy}
             language={language}
+            hasDelivery={Number(hasDelivery)}
           />
         )}
 
@@ -249,7 +265,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                           <h3 className={style.h3}>
                             {capitalize(product.PD_des_pro.length > 29 ? product.PD_des_pro.slice(0, 20) + '...' : product.PD_des_pro)}
                           </h3>
-                          <p className={style.p}>{product.PD_pre_ven.slice(0, product.PD_pre_ven.length - 2)}</p>
+                          <p className={style.p}>{product.PD_pre_ven / 10000}</p>
                         </div>
                       </motion.li>
                     ))}

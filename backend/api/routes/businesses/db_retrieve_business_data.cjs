@@ -3,9 +3,13 @@ const router = express.Router();
 const db = require('../../db.cjs');
 
 
-router.post('/', ( req, res ) => {//get products
+router.post('/', ( req, res ) => {
     const { id } = req.body;
-    db.query('SELECT EM_cod_raz_soc, EM_nom_fant FROM ST_RZMA1 WHERE EM_ID_suc = ?', [id], (err, results) => {
+
+    if (!id) {
+      return res.status(400).json({ message: 'ID is required' });
+  }    
+    db.query('SELECT EM_cod_raz_soc, EM_nom_fant, EM_delivery FROM ST_RZMA1 WHERE EM_ID_suc = ?', [id], (err, results) => {
 
       if (err) {
         res.status(500).json({ message: 'Database query error', error: err })

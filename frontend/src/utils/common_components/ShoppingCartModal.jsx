@@ -8,7 +8,7 @@ import { ES_text } from '../text_scripts'
 import userStore from '../store'
 
 
-const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language }) => {
+const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language, hasDelivery }) => {
 
 //     example usage for renderItem: renderItem={(product)=>(
 //       <div className={style.li}>
@@ -32,27 +32,45 @@ const [inputWrong, setInputWrong] = useState(false)
 
 const userId = userStore((state) => state.userId);
 
-
+console.log(hasDelivery)
 useEffect(()=>{
-const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0).toFixed(4);
+const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0).toFixed(2);
 setTotal(total)
 },[itemsToMap])
 
 const handleBtn = () => {
-    if(receptor !== '' && selectedAddress !==  null){
-        buyFunction(userId, itemsToMap, selectedAddress, total, receptor, comentary)
-        setFunction()
+    // Set selectedAddress based on delivery status
+    const addressToSend = hasDelivery === 0
+        ? { address: language.none, type: language.none }
+        : selectedAddress;
+    setSelectedAddress(addressToSend)
+
+    // Check if receptor and address (if delivery is required) are set properly
+    if (receptor) {
+        buyFunction(
+            userId,
+            itemsToMap,
+            selectedAddress,
+            total,
+            receptor,
+            comentary
+        );
+        setFunction(false);
     } else {
-        setInputWrong(true) 
-        if(selectedAddress === null){
-            alert(language.please_select_address)
-        } else {
-            alert(language.please_enter_name)
+        // Trigger wrong input state
+        setInputWrong(true);
+
+        // Show appropriate alert based on missing input
+        if (!receptor) {
+            alert(language.please_enter_name);
+        } else if (hasDelivery === 1 && !addressToSend?.address) {
+            alert(language.please_select_address);
         }
-        
     }
+};
+
+
   
-}
 
 
 
@@ -93,7 +111,10 @@ const handleBtn = () => {
         </div>       
         }
 </div>
+        <div style={hasDelivery === 1 ? {display: 'flex'} :  {display: 'none'}}>
+
         <AddressSelector buttonText1={language.add_address} language={language} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
+        </div>
         <div className={style.inputContainer}>
         <label htmlFor='receptor' 
         className={style.label}
@@ -107,6 +128,8 @@ const handleBtn = () => {
          maxLength={'20'}
         />
         </div>
+        <p className={hasDelivery === 1 ? style.hidden : style.p}>{language.has_not_delivery}</p>
+
         <div className={style.inputContainer}>
         <label htmlFor='commentary' 
         className={style.label}

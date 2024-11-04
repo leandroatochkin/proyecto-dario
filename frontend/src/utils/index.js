@@ -17,5 +17,6 @@ export const index = {
     get_business_number:  `${host}/api/get_business_number`,
     login_user:   `${host}/api/login`,
     send_verification_email:   `${host}/api/send_verification_email`,
-    verify_email:   `${host}/api/verify_email`
+    verify_email:   `${host}/api/verify_email`,
+    get_business_details:    `${host}/api/get_business_details`
 }
