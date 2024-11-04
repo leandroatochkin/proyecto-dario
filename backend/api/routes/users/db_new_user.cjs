@@ -16,9 +16,11 @@ const isValidPassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$
 
 router.post('/', (req, res) => {
     const { email, phone, password, role, isGoogle } = req.body;
+    console.log(email, phone, password, role, isGoogle)
+
 
     // Validate required fields
-    if (!email || !phone || !password) {
+    if (!email || !phone || !password && !isGoogle) {
         return res.status(400).json({ error: 'Email, phone and password are required.' });
     }
 
@@ -30,7 +32,7 @@ router.post('/', (req, res) => {
         return res.status(400).json({ error: 'Invalid phone format.' });
     }
 
-    if (!isValidPassword(password)) {
+    if (!isValidPassword(password) && !isGoogle) {
         return res.status(400).json({ error: 'Invalid password format.' });
     }
 
@@ -41,18 +43,18 @@ router.post('/', (req, res) => {
             return res.status(500).json({ error: 'Error checking for existing email' });
         }
 
-        // Check for existing users
+        // Check for existing usersd
         if (result.length > 0) {
             // If the user is soft-deleted, reactivate them
             if (result[0].deleted_at !== null) {
                 const id = result[0].id; // Use the existing user ID for reactivation
                 const { iv: phoneIv, encryptedData: encryptedPhone } = encrypt(phone);
-                const { iv: passwordIv, encryptedData: encryptedPassword } = encrypt(password);
+                const encryptedPassword = isGoogle ? null : encrypt(password);
 
                 // Update the user record instead of inserting a new one
                 db.query(
-                    'UPDATE users SET phone = ?, password = ?, role = ?, is_google = ? deleted_at = NULL WHERE id = ?',
-                    [JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), JSON.stringify({iv: passwordIv, encryptedData: encryptedPassword}), role || 'user', isGoogle, id],
+                    'UPDATE users SET phone = ?, password = ?, role = ?, is_google = ?, deleted_at = NULL WHERE id = ?',
+                    [JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), encryptedPassword ? JSON.stringify({ iv: encryptedPassword.iv, encryptedData: encryptedPassword.encryptedData }) : null, role || 'user', isGoogle, id],
                     (err) => {
                         if (err) {
                             console.error("Error reactivating user:", err);
@@ -72,11 +74,11 @@ router.post('/', (req, res) => {
         // Proceed with user creation if email does not exist
         const id = uuidv4();
         const { iv: phoneIv, encryptedData: encryptedPhone } = encrypt(phone);
-        const { iv: passwordIv, encryptedData: encryptedPassword } = encrypt(password);
+        const encryptedPassword = isGoogle ? null : encrypt(password);
 
         db.query(
             'INSERT INTO users (id, email, phone, role, password, is_google) VALUES (?, ?, ?, ?, ?, ?)', 
-            [id, email, JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'customer',  JSON.stringify({ iv: passwordIv, encryptedData: encryptedPassword }), isGoogle], 
+            [id, email, JSON.stringify({ iv: phoneIv, encryptedData: encryptedPhone }), role || 'user',  encryptedPassword ? JSON.stringify({ iv: encryptedPassword.iv, encryptedData: encryptedPassword.encryptedData }) : null, isGoogle], 
             (err) => {
                 if (err) {
                     // Handle duplicate entry error in case of race condition

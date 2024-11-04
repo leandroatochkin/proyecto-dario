@@ -1,4 +1,4 @@
-const host = import.meta.env.VITE_BACKEND_HOST
+const host = import.meta.env.VITE_BACKEND_HOST || 'https://localhost:3000'
 
 
 export const index = {

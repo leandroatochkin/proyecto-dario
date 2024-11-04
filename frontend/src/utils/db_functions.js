@@ -133,7 +133,6 @@ export const registerUser = async (email, password, phone, isGoogle) => {
         role: 'user',
         isGoogle: isGoogle,
      };
-
     try {
         const response = await fetch(index.register_user, {
             method: 'POST',

@@ -11,6 +11,7 @@ import { MoonLoader } from 'react-spinners';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import { passwordRegex, emailRegex, phoneRegex } from '../../utils/common_functions';
 import CustomGoogleLoginBtn from '../../utils/common_components/CustomGoogleLoginBtn';
+import { motion } from 'framer-motion';
 
 
 const Login = ({language}) => {
@@ -21,7 +22,7 @@ const Login = ({language}) => {
   const [openModal, setOpenModal] = useState(false);
   const [newUser, setNewUser] = useState(null);
   const [phone, setPhone] = useState('');
-  const [data, setData] = useState({});
+  const [data, setData] = useState({}); 
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
   const [business, setBusiness] = useState({
@@ -34,9 +35,7 @@ const Login = ({language}) => {
   const [newAccountMode, setNewAccountMode] = useState(false)
   const [repeatPassword, setRepeatPassword] = useState('')
   const [isGoogleLogin, setIsGoogleLogin] = useState(false)
-
-
-
+  const [continueBtn, setContinueBtn] = useState(false)
 
   // Zustand store for login status
   const setLoginStatus = userStore((state) => state.setLoginStatus);
@@ -134,45 +133,70 @@ const Login = ({language}) => {
     } else {
       alert('Invalid input');
     }
-  };
+  }; 
 
-  const handleGoogleLoginRegister  = async (email) => {
+  const handleGoogleLoginRegister = async (email) => {
     try {
-      const userExists = await checkUser(email)
-      if (userExists) {
-        setNewUser(false)
-        console.log(userExists)
-        setLoginStatus(true, userExists.userId)
-        console.log(userExists)
-        if (business.codRazSoc) {
-          navigateToMenuIfId();
-        } else {
-          console.log('here')
-          navigate('/');
-        } 
-      }  else {
-        setOpenModal(true);
-        if (phone !== '' && phoneRegex.test(phone)){
-          const response = await registerUser(email, null, phone, true)
-          if (response.success) {
-            setNewUser(false);
-            setLoginStatus(true, response.userId);
+      // Check if user exists
+      const userExists = await checkUser(email);
+
   
-            // Navigate immediately after successful registration
-            if (business.codRazSoc) {
-              navigateToMenuIfId();
-            } else {
-              navigate('/');
-            }
-          }
-        }
+      if (userExists.exists) {
+        setNewUser(false);
+        setLoginStatus(true, userExists.userId);
+  
+        // Navigate based on business presence
+        business.codRazSoc ? navigateToMenuIfId() : navigate('/');
+      } else {
+        setPhone('')
+        // User does not exist, proceed with registration
+        setOpenModal(true);
+        setEmail(email)
+        // Check if phone is valid before attempting registration
+        // if (phone  !== '' && openModal === false) {
+        //   console.log('Phone is valid, proceeding with registration');
+        //   try {
+        //     const response = await registerUser(email, null, phone, true);
+        //     console.log('Registration response:', response);
+  
+        //     if (response.success) {
+        //       setNewUser(false);
+        //       setLoginStatus(true, response.userId);
+  
+        //       // Navigate based on business presence
+        //       business.codRazSoc ? navigateToMenuIfId() : navigate('/');
+        //     } else {
+        //       console.error('Registration failed:', response);
+        //     }
+        //   } catch (e) {
+        //     console.error('Error registering user:', e);
+        //   }
+        // } else {
+        //   return
+        // }
       }
-
-
-    }catch(e){
+    } catch (e) {
       console.error('Error checking user:', e);
     }
-  
+  };
+
+  const handleContinue = async () => {
+    try {
+      const response = await registerUser(email, null, phone, true);
+
+
+      if (response.success) {
+        setNewUser(false);
+        setLoginStatus(true, response.userId);
+
+        // Navigate based on business presence
+        business.codRazSoc ? navigateToMenuIfId() : navigate('/');
+      } else {
+        console.error('Registration failed:', response);
+      }
+    } catch (e) {
+      console.error('Error registering user:', e);
+    }
   }
 
   
@@ -241,22 +265,35 @@ const Login = ({language}) => {
                 <input type='password' name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.input : style.inputHidden}/>
                 </div>
               <button type='submit' onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
-              <div className={!phone ? style.verificationMsgHidden : style.verificationMsg}>{language.verification_message}</div>
+              <div className={(!isGoogleLogin) ? style.verificationMsgHidden : style.verificationMsg}>{language.verification_message}</div>
             </div>
 
             <p className={!phone ? style.createAccP : style.createAccPHidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.create_account_button}</span></p>
 
             <div className={style.loginBtnContainer}>
             <p className={style.createAccP}>{language.or_else}</p>
-            <CustomGoogleLoginBtn handleGoogleLoginRegister={handleGoogleLoginRegister} setIsGoogleLogin={setIsGoogleLogin}/>
+            {!continueBtn ?
+             <CustomGoogleLoginBtn 
+             handleGoogleLoginRegister={handleGoogleLoginRegister} 
+             setIsGoogleLogin={setIsGoogleLogin} 
+             setContinueBtn={setContinueBtn}/> 
+             : 
+             <motion.button 
+             initial={{ scale: '1' }}
+             whileTap={{ scale: '0.95' }}
+             className={style.continueBtn}
+             onClick={handleContinue}>
+              {language.continue}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="lucide lucide-circle-check" className={style.check}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              </motion.button>}
             </div>
           </div>
         )}
       </div>
 
       <footer className={style.footer}>
-        <p>code by <a href='https://github.com/leandroatochkin'>leandroatochkin</a></p>
-        <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>Blick Media Lab</a></p>
+        <p>code by <a href='https://github.com/leandroatochkin'>lna</a></p>
+        <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>blick</a></p>
       </footer>
     </div>
   );

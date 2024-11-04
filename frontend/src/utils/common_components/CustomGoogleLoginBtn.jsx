@@ -2,7 +2,7 @@ import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { motion } from 'framer-motion';
 
-const CustomGoogleLoginBtn = ({ handleGoogleLoginRegister, setIsGoogleLogin }) => {
+const CustomGoogleLoginBtn = ({ handleGoogleLoginRegister, setIsGoogleLogin, setContinueBtn }) => {
   const login = useGoogleLogin({
     onSuccess: async tokenResponse => {
       try {
@@ -16,6 +16,7 @@ const CustomGoogleLoginBtn = ({ handleGoogleLoginRegister, setIsGoogleLogin }) =
 
         // Optionally, call handleGoogleLoginRegister with user data
         handleGoogleLoginRegister(userData.email);
+        setContinueBtn(true)
       } catch (error) {
         console.error('Error fetching user info:', error);
       }

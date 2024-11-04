@@ -36,7 +36,8 @@ export const ES_text = {
     create_account_button: 'crear cuenta',
     thanks_for_verifying: 'Gracias por verificar tu cuenta!',
     verification_message: 'Se enviará un correo al mail proporcionado. En caso de no recibirlo, por favor, revisa tu carpeta de spam.',
-    or_else: 'o también'
+    or_else: 'o también',
+    continue: 'continuar'
 }
 
 export const consoleMsg = `

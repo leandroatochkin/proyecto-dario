@@ -12,7 +12,7 @@ const[openErrorModal, setOpenErrorModal] =  useState(false);
 
 const userId = userStore((state)=>state.userId)
 
-console.log(userId)
+
 
 const  navigate = useNavigate();
 

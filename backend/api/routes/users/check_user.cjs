@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
             const payload = {
                 userId: userId,
                 loggedIn: true
-              };
+              }; 
 
             const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 

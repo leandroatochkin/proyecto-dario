@@ -149,6 +149,30 @@
         justify-content: flex-end;
         align-items: end;
     }
+
+    .continueBtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #e0e0e0;
+        background: linear-gradient(10deg, #fa0, #ff6a00);
+        margin-bottom: 2%;
+        
+    }
+
+    .check{
+        color: aqua;
+        animation: rotate360 1s linear forwards;
+    }
+
+    @keyframes rotate360 {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
 }
 
 @media only screen and (min-width: 641px){
