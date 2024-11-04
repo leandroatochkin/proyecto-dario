@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const { decrypt } = require('./utils.cjs');
 
-const sendEmailNotification = (orderDetails, contact, business) => {
+const sendEmailNotification =  async (orderDetails, contact, business) => {
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -58,7 +58,7 @@ const sendEmailNotification = (orderDetails, contact, business) => {
     });
   };
 
-const sendEmailVerification = (email, link) => {
+const sendEmailVerification = async  (email, link) => {
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
