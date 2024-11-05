@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ItemView from './ItemView';
 import { getCategories, getProducts, createCheckout, getBusinessesNumber, getBusinessesDetails } from '../../utils/db_functions';
 import style from './Menu.module.css';
-import { capitalize } from '../../utils/common_functions';
+import { capitalize, returnDiscount } from '../../utils/common_functions';
 import { motion } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
@@ -27,11 +27,14 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [openClosedModal, setOpenClosedModal] = useState(false)
   const [accept, setAccept] = useState(false)
   const [hasDelivery, setHasDelivery] = useState(null)
- 
+  
+  const host = import.meta.env.VITE_BACKEND_HOST || 'https://localhost:3000'
 
   const location = useLocation();
   const { razSoc } = location.state || {}
   const {businessNameFromLogIn} =  location.state || {}
+
+  console.log(currentOrder)
 
 
   useEffect(() => {
@@ -146,11 +149,12 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             itemsToMap={currentOrder}
             renderItem={(product) => (
               <div className={style.li}>
-                <img src={`https://localhost:3000/images/${product.PD_ubi_imagen}`} className={style.listImage} />
+                <img src={`${host}/images/${product.PD_ubi_imagen}`} className={style.listImage} />
                 <div className={style.scInfo}>
                   <div className={style.liInfo}>
                   <span className={style.h2}>{capitalize(product.PD_des_pro).length > 20 ? capitalize(product.PD_des_pro).slice(0, 20) + '...' :  capitalize(product.PD_des_pro)}</span>
-                  <span className={style.h2}>{product.PD_pre_ven / 10000}</span>
+                  <span className={style.h2}>{product.PD_pre_ven}</span>
+
                   </div>
                   <span className={style.h2}>{language.quantity}:{product.quantity}</span>
                 </div>
@@ -265,8 +269,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                           <h3 className={style.h3}>
                             {capitalize(product.PD_des_pro.length > 29 ? product.PD_des_pro.slice(0, 20) + '...' : product.PD_des_pro)}
                           </h3>
-                          <p className={style.p}>{product.PD_pre_ven / 10000}</p>
-                        </div>
+                              <p className={product.PD_est === 'A' ? style.p : style.pDiscount} name='offer'><span className={product.PD_est === 'A' ? style.hidden : style.oldPrice}><span style={{fontWeight: 'bolder'}}>oferta! </span> <span className={style.crossedText}>{product.PD_pre_ven/10000}</span></span><span></span>{product.PD_discount === '00' ? product.PD_pre_ven / 10000 : returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000}</p>
+                            </div>
                       </motion.li>
                     ))}
               </ul>

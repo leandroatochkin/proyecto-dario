@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Backdrop from '../../utils/common_components/Backdrop';
 import QuantityPicker from '../../utils/common_components/QuantityPicker';
-import { capitalize, dropIn } from '../../utils/common_functions';
+import { capitalize, dropIn, returnDiscount } from '../../utils/common_functions';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import style from './ItemView.module.css';
 
@@ -15,13 +15,13 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
     PD_cod_pro:product.PD_cod_pro,
     PD_des_pro:product.PD_des_pro,
     PD_cod_rub:product.PD_cod_rub,
-    PD_pre_ven:product.PD_pre_ven/10000,
+    PD_pre_ven: product.PD_est === 'X' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven/10000,
     PD_ubi_imagen:product.PD_ubi_imagen,
     PD_est:product.PD_est,
     quantity: 1,
   });
 
-  console.log(pushingItem)
+
 
   const [openMsg, setOpenMsg] = useState(false);
 
@@ -108,7 +108,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
           </p>
           
           <p>
-            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_pre_ven / 10000}
+            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_est === 'X' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven / 10000}{product.PD_est === 'X' ? '(oferta)' : ''}             
           </p>
           <p>
             <span style={{ fontWeight: 'bolder' }}>{language.quantity}:</span>

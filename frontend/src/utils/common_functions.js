@@ -50,3 +50,9 @@ export const emailRegex = /^\S+@(gmail|outlook|hotmail|yahoo)\.[a-zA-Z]{2,3}$/
 
 export  const phoneRegex = /^[0-9]+$/
 
+export const returnDiscount = (total ,discount) => {
+
+  return total - (total * discount / 100)
+
+}
+

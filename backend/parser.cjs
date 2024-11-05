@@ -20,7 +20,9 @@ const parseFileData = (fileData, type) => {
                 PD_cod_rub: columns[4],
                 PD_pre_ven: parseFloat(columns[5]),
                 PD_ubi_imagen: columns[6],
-                PD_est: columns[7]
+                PD_est: columns[7],
+                PD_discount:  columns[8],
+                PD_discount_DATE:  columns[9]
             };
         } else if (type === 'estado_pedido') {
             return {

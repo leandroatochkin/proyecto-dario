@@ -49,7 +49,7 @@ const handleBtn = () => {
         ? { address: language.none, type: language.none }
         : selectedAddress;
     setSelectedAddress(addressToSend)
-    console.log(selectedAddress)
+  
     // Check if receptor and address (if delivery is required) are set properly
     if (receptor) {
         buyFunction(
