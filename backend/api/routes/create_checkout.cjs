@@ -12,7 +12,7 @@ const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt');
 // Endpoint for order checkout
 router.post('/checkout', async (req, res) => {
   const { orderData } = req.body;
-  console.log(orderData)
+
   // Check if orderData is defined and is an array
   if (!orderData || !Array.isArray(orderData)) {
     return res.status(400).send('Invalid order data');

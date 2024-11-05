@@ -29,13 +29,18 @@ const [receptor, setReceptor] = useState('')
 const [comentary, setCommentary] = useState('')
 const [inputWrong, setInputWrong] = useState(false)
 
+console.log(selectedAddress)
 
 const userId = userStore((state) => state.userId);
 
 console.log(hasDelivery)
 useEffect(()=>{
-const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0).toFixed(2);
+const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0);
 setTotal(total)
+const addressToSend = hasDelivery === 0
+        ? { address: language.none, type: 2 }
+        : selectedAddress;
+setSelectedAddress(addressToSend)
 },[itemsToMap])
 
 const handleBtn = () => {
@@ -44,7 +49,7 @@ const handleBtn = () => {
         ? { address: language.none, type: language.none }
         : selectedAddress;
     setSelectedAddress(addressToSend)
-
+    console.log(selectedAddress)
     // Check if receptor and address (if delivery is required) are set properly
     if (receptor) {
         buyFunction(
