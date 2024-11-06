@@ -56,3 +56,9 @@ export const returnDiscount = (total ,discount) => {
 
 }
 
+export const returnDiscountDate = (date) => {
+  const year = date.slice(0, -4)
+  const month = date.slice(-4, -2)
+  const day = date.slice(-2)
+  return `${day}/${month}/${year}`
+}

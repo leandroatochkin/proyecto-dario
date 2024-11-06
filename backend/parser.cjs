@@ -22,7 +22,9 @@ const parseFileData = (fileData, type) => {
                 PD_ubi_imagen: columns[6],
                 PD_est: columns[7],
                 PD_discount:  columns[8],
-                PD_discount_DATE:  columns[9]
+                PD_discount_DATE:  columns[9],
+                PD_img_discount:   columns[10],
+
             };
         } else if (type === 'estado_pedido') {
             return {

@@ -13,6 +13,7 @@ import ModalTwoButton from '../../utils/common_components/ModalTwoButtons';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import SettingsModal from '../../utils/common_components/SettingsModal';
 import ClosedModal from '../../utils/common_components/ClosedModal';
+import DiscountsModal from '../../utils/common_components/DiscountsModal';
 
 const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, schedule, businessName }) => {
   const [categories, setCategories] = useState([]);
@@ -27,6 +28,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [openClosedModal, setOpenClosedModal] = useState(false)
   const [accept, setAccept] = useState(false)
   const [hasDelivery, setHasDelivery] = useState(null)
+  const [openDiscountModal, setOpenDiscountModal] = useState(true)
+  const [discountProducts, setDiscountProducts] = useState([])
   
   const host = import.meta.env.VITE_BACKEND_HOST || 'https://localhost:3000'
 
@@ -70,7 +73,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
         const fetchedCat = await getCategories(razSoc? razSoc : codRazSoc);
         const fetchedProd = await getProducts(razSoc? razSoc : codRazSoc);
         setCategories(fetchedCat);
-        setProducts(fetchedProd);
+        setProducts(fetchedProd)
+        setDiscountProducts(fetchedProd.filter(product => product.PD_est === 'S'));;
       } catch (e) {
         console.log(e);
         setOpenErrorModal(true)
@@ -113,11 +117,16 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
     navigate('/')
   }
 
-
+  const handleDiscountModal = (product) => {
+    setOpenDiscountModal(false)
+    setProduct(product)
+    setOpenBuyModal(true)
+  }
   return (
     <div className={style.background}>
       <LargeScreenNotice />
       {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} language={language} schedule={schedule}/>)}
+      {!openClosedModal && openDiscountModal && (<DiscountsModal language={language} products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal}/>)}
       {openLogOutModal && (
         <ModalTwoButton message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'}/>
       )}

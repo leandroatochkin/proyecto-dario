@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Backdrop from '../../utils/common_components/Backdrop';
 import QuantityPicker from '../../utils/common_components/QuantityPicker';
-import { capitalize, dropIn, returnDiscount } from '../../utils/common_functions';
+import { capitalize, dropIn, returnDiscount, returnDiscountDate } from '../../utils/common_functions';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import style from './ItemView.module.css';
 
@@ -15,13 +15,15 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
     PD_cod_pro:product.PD_cod_pro,
     PD_des_pro:product.PD_des_pro,
     PD_cod_rub:product.PD_cod_rub,
-    PD_pre_ven: product.PD_est === 'X' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven/10000,
+    PD_pre_ven: product.PD_est === 'X' || 'S' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven/10000,
     PD_ubi_imagen:product.PD_ubi_imagen,
     PD_est:product.PD_est,
     quantity: 1,
   });
 
+  const host = import.meta.env.VITE_BACKEND_HOST || 'https://localhost:3000'
 
+  const superOffer =  product.PD_est === 'S' ? true : false
 
   const [openMsg, setOpenMsg] = useState(false);
 
@@ -57,32 +59,32 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
     }
   };
   
-
+  const date = returnDiscountDate(product.PD_discount_DATE)
 
   return (
-    <Backdrop>
+    <Backdrop
+    onClick={()=>setOpenBuyModal(false)}
+    >
       <motion.div
         className={style.itemView}
+        style={superOffer  ? { backgroundImage: `url(${host}/images/${product.PD_img_discount})`, color: '#e0e0e0' } : ''}
         variants={dropIn}
         initial="hidden"
         animate="visible"
         exit="exit"
       >
-        <div
-          className={style.modalItemImage}
-          //style={{ background: `url(${book.coverImageUrl})`, backgroundSize: 'cover' }}
-          //aria-label={`Cover image of ${book.title}`}
-        ></div>
         <div className={style.modalItemInfo}>
-          <div className={style.closeButtonContainer}>
-            <h1 className={style.dialogueTitle} aria-label={`Title: ${product.PD_des_pro}`} style={{color: '#212427'}}>
-              {capitalize(product.PD_des_pro.length < 29 ? product.PD_des_pro : product.PD_des_pro.slice(0, 30) + '...')}
+          <p className={product.PD_est === 'S' ? style.discountTag : style.hidden}><span style={{fontWeight: 'bolder'}}>{language.highlighted_discount}</span>{' '}{language.to}{' '}{date}</p>
+          <div className={superOffer ? style.closeButtonContainerS : style.closeButtonContainer}>
+            <h1 className={style.dialogueTitle} aria-label={`Title: ${product.PD_des_pro}`} style={product.PD_est === 'S'  ? {color: '#e0e0e0'} : {color: '#212427'}}>
+              {capitalize(product.PD_des_pro.length < 19 ? product.PD_des_pro : product.PD_des_pro.slice(0, 20) + '...')}
             </h1>
             <motion.button
               className={style.closeFormButton}
               onClick={()=>setOpenBuyModal(false)}
               initial={{ scale: '1' }}
               whileTap={{ scale: '0.95' }}
+              style={superOffer ? {color: '#e0e0e0'} : {color: '#212427'}}
               aria-label="Close book details"
             >
               <svg
@@ -103,19 +105,19 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
               </svg>
             </motion.button>
           </div>
-          <p className={style.itemModalDescription} aria-label={`Description: ${product.PD_des_pro}`}>
+          <p className={superOffer ? style.itemModalDescriptionS : style.itemModalDescription} aria-label={`Description: ${product.PD_des_pro}`}>
             {capitalize(product.PD_des_pro.length < 29 ? product.PD_des_pro : product.PD_des_pro.slice(0, 30) + '...')}
           </p>
           
-          <p>
-            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_est === 'X' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven / 10000}{product.PD_est === 'X' ? '(oferta)' : ''}             
+          <p className={ superOffer ? style.totalP : ''}>
+            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_est === 'X' || 'S' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven / 10000}{product.PD_est === 'X' || 'S' ? '(oferta)' : ''}             
           </p>
           <p>
             <span style={{ fontWeight: 'bolder' }}>{language.quantity}:</span>
           </p>
           <div className="operation-btn-container">
             <div className={style.pickerContainer}>
-              <QuantityPicker min={1} max={10} value={value} setValue={setValue} aria-label="Select quantity" />
+              <QuantityPicker min={1} max={10} value={value} setValue={setValue} product={product} aria-label="Select quantity" />
             </div>
             <motion.button
               className={style.addToCartBtn}

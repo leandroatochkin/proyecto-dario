@@ -13,8 +13,24 @@
         color: #212427;
         border-radius: 32px;
         display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
+    .hidden{
+      display: none;
+    }
+
+    .discountTag{
+      background-color: red;
+      border: 2px solid white;
+      padding: 1%;
+      border-radius: 8px;
+    }
+
+    .superOfferItemView{
+      color: #e0e0e0;
+    }  
       .modalItemInfo{
         display: flex;
         flex-direction: column;
@@ -26,6 +42,22 @@
 
       }
       
+      .dialogueTitle{
+ 
+        font-size: 2.5rem;
+      }
+      .closeButtonContainerS{
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        height: 20%;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--dark-text);
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 16px;
+      }
+
       .closeButtonContainer{
         display: flex;
         flex-direction: row;
@@ -34,6 +66,7 @@
         justify-content: space-between;
         align-items: center;
         color: var(--dark-text);
+        border-radius: 16px;
       }
       
       .closeFormButton{
@@ -45,13 +78,26 @@
       .itemModalDescription{
         text-wrap:wrap;
         color: var(--dark-text);
+        padding: 1%;
+        border-radius: 8px;
+      }
+
+      .itemModalDescriptionS{
+        text-wrap:wrap;
+        color: var(--dark-text);
+        background-color: rgba(0,0,0,0.3);
+        padding: 1%;
+        border-radius: 8px;
+      }
+
+      .totalP{
+        background-color: rgba(0,0,0,0.3);
       }
       
       .operationBtnContainer{
-        display: grid;
-        grid-template-columns:  repeat(2, 1fr);
-        margin-right: 5%;
-        gap: 5px 5px;
+        margin-top: 5%;
+        display: flex;
+        flex-direction: column;
       }
       
       .addToCartBtn{
@@ -60,7 +106,9 @@
       }
 
       .pickerContainer{
-        column-span: 2;
+       display: flex;
+       justify-content: center;
+       margin-bottom: 3%;   
       }
       
   }

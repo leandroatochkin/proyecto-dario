@@ -154,7 +154,7 @@ app.post('/upload/producto', async (req, res) => {
 
         const queries = productoData.map(item => {
             const { PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est } = item;
-            let { PD_discount, PD_discount_DATE } = item;
+            let { PD_discount, PD_discount_DATE, PD_img_discount } = item;
 
             // Validate data and provide default values if needed
             if (typeof PD_cod_rub !== 'string' || PD_cod_rub.length > 10) {
@@ -170,11 +170,12 @@ app.post('/upload/producto', async (req, res) => {
             // Set default values if PD_discount or PD_discount_DATE are missing
             PD_discount = PD_discount ?? 0; // Default discount to 0 if undefined
             PD_discount_DATE = PD_discount_DATE ?? null; // Set to null if date is undefined
+            PD_img_discount = PD_img_discount ?? null; // Set to null if image is undefined
 
             const query = `
                 INSERT INTO producto 
-                (PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est, PD_discount, PD_discount_DATE) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+                (PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est, PD_discount, PD_discount_DATE, PD_img_discount) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
                 ON DUPLICATE KEY UPDATE 
                     PD_des_pro = VALUES(PD_des_pro), 
                     PD_cod_rub = VALUES(PD_cod_rub), 
@@ -182,13 +183,13 @@ app.post('/upload/producto', async (req, res) => {
                     PD_ubi_imagen = VALUES(PD_ubi_imagen), 
                     PD_est = VALUES(PD_est),
                     PD_discount = VALUES(PD_discount),
-                    PD_discount_DATE = VALUES(PD_discount_DATE)
+                    PD_discount_DATE = VALUES(PD_discount_DATE),
+                    PD_img_discount = VALUES(PD_img_discount)
             `;
 
             return new Promise((resolve, reject) => {
                 db.query(query, [
-                    PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub,
-                    PD_pre_ven, PD_ubi_imagen, PD_est, PD_discount, PD_discount_DATE
+                    PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub,PD_pre_ven, PD_ubi_imagen, PD_est, PD_discount, PD_discount_DATE, PD_img_discount
                 ], (err) => {
                     if (err) {
                         console.error(`Failed to insert/update producto: ${err.message}`);

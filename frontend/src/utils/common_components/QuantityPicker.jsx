@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import style from './QuantityPicker.module.css';
 
-const QuantityPicker = ({ min, max, value, setValue }) => {
+const QuantityPicker = ({ min, max, value, setValue, product }) => {
   const [disableDec, setDisableDec] = useState(value <= min);
   const [disableInc, setDisableInc] = useState(value >= max);
 
@@ -31,7 +31,7 @@ const QuantityPicker = ({ min, max, value, setValue }) => {
   };
 
   return (
-    <span className={style.container}>
+    <span className={product.PD_est === 'S'  ?  style.offerContainer : style.container}>
       <motion.button
         className={style.button}
         onClick={decrement}

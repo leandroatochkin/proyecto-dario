@@ -39,7 +39,11 @@ export const ES_text = {
     or_else: 'o también',
     continue: 'continuar',
     has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.',
-    none: 'ninguno'
+    none: 'ninguno',
+    highlighted_discount: 'oferta destacada',
+    highlighted_discounts: 'ofertas destacadas',
+    to: 'hasta el',
+    see_more: 'ver más'
 }
 
 export const consoleMsg = `
