@@ -6,7 +6,6 @@
     overflow-x: auto;
     gap: 5%;
     align-items: center;
-    margin-left: 5%;
 }
 
 .product{
@@ -19,8 +18,10 @@
     justify-content: space-between;
 }
 
+
 .productTitle{
     font-size: 2rem;
+    font-family: "Fredoka", roboto, sans-serif;
     margin-left: 3%;
     width: 90%;
     padding: 2%;
@@ -38,6 +39,8 @@
 
 .headerText{
     font-size: 2rem;
+    font-family: "Fredoka", roboto, sans-serif;
+
 }
 
 .arrow{
