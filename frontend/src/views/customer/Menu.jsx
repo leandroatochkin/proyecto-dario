@@ -7,7 +7,7 @@ import { capitalize, returnDiscount } from '../../utils/common_functions';
 import { motion } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
-import userStore from '../../utils/store';
+import {userStore} from '../../utils/store';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import ModalTwoButton from '../../utils/common_components/ModalTwoButtons';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
@@ -37,13 +37,13 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [openDiscountModal, setOpenDiscountModal] = useState(true)
   const [discountProducts, setDiscountProducts] = useState([])
   
-  console.log(host)
+
 
   const location = useLocation();
   const { razSoc } = location.state || {}
   const {businessNameFromLogIn} =  location.state || {}
 
-  console.log(currentOrder)
+
 
 
   useEffect(() => {

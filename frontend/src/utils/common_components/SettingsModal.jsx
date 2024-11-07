@@ -5,7 +5,7 @@ import Backdrop from './Backdrop';
 import style from './SettingsModal.module.css';
 import { deleteUser } from '../db_functions';
 import ModalOneButton from './ModalOneButton';
-import userStore from '../store';
+import {userStore} from '../store';
 import MotionButton from '../buttons/MotionButton';
 
 const SettingsModal = ({language, setFunction}) => {

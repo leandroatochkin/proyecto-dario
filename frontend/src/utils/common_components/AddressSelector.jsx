@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import userStore from '../store';
+import {userStore} from '../store';
 import { getAddress, addAddress, deleteAddress } from '../db_functions';
 import style from './AddressSelector.module.css';
 import { ES_text } from '../text_scripts';

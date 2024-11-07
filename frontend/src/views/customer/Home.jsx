@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Home.module.css';
 import { getBusinesses, getSchedule } from '../../utils/db_functions';
-import userStore from '../../utils/store';
+import {userStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';

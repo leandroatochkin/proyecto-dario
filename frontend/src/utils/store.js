@@ -1,11 +1,11 @@
 import {create} from 'zustand';
 
-const userStore = create((set) => ({
+export const userStore = create((set) => ({
   loggedIn: false,
   userId: null,
   error: false,
   errorMsg: null,
-  loading: false,
+  tokenData: null || {},
   
   // Function to log in and set the user ID
   setLoginStatus: (status, id) => set({
@@ -18,8 +18,8 @@ const userStore = create((set) => ({
     errorMsg: error,
   }),
 
-  setLoading: (status) => set({
-    loading: status,
+  setTokenData: (data) => set({
+    tokenData: data
   }),
   
   // Function to log out
@@ -29,4 +29,15 @@ const userStore = create((set) => ({
   }),
 }));
 
-export default userStore;
+export const UIStore = create((set)=>({
+openModal: false,
+loading: true,
+
+setOpenModal: (status) => set({
+  openModal: status,
+}),
+
+setLoading: (status) => set({
+  loading: status,
+})
+}))

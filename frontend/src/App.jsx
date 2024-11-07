@@ -7,7 +7,7 @@ import VerifiedEmail from './views/customer/VerifiedEmail';
 import './App.css';
 import { ES_text } from './utils/text_scripts';
 import { Route, Routes } from 'react-router-dom';
-import userStore from './utils/store';
+import {userStore} from './utils/store';
 import { convertTimeToMinutes } from './utils/common_functions';
 import { getServerTime } from './utils/async_functions';
 import { consoleMsg } from './utils/text_scripts';

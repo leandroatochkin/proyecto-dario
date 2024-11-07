@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ES_text } from '../../utils/text_scripts';
 import { handleResponse, sendVerification } from '../../utils/async_functions';
 import { checkUser, getBusinessesNumber, loginUser, registerUser } from '../../utils/db_functions';
-import userStore from '../../utils/store';
+import {userStore, UIStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import { passwordRegex, emailRegex, phoneRegex } from '../../utils/common_functions';
@@ -18,17 +18,13 @@ const Login = ({language}) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id'); // Get 'id' from query params
-  const [openModal, setOpenModal] = useState(false);
   const [newUser, setNewUser] = useState(null);
   const [phone, setPhone] = useState('');
-  const [data, setData] = useState({}); 
-  const [loading, setLoading] = useState(true);
-  const [loginLoading, setLoginLoading] = useState(false);
+  //const [data, setData] = useState({}); 
   const [business, setBusiness] = useState({
                                             codRazSoc:null,
                                             businessName: null
                                           });
-  const [businessLoading, setBusinessLoading] = useState(true);
   const [email, setEmail] = useState('')
   const [password,  setPassword] = useState('')
   const [newAccountMode, setNewAccountMode] = useState(false)
@@ -38,7 +34,16 @@ const Login = ({language}) => {
 
   // Zustand store for login status
   const setLoginStatus = userStore((state) => state.setLoginStatus);
-                                          
+  const setData = userStore((state)=>state.setTokenData)
+  const data = userStore((state)=>state.tokenData)
+  const setLoading = UIStore((state) => state.setLoading);
+  const loading =  UIStore((state) => state.loading);
+  const setOpenModal = UIStore((state) => state.setOpenModal);
+  const openModal = UIStore((state)=>state.openModal)                                        
+
+  console.log(loading)
+  console.log(data)
+
 
   // Fetch business number based on id
   useEffect(() => {
@@ -58,10 +63,10 @@ const Login = ({language}) => {
       } catch (error) {
         console.error("Error fetching business number:", error);
       } finally {
-        setBusinessLoading(false); // Mark business loading as complete
+        setLoading(false); // Mark business loading as complete
       }
     } else {
-      setBusinessLoading(false); // No id, still set loading to false
+      setLoading(false); // No id, still set loading to false
     }
   };
 
@@ -71,7 +76,7 @@ const Login = ({language}) => {
 
   // Handle Google login response
   const handleLogin = async () => {
-    setLoginLoading(true);
+    setLoading(true);
 
     try {
       const { exists, userId, valid, emailVerified, token } = await loginUser(email, password);
@@ -101,7 +106,7 @@ const Login = ({language}) => {
     } catch (e) {
       console.error('Error checking user:', e);
     } finally {
-      setLoginLoading(false);
+      setLoading(false);
     }
   };
 
@@ -223,7 +228,7 @@ const Login = ({language}) => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading || loginLoading) {
+  if (loading) {
     return (
       <div className={style.container}>
         <MoonLoader color="red" size={50} aria-label="Loading spinner" />

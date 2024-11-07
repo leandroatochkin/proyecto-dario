@@ -5,7 +5,7 @@ import style from './ShoppingCartModal.module.css'
 import { dropIn } from '../common_functions'
 import AddressSelector from './AddressSelector'
 import { ES_text } from '../text_scripts'
-import userStore from '../store'
+import {userStore} from '../store'
 import { MoonLoader } from 'react-spinners';
 import Trashcan from '../Icons/Trashcan' 
 import MotionButton from '../buttons/MotionButton'
