@@ -18,7 +18,7 @@ const ClosedModal = ({setFunction, language, schedule}) => {
       <div className={style.messageContainer}>
         <h1 className={style.message}>{language.closed_business}</h1>
         
-        <img src='/public/images/clock.png' className={style.image}/>
+        <img src='/images/clock.png' className={style.image}/>
         <p className={style.p}><span style={{fontWeight: 'bolder'}}>{language.schedule}:</span>
         {!schedule.EM_corte ?
          schedule.EM_hora_ap.slice(0, -2)+':'+schedule.EM_hora_ap.slice(2, 4)+'hs. - ' + schedule.EM_hora_cierre.slice(0, -2)+':'+schedule.EM_hora_cierre.slice(2, 4) + 'hs.' 

@@ -5,6 +5,7 @@ import QuantityPicker from '../../utils/common_components/QuantityPicker';
 import { capitalize, dropIn, returnDiscount, returnDiscountDate } from '../../utils/common_functions';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import style from './ItemView.module.css';
+import { host } from '../../utils/index';
 
 
 const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
@@ -21,7 +22,6 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
     quantity: 1,
   });
 
-  const host = import.meta.env.VITE_BACKEND_HOST || 'https://localhost:3000'
 
   const superOffer =  product.PD_est === 'S' ? true : false
 

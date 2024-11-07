@@ -9,35 +9,73 @@ const  helmet = require('helmet')
 const fs = require('fs');
 const https = require('https')
 const parseFileData = require('./parser.cjs')
-const {sendEmailNotification} = require('./notification_mailer.cjs');
-const { getUserDetails, getUserIdFromOrder } = require('./utils.cjs');
+
+
+const cron = require('node-cron');
 const session = require('express-session');
+const {updateDiscountStatus} = require('./api/routes/businesses/client_check_discounts.cjs')
+
+// const allowedOrigins = [
+//     'https://localhost:5173', 
+//     'https://malbec2-pjl72ly8k-leandroatochkins-projects.vercel.app', 
+//     'https://localhost:4173'
+// ];
+
+// // CORS setup
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (!origin) return callback(null, true);  // Allow requests with no origin (mobile apps, curl, etc.)
+        
+//         if (allowedOrigins.includes(origin)) {
+//             callback(null, true);  // Allow the origin
+//         } else {
+//             callback(new Error('Not allowed by CORS'));  // Reject other origins
+//         }
+//     },
+//     credentials: true,  // Allow credentials (cookies or authorization headers)
+//     methods: ['GET', 'POST'],  // Allow necessary methods
+//     allowedHeaders: ['Content-Type', 'Authorization'],  // Allow necessary headers
+// }));
+const allowedOrigins = [
+    'https://localhost:5173',
+    'https://malbec8-murvapfvm-leandroatochkins-projects.vercel.app', // Vercel URL
+    'https://localhost:4173'
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);  // Allow requests with no origin (e.g., mobile apps)
+        
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+
+
 
 const options = {
     key: fs.readFileSync('C:/Users/leand/privkey.pem'),  // Replace with the correct path
     cert: fs.readFileSync('C:/Users/leand/cert.pem'),    // Replace with the correct path
   };
+app.use(express.json());
 
 
 app.use(bodyParser.json());
 
-const allowedOrigins = ['https://localhost:5173', 'https://b219-2800-2222-4000-276-195f-4171-e8b7-a8a9.ngrok-free.app', 'https://localhost:4173'];
 
-app.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests with no origin, like mobile apps or curl requests
-        if (!origin) return callback(null, true);
-        
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);  // Allow the origin
-        } else {
-            callback(new Error('Not allowed by CORS'));  // Reject other origins
-        }
-    },
-    credentials: true,  // Allow credentials to be sent
-    methods: ['GET', 'POST'],  // Allow necessary methods
-    allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
-}));
+
+// Explicitly handle preflight (OPTIONS) requests
+app.options('https://malbec3-rfuu71xuc-leandroatochkins-projects.vercel.app', cors());  // Handles OPTIONS requests for all routes
+
+// Your routes and other middleware
+
 
 
 app.use((req, res, next) => {
@@ -50,7 +88,7 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             "default-src": ["'self'"],
-            "img-src": ["'self'", "data:", "https://localhost:3000"],
+            "img-src": ["'self'", "data:", "https://jqkccp38-3000.brs.devtunnels.ms"],
             "upgrade-insecure-requests": [],
         },
     },
@@ -59,16 +97,16 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: true, // Ensures cookie is sent only over HTTPS
-        httpOnly: true,
-        sameSite: 'None' // Required for cross-origin cookies in recent browser versions
-    }
-}));
+// app.use(session({
+//     secret: 'your-secret-key',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         secure: true, // Ensures cookie is sent only over HTTPS
+//         httpOnly: true,
+//         sameSite: 'None' // Required for cross-origin cookies in recent browser versions
+//     }
+// }));
 
 
 
@@ -100,6 +138,10 @@ const loginRoute = require('./api/routes/users/login_user.cjs')
 const sendVerificationEmailRoute = require('./api/routes/users/send_email_verification.cjs')
 const verifyEmailRoute = require('./api/routes/users/verify_email.cjs')
 const getBusinessDetails = require('./api/routes/businesses/db_retrieve_business_details.cjs')
+const uploadProductRoute = require('./api/routes/businesses/upload_products.cjs')
+const uploadCategoriesRoute = require('./api/routes/businesses/upload_categories.cjs')
+const uploadOrderStateRoute =  require('./api/routes/orders/upload_order_state.cjs')
+
 
 
 
@@ -120,177 +162,18 @@ app.use('/api/login', loginRoute)
 app.use('/api/send_verification_email', sendVerificationEmailRoute)
 app.use('/api/verify_email', verifyEmailRoute)
 app.use('/api/get_business_details', getBusinessDetails)
+app.use('/upload/producto', uploadProductRoute)
+app.use('/upload/rubro', uploadCategoriesRoute)
+app.use('upload/estado_pedido', uploadOrderStateRoute)
 
 
-
-// Endpoint to upload rubro data
-app.post('/upload/rubro', (req, res) => {
-    const rubroData = parseFileData(req.body.data, 'rubro');
-
-    if (!rubroData) {
-        return res.status(400).json({ error: 'no data.' });
-    }
-    
-    rubroData.forEach(item => {
-        const { RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est } = item;
-        const query = `INSERT INTO rubro (RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est)
-                       VALUES (?, ?, ?, ?, ?)
-                       ON DUPLICATE KEY UPDATE RB_des_rub = ?, RB_est = ?`;
-        
-        db.query(query, [RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est, RB_des_rub, RB_est], (err) => {
-            if (err) {
-                return res.status(500).json({ message: 'Database query error', error: err });
-            }
-        });
-    });
-    
-    res.send('Rubro data uploaded');
-});
-
-// Endpoint to upload producto data
-app.post('/upload/producto', async (req, res) => {
-    try {
-        const productoData = parseFileData(req.body.data, 'producto');
-
-        const queries = productoData.map(item => {
-            const { PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est } = item;
-            let { PD_discount, PD_discount_DATE, PD_img_discount } = item;
-
-            // Validate data and provide default values if needed
-            if (typeof PD_cod_rub !== 'string' || PD_cod_rub.length > 10) {
-                return Promise.reject(new Error(`Invalid PD_cod_rub: ${PD_cod_rub}`));
-            }
-            if (typeof PD_est !== 'string' || PD_est.length > 5) {
-                return Promise.reject(new Error(`Invalid PD_est: ${PD_est}`));
-            }
-            if (isNaN(PD_pre_ven)) {
-                return Promise.reject(new Error(`Invalid PD_pre_ven: ${PD_pre_ven}`));
-            }
-
-            // Set default values if PD_discount or PD_discount_DATE are missing
-            PD_discount = PD_discount ?? 0; // Default discount to 0 if undefined
-            PD_discount_DATE = PD_discount_DATE ?? null; // Set to null if date is undefined
-            PD_img_discount = PD_img_discount ?? null; // Set to null if image is undefined
-
-            const query = `
-                INSERT INTO producto 
-                (PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub, PD_pre_ven, PD_ubi_imagen, PD_est, PD_discount, PD_discount_DATE, PD_img_discount) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
-                ON DUPLICATE KEY UPDATE 
-                    PD_des_pro = VALUES(PD_des_pro), 
-                    PD_cod_rub = VALUES(PD_cod_rub), 
-                    PD_pre_ven = VALUES(PD_pre_ven), 
-                    PD_ubi_imagen = VALUES(PD_ubi_imagen), 
-                    PD_est = VALUES(PD_est),
-                    PD_discount = VALUES(PD_discount),
-                    PD_discount_DATE = VALUES(PD_discount_DATE),
-                    PD_img_discount = VALUES(PD_img_discount)
-            `;
-
-            return new Promise((resolve, reject) => {
-                db.query(query, [
-                    PD_cod_raz_soc, PD_cod_suc, PD_cod_pro, PD_des_pro, PD_cod_rub,PD_pre_ven, PD_ubi_imagen, PD_est, PD_discount, PD_discount_DATE, PD_img_discount
-                ], (err) => {
-                    if (err) {
-                        console.error(`Failed to insert/update producto: ${err.message}`);
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
-        });
-
-        await Promise.all(queries);
-        res.send('Producto data uploaded');
-    } catch (err) {
-        console.error(`Error uploading producto data: ${err.message}`);
-        res.status(500).json({ message: 'Database query error', error: err.message });
-    }
+cron.schedule('0 0 * * *', async () => {
+    console.log('Running scheduled update for discount status');
+    await updateDiscountStatus();
 });
 
 
 
+//https.createServer(options, app).listen(3000, ()=>{console.log('Server running on port 3000')})
 
-app.post('/upload/estado_pedido', (req, res) => {
-    const stateData = parseFileData(req.body.data, 'estado_pedido');
-
-    console.log(stateData)
-
-    if (!stateData) {
-        return res.status(400).json({ error: 'no data.' });
-    }
-
-    stateData.forEach(item => {
-        const { EP_cod_raz_soc, EP_cod_suc, EP_fecha, EP_nro_ped, EP_tot_fin, EP_est } = item;
-
-        const query = `UPDATE user_orders 
-            SET state = ?, total = ?, fecha = ?
-            WHERE PD_cod_raz_soc = ? 
-              AND PD_cod_suc = ? 
-              AND order_number = ?`;
-
-        db.query(query, [EP_est, EP_tot_fin, EP_fecha, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
-            if (err) {
-                console.error(`Failed to insert/update pedido: ${err.message}`);
-                return res.status(500).json({ message: 'Database query error', error: err });  
-            }
-        });
-
-        if (EP_est === 4) {
-            const sendNotification = async () => {
-                try {
-                    console.log('email sent to user');
-                    // Check if the notification has already been sent
-                    const checkNotificationQuery = `SELECT notification_sent FROM user_orders 
-                        WHERE PD_cod_raz_soc = ? 
-                        AND PD_cod_suc = ? 
-                        AND order_number = ?`;
-            
-                    db.query(checkNotificationQuery, [EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], async (err, results) => {
-                        if (err) {
-                            console.error("Error checking notification status:", err);
-                            return res.status(500).json({ message: 'Database query error', error: err });
-                        }
-            
-                        if (results.length && !results[0].notification_sent) {
-                            // Notification hasn't been sent, proceed
-                            try {
-                                const userId = await getUserIdFromOrder(EP_cod_raz_soc, EP_cod_suc, EP_nro_ped);
-                                const userDetails = await getUserDetails(userId);
-            
-                                // Send the email notification
-                                await sendEmailNotification(null, userDetails, false); // Make sure this is async if it returns a promise
-            
-                                // Update the notification_sent flag
-                                const updateNotificationQuery = `UPDATE user_orders 
-                                    SET notification_sent = 1 
-                                    WHERE PD_cod_raz_soc = ? 
-                                    AND PD_cod_suc = ? 
-                                    AND order_number = ?`;
-            
-                                db.query(updateNotificationQuery, [EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
-                                    if (err) {
-                                        console.error("Failed to update notification flag:", err);
-                                    }
-                                });
-                            } catch (userError) {
-                                console.error('Failed to retrieve user details or send notification:', userError);
-                            }
-                        }
-                    });
-                } catch (error) {
-                    console.error('Failed to send notification:', error);
-                }
-            };
-            
-
-            // Call the async notification function
-            sendNotification();
-        }
-    });
-
-    res.send('Novedad uploaded');
-});
-
-
-https.createServer(options, app).listen(3000, ()=>{console.log('Server running on port 3000')})
+app.listen(3000, ()=>{console.log('Server running on port 3000')})

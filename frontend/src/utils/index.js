@@ -1,4 +1,4 @@
-const host = import.meta.env.VITE_BACKEND_HOST || 'https://localhost:3000'
+export const host = 'https://jqkccp38-3000.brs.devtunnels.ms'
 
 
 export const index = {

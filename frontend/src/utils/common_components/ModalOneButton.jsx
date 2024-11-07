@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Backdrop from './Backdrop';
 import style from './ModalOneButton.module.css';
 import { dropIn } from '../common_functions';
+import MotionButton from '../buttons/MotionButton';
 
 const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error }) => {
   const [areaCode, setAreaCode] = useState(''); // State for area code
@@ -62,14 +63,7 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error }
           />
         </div>
         }
-        <motion.button 
-        onClick={stateSetter ? handleSubmit : handleClick} 
-        className={style.button}
-        initial={{ scale: '1' }}
-        whileTap={{ scale: '0.95' }}
-        >
-          {buttonText}
-        </motion.button>
+        <MotionButton buttonText={buttonText} onClick={stateSetter ? handleSubmit : handleClick} className={style.button}/>
       </div>
     </Backdrop>
   );

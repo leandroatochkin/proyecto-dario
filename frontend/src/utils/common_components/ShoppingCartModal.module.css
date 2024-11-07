@@ -21,6 +21,10 @@
     width: 90%;
   }
 
+  .topContainer{
+    width: 100%;
+  }
+
   .noItems{
     color: #212427;
     font-weight: bolder;

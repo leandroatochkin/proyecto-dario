@@ -6,6 +6,7 @@ import style from './SettingsModal.module.css';
 import { deleteUser } from '../db_functions';
 import ModalOneButton from './ModalOneButton';
 import userStore from '../store';
+import MotionButton from '../buttons/MotionButton';
 
 const SettingsModal = ({language, setFunction}) => {
 const[openErrorModal, setOpenErrorModal] =  useState(false);
@@ -45,22 +46,8 @@ const handleDeleteUser = (userId)  => {
         >
             <h1 className={style.message}>{language.delete_account}</h1>
             <div className={style.buttonContainer}>
-            <motion.button
-            className={style.button}
-            initial={{ scale: '1' }}
-            whileTap={{scale: '0.95'}}
-            onClick={()=>setFunction(false)}
-            >
-            {language.cancel}
-            </motion.button>
-            <motion.button
-            className={style.button}
-            initial={{ scale: '1' }}
-            whileTap={{scale: '0.95'}}
-            onClick={()=>handleDeleteUser(userId)}
-            >
-            {language.delete_account_button}
-            </motion.button>
+            <MotionButton buttonText={language.cancel} onClick={()=>setFunction(false)} className={style.button}/>
+            <MotionButton buttonText={language.delete_account_button} onClick={()=>handleDeleteUser(userId)} className={style.button}/>
             </div>
         </motion.div>
     </Backdrop>

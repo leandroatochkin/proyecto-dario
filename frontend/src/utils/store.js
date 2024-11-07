@@ -5,6 +5,7 @@ const userStore = create((set) => ({
   userId: null,
   error: false,
   errorMsg: null,
+  loading: false,
   
   // Function to log in and set the user ID
   setLoginStatus: (status, id) => set({
@@ -15,6 +16,10 @@ const userStore = create((set) => ({
   setError: (status, error) => set({
     error: status,
     errorMsg: error,
+  }),
+
+  setLoading: (status) => set({
+    loading: status,
   }),
   
   // Function to log out

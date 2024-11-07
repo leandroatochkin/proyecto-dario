@@ -45,7 +45,7 @@ const CustomGoogleLoginBtn = ({ handleGoogleLoginRegister, setIsGoogleLogin, set
         cursor: 'pointer'
       }}
     >
-      <img src='/public/images/google (1).png' alt="Google icon" style={{ height: '1.5rem', width: '1.5rem' }} />
+      <img src='/images/google (1).png' alt="Google icon" style={{ height: '1.5rem', width: '1.5rem' }} />
       <span>Google Login</span>
     </motion.button>
   );

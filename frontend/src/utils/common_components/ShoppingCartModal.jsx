@@ -6,6 +6,9 @@ import { dropIn } from '../common_functions'
 import AddressSelector from './AddressSelector'
 import { ES_text } from '../text_scripts'
 import userStore from '../store'
+import { MoonLoader } from 'react-spinners';
+import Trashcan from '../Icons/Trashcan' 
+import MotionButton from '../buttons/MotionButton'
 
 
 const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language, hasDelivery }) => {
@@ -28,6 +31,8 @@ const [total, setTotal] = useState(0)
 const [receptor, setReceptor] = useState('')
 const [comentary, setCommentary] = useState('')
 const [inputWrong, setInputWrong] = useState(false)
+const [loading, setLoading] = useState(false)
+const [playAnimation, setPlayAnimation] = useState(false)
 
 console.log(selectedAddress)
 
@@ -44,6 +49,7 @@ setSelectedAddress(addressToSend)
 },[itemsToMap])
 
 const handleBtn = () => {
+    setLoading(true)
     // Set selectedAddress based on delivery status
     const addressToSend = hasDelivery === 0
         ? { address: language.none, type: language.none }
@@ -60,7 +66,7 @@ const handleBtn = () => {
             receptor,
             comentary
         );
-        setFunction(false);
+        //setFunction(false);
     } else {
         // Trigger wrong input state
         setInputWrong(true);
@@ -73,6 +79,21 @@ const handleBtn = () => {
         }
     }
 };
+
+useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+      setPlayAnimation(true)
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [loading]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPlayAnimation(false)
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [playAnimation]);
 
 
   
@@ -87,26 +108,25 @@ const handleBtn = () => {
     initial='hidden'
     animate='visible'
     exit='exit'
-    >   
- <div className={style.itemInfo}>  
+    >
+  {
+    loading && <MoonLoader color="red" size={60} aria-label="Loading spinner" />
+  }
+  {
+    playAnimation && <div>
+        <img src='/images/place_order.gif'/>
+        <h3 style={{color: '#212427'}}>{language.order_placed}</h3>
+    </div>
+  }         
+<div className={loading || playAnimation ? style.hidden : style.topContainer}>
+<div className={style.itemInfo}>  
         {itemsToMap.length > 0 ? itemsToMap.map((item, index)=>(
             <div className={style.itemContainer} key={index}>
                 <div className={style.itemLine}>
                 <div  className={style.item}>
                     {renderItem(item)}
                 </div>
-                <button 
-                onClick={()=>handleRemove(index)}
-                className={style.removeItem}
-                >
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2">
-  <path d="M3 6h18" />
-  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-  <line x1="10" y1="11" x2="10" y2="17" />
-  <line x1="14" y1="11" x2="14" y2="17" />
-</svg>
-                </button>
+                <MotionButton buttonText={<Trashcan />} onClick={()=>handleRemove(index)} className={style.removeItem}/>
                 </div>
             </div>
             
@@ -148,14 +168,10 @@ const handleBtn = () => {
         <div className={style.totalText}>
             {ES_text.total + ': '}<span style={{fontWeight: 'bolder'}}>{'$' + total}</span>
         </div>
-        
-        <button 
-        onClick={() => setFunction()} 
-        className={style.button1}>{buttonText1}</button>
-        <button onClick={handleBtn} 
-        className={style.button2} 
-        disabled={itemsToMap.length === 0}>{buttonText2}</button>
+        <MotionButton buttonText={buttonText1} onClick={() => setFunction()} className={style.button1}/>
+        <MotionButton buttonText={buttonText2} onClick={handleBtn} className={style.button2} disabled = {itemsToMap.length === 0}/>
         </div>
+</div>
     </motion.div>
 </Backdrop>
   )

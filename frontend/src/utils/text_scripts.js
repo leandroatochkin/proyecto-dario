@@ -43,7 +43,8 @@ export const ES_text = {
     highlighted_discount: 'oferta destacada',
     highlighted_discounts: 'ofertas destacadas',
     to: 'hasta el',
-    see_more: 'ver más'
+    see_more: 'ver más',
+    order_placed: 'Tu pedido fue registrado'
 }
 
 export const consoleMsg = `

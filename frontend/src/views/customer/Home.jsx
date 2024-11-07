@@ -9,7 +9,7 @@ import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 
 const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
-    const [businesses, setBusinesses] = useState(null);
+    const [businesses, setBusinesses] = useState({});
     const [loading, setLoading] = useState(true);
     const [openErrorModal, setOpenErrorModal] = useState(false);
 
@@ -68,6 +68,7 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
         const db_businesses = async () => {
             try {
                 const retrievedBusinesses = await getBusinesses();
+                console.log(retrievedBusinesses)
                 const uniqueBusinesses = filterUniqueBusinesses(retrievedBusinesses);
                 const groupedBusinesses = groupBusinessesByLetter(uniqueBusinesses);
                 setBusinesses(groupedBusinesses);
@@ -90,6 +91,10 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
         );
     }
 
+    if (!businesses || Object.keys(businesses).length === 0) {
+        return <div className={style.container}><p>No businesses available</p></div>;
+    }
+
     return (
         <div className={style.container} role="main" aria-labelledby="business-list-heading">
             <LargeScreenNotice />
@@ -102,47 +107,47 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
             )}
             <div className={style.logoContainer}>
                 <img
-                    src={'/public/images/malbec_logo_transparente(s_reflejo).PNG'}
+                    src={'/images/malbec_logo_transparente(s_reflejo).PNG'}
                     className={style.logo}
                     alt="Malbec logo"
                 />
             </div>
             <div className={style.indexContainer}>
-                {businesses &&
-                    Object.keys(businesses).map((letter, index) => (
-                        <div key={index}>
-                            <h2 className={style.h2} id={`letter-${letter}`}>
-                                {'•'+letter}
-                            </h2>
-                            {Array.isArray(businesses[letter]) ? (
-                                businesses[letter].map((business, idx) => (
-                                    <motion.div 
-                                        key={idx}
-                                        className={style.businessName}
-                                        onClick={() => handleClick(business)}
-                                        initial={{ scale: '1' }}
-                                        whileTap={{ scale: '0.95' }}
-                                        role="button"
-                                        tabIndex="0"
-                                        aria-label={`Select ${business.EM_nom_fant}`}
-                                        onKeyPress={(e) => {
-                                            if (e.key === 'Enter') {
-                                                handleClick(business.EM_cod_raz_soc);
-                                            }
-                                        }}
-                                    >
-                                        <span>{business.EM_nom_fant}</span>
-                                        <span>{'>'}</span>
-                                    </motion.div>
-                                ))
-                            ) : (
-                                <p role="alert" aria-live="assertive">
-                                    Error: Expected array but got something else
-                                </p>
-                            )}
-                        </div>
-                    ))}
+    {businesses && Object.keys(businesses).length > 0 ? (
+        Object.keys(businesses).map((letter, index) => (
+            <div key={index}>
+                <h2 className={style.h2} id={`letter-${letter}`}>{'•' + letter}</h2>
+                {Array.isArray(businesses[letter]) ? (
+                    businesses[letter].map((business, idx) => (
+                        <motion.div
+                            key={idx}
+                            className={style.businessName}
+                            onClick={() => handleClick(business)}
+                            initial={{ scale: '1' }}
+                            whileTap={{ scale: '0.95' }}
+                            role="button"
+                            tabIndex="0"
+                            aria-label={`Select ${business.EM_nom_fant}`}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleClick(business);
+                                }
+                            }}
+                        >
+                            <span>{business.EM_nom_fant}</span>
+                            <span>{'>'}</span>
+                        </motion.div>
+                    ))
+                ) : (
+                    <p>Error: Expected an array but got something else.</p>
+                )}
             </div>
+        ))
+    ) : (
+        <p>No businesses found.</p>
+    )}
+</div>
+
         </div>
     );
 };

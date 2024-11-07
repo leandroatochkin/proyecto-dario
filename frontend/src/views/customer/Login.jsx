@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ES_text } from '../../utils/text_scripts';
 import { handleResponse, sendVerification } from '../../utils/async_functions';
 import { checkUser, getBusinessesNumber, loginUser, registerUser } from '../../utils/db_functions';
-import { jwtDecode } from 'jwt-decode';
 import userStore from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
@@ -39,6 +38,7 @@ const Login = ({language}) => {
 
   // Zustand store for login status
   const setLoginStatus = userStore((state) => state.setLoginStatus);
+                                          
 
   // Fetch business number based on id
   useEffect(() => {
@@ -91,7 +91,7 @@ const Login = ({language}) => {
         if(business.codRazSoc){
           navigateToMenuIfId()
         } else {
-          navigate('/')
+          navigate('/home')
         }; // Navigate to the menu if there's an ID after login
       } else {
         setNewUser(true);
@@ -123,7 +123,7 @@ const Login = ({language}) => {
             if (business.codRazSoc) {
               navigateToMenuIfId();
             } else {
-              navigate('/');
+              navigate('/home');
             }
           }
         } catch (e) {
@@ -146,7 +146,7 @@ const Login = ({language}) => {
         setLoginStatus(true, userExists.userId);
   
         // Navigate based on business presence
-        business.codRazSoc ? navigateToMenuIfId() : navigate('/');
+        business.codRazSoc ? navigateToMenuIfId() : navigate('/home');
       } else {
         setPhone('')
         // User does not exist, proceed with registration
@@ -190,7 +190,7 @@ const Login = ({language}) => {
         setLoginStatus(true, response.userId);
 
         // Navigate based on business presence
-        business.codRazSoc ? navigateToMenuIfId() : navigate('/');
+        business.codRazSoc ? navigateToMenuIfId() : navigate('/home');
       } else {
         console.error('Registration failed:', response);
       }
@@ -223,10 +223,10 @@ const Login = ({language}) => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
+  if (loading || loginLoading) {
     return (
-      <div className={style.loaderContainer}>
-        <MoonLoader color="#4A90E2" size={50} aria-label="Loading spinner" />
+      <div className={style.container}>
+        <MoonLoader color="red" size={50} aria-label="Loading spinner" />
       </div>
     );
   }
@@ -245,15 +245,11 @@ const Login = ({language}) => {
 
       <div className={style.login} aria-label="Login form">
         <div className={style.title} aria-label="Welcome Back!">
-          <img src={'/public/images/malbec_logo_transparente.PNG'} className={style.logo} alt="Malbec Logo" />
+          <img src={'/images/malbec_logo_transparente.PNG'} className={style.logo} alt="Malbec Logo" />
         </div>
 
         {/* Show loader while the login process is happening */}
-        {loginLoading ? (
-          <div className={style.loaderContainer}>
-            <MoonLoader color="red" size={60} aria-label="Loading spinner" />
-          </div>
-        ) : (
+        
           <div className={style.formContainer} aria-label="Google login button container">
             
             <div>
@@ -288,7 +284,7 @@ const Login = ({language}) => {
               </motion.button>}
             </div>
           </div>
-        )}
+        
       </div>
 
       <footer className={style.footer}>

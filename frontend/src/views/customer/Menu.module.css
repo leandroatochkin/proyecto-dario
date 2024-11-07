@@ -193,9 +193,10 @@
         background-color: red;
         color: white;
         border-radius: 8px;
-        width: 60%;
-        margin-left: 40%;
+        width: 70%;
+        margin-left: 30%;
         animation: float 3s ease-in-out infinite;
+        z-index: 4;
     }
 
     .oldPrice{

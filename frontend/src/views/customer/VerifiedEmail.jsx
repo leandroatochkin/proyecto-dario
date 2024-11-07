@@ -4,6 +4,7 @@ import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import style from './VerifiedEmail.module.css'
 import { verifyEmail } from '../../utils/db_functions';
 import { motion } from 'framer-motion';
+import MotionButton from '../../utils/buttons/MotionButton';
 
 
 
@@ -39,11 +40,7 @@ const VerifiedEmail = ({language}) => {
         <LargeScreenNotice language={language} />
         <h1>{language.thanks_for_verifying}</h1>
         <img src='/public/images/verification.png' className={style.image}/>
-        <motion.button
-        initial={{ scale: '1' }}
-        whileTap={{scale: '0.95'}} 
-        onClick={handleClick} 
-        className={style.button}>ok</motion.button>
+        <MotionButton buttonText={'ok'} onClick={handleClick} className={style.button}/>
     </div>
   )
 }

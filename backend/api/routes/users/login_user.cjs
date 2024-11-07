@@ -6,10 +6,12 @@ const { decrypt } = require('../../../utils.cjs');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post('/', (req, res) => {
+    console.log('Login route hit');
+    
     const { email, password } = req.body;
 
     if (!email) {
-        return res.status(400).send("Email is required");
+        return res.status(400).json({ message: "Email is required" });
     }
     
     db.query(
@@ -17,44 +19,53 @@ router.post('/', (req, res) => {
         [email],
         (err, results) => {
             if (err) {
+                console.error('Database query error:', err);
                 return res.status(500).json({ message: 'Database query error', error: err });
             }
 
-            console.log('Database results:', results);
+            console.log('Database query successful:', results);
 
             if (results.length === 0) {
+                console.log('User does not exist');
                 return res.status(200).json({ exists: false });
             } 
 
             const userId = results[0].id;
             const storedPassword = results[0].password;
             const emailVerified = parseInt(results[0].email_verified, 10); 
-            const isGoogle = Boolean(results[0].is_google); // Check if user registered with Google
+            const isGoogle = Boolean(results[0].is_google);
 
-            // If registered via Google, skip email verification check
+            // Skip email verification if registered via Google
             if (isGoogle) {
-                console.log('User registered via Google; skipping email verification.');
+                console.log('User registered via Google, bypassing email verification.');
                 const token = jwt.sign({ userId, loggedIn: true }, JWT_SECRET, { expiresIn: '1d' });
                 return res.status(200).json({ exists: true, userId, valid: true, emailVerified: true, token });
             }
 
-            // If email is not verified, return with emailVerified as false
+            // Email verification check
             if (emailVerified === 0) {
-                console.log('Email is not verified');
+                console.log('Email not verified');
                 return res.status(200).json({ exists: true, userId, emailVerified: false });
             } 
 
-            // Decrypt and compare password
-            const parsedPassword = JSON.parse(storedPassword);
-            const decryptedPassword = decrypt(parsedPassword);
+            // Decrypt stored password and compare
+            let decryptedPassword;
+            try {
+                const parsedPassword = JSON.parse(storedPassword);
+                decryptedPassword = decrypt(parsedPassword);
+            } catch (decryptionError) {
+                console.error('Password decryption error:', decryptionError);
+                return res.status(500).json({ message: 'Password decryption error' });
+            }
 
             if (decryptedPassword !== password) {
+                console.log('Invalid password');
                 return res.status(200).json({ exists: true, userId, valid: false, emailVerified: true });
             }
 
-            // Create token if password is correct and email is verified
+            // Generate JWT if login is valid
             const token = jwt.sign({ userId, loggedIn: true }, JWT_SECRET, { expiresIn: '1d' });
-
+            console.log('Login successful, token generated');
             return res.status(200).json({ exists: true, userId, valid: true, emailVerified: true, token });
         }
     );
