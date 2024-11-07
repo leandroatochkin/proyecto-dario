@@ -68,7 +68,6 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
         const db_businesses = async () => {
             try {
                 const retrievedBusinesses = await getBusinesses();
-                console.log(retrievedBusinesses)
                 const uniqueBusinesses = filterUniqueBusinesses(retrievedBusinesses);
                 const groupedBusinesses = groupBusinessesByLetter(uniqueBusinesses);
                 setBusinesses(groupedBusinesses);

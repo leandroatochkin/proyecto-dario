@@ -41,9 +41,6 @@ const Login = ({language}) => {
   const setOpenModal = UIStore((state) => state.setOpenModal);
   const openModal = UIStore((state)=>state.openModal)                                        
 
-  console.log(loading)
-  console.log(data)
-
 
   // Fetch business number based on id
   useEffect(() => {
@@ -59,7 +56,7 @@ const Login = ({language}) => {
         }));
 
 
-        console.log(result)
+
       } catch (error) {
         console.error("Error fetching business number:", error);
       } finally {

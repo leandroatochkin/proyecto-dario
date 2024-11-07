@@ -1,14 +1,13 @@
 const express = require('express');
 const app = express();
-const db = require('../backend/api/db.cjs')
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const path = require('path')
 const xss = require('xss-clean')
 const  helmet = require('helmet')
 const fs = require('fs');
-const https = require('https')
-const parseFileData = require('./parser.cjs')
+const routes = require('./routes.cjs')
+
 
 
 const cron = require('node-cron');
@@ -38,7 +37,7 @@ const {updateDiscountStatus} = require('./api/routes/businesses/client_check_dis
 // }));
 const allowedOrigins = [
     'https://localhost:5173',
-    'https://malbec8-murvapfvm-leandroatochkins-projects.vercel.app', // Vercel URL
+    'https://malbec-fg0a7cfem-leandroatochkins-projects.vercel.app', // Vercel URL
     'https://localhost:4173'
 ];
 
@@ -72,7 +71,7 @@ app.use(bodyParser.json());
 
 
 // Explicitly handle preflight (OPTIONS) requests
-app.options('https://malbec3-rfuu71xuc-leandroatochkins-projects.vercel.app', cors());  // Handles OPTIONS requests for all routes
+app.options('https://malbec-fg0a7cfem-leandroatochkins-projects.vercel.app', cors());  // Handles OPTIONS requests for all routes
 
 // Your routes and other middleware
 
@@ -121,50 +120,54 @@ app.use('/images', (req, res, next) => {
 
 
 
-const productRoute = require('./api/routes/products/db_productos.cjs')
-const categoryRoute = require('./api/routes/products/db_rubros.cjs')
-const checkoutRoute = require('./api/routes/create_checkout.cjs')
-const newUserRoute = require('./api/routes/users/db_new_user.cjs')
-const checkUserRoute = require('./api/routes/users/check_user.cjs')
-const deleteUserRoute = require('./api/routes/users/delete_user.cjs')
-const addAddressRoute = require('./api/routes/users/db_register_address.cjs')
-const getAddressRoute = require('./api/routes/users/db_retrieve_addresses.cjs')
-const getBusinessesRoute = require('./api/routes/businesses/db_retrieve_business.cjs')
-const getScheduleRoute = require('./api/routes/businesses/db_retrieve_schedule.cjs')
-const getCurrentTime = require('./api/routes/other/server_time.cjs')
-const deleteAddressRoute = require('./api/routes/users/db_delete_address.cjs')
-const getBusinessNumber = require('./api/routes/businesses/db_retrieve_business_data.cjs')
-const loginRoute = require('./api/routes/users/login_user.cjs')
-const sendVerificationEmailRoute = require('./api/routes/users/send_email_verification.cjs')
-const verifyEmailRoute = require('./api/routes/users/verify_email.cjs')
-const getBusinessDetails = require('./api/routes/businesses/db_retrieve_business_details.cjs')
-const uploadProductRoute = require('./api/routes/businesses/upload_products.cjs')
-const uploadCategoriesRoute = require('./api/routes/businesses/upload_categories.cjs')
-const uploadOrderStateRoute =  require('./api/routes/orders/upload_order_state.cjs')
+// const productRoute = require('./api/routes/products/db_productos.cjs')
+// const categoryRoute = require('./api/routes/products/db_rubros.cjs')
+// const checkoutRoute = require('./api/routes/create_checkout.cjs')
+// const newUserRoute = require('./api/routes/users/db_new_user.cjs')
+// const checkUserRoute = require('./api/routes/users/check_user.cjs')
+// const deleteUserRoute = require('./api/routes/users/delete_user.cjs')
+// const addAddressRoute = require('./api/routes/users/db_register_address.cjs')
+// const getAddressRoute = require('./api/routes/users/db_retrieve_addresses.cjs')
+// const getBusinessesRoute = require('./api/routes/businesses/db_retrieve_business.cjs')
+// const getScheduleRoute = require('./api/routes/businesses/db_retrieve_schedule.cjs')
+// const getCurrentTime = require('./api/routes/other/server_time.cjs')
+// const deleteAddressRoute = require('./api/routes/users/db_delete_address.cjs')
+// const getBusinessNumber = require('./api/routes/businesses/db_retrieve_business_data.cjs')
+// const loginRoute = require('./api/routes/users/login_user.cjs')
+// const sendVerificationEmailRoute = require('./api/routes/users/send_email_verification.cjs')
+// const verifyEmailRoute = require('./api/routes/users/verify_email.cjs')
+// const getBusinessDetails = require('./api/routes/businesses/db_retrieve_business_details.cjs')
+// const uploadProductRoute = require('./api/routes/businesses/upload_products.cjs')
+// const uploadCategoriesRoute = require('./api/routes/businesses/upload_categories.cjs')
+// const uploadOrderStateRoute =  require('./api/routes/orders/upload_order_state.cjs')
 
 
 
 
-app.use('/api/productos', productRoute);
-app.use('/api/rubros', categoryRoute);
-app.use('/api/checkout', checkoutRoute);
-app.use('/api/register', newUserRoute);
-app.use('/api/check_user', checkUserRoute)
-app.use('/api/add_address', addAddressRoute)
-app.use('/api/get_address', getAddressRoute)
-app.use('/api/get_businesses', getBusinessesRoute)
-app.use('/api/delete_user', deleteUserRoute)
-app.use('/api/get_schedule', getScheduleRoute)
-app.use('/api/get_current_time', getCurrentTime)
-app.use('/api/delete_address', deleteAddressRoute)
-app.use('/api/get_business_number',  getBusinessNumber)
-app.use('/api/login', loginRoute)
-app.use('/api/send_verification_email', sendVerificationEmailRoute)
-app.use('/api/verify_email', verifyEmailRoute)
-app.use('/api/get_business_details', getBusinessDetails)
-app.use('/upload/producto', uploadProductRoute)
-app.use('/upload/rubro', uploadCategoriesRoute)
-app.use('upload/estado_pedido', uploadOrderStateRoute)
+// app.use('/api/productos', productRoute);
+// app.use('/api/rubros', categoryRoute);
+// app.use('/api/checkout', checkoutRoute);
+// app.use('/api/register', newUserRoute);
+// app.use('/api/check_user', checkUserRoute)
+// app.use('/api/add_address', addAddressRoute)
+// app.use('/api/get_address', getAddressRoute)
+// app.use('/api/get_businesses', getBusinessesRoute)
+// app.use('/api/delete_user', deleteUserRoute)
+// app.use('/api/get_schedule', getScheduleRoute)
+// app.use('/api/get_current_time', getCurrentTime)
+// app.use('/api/delete_address', deleteAddressRoute)
+// app.use('/api/get_business_number',  getBusinessNumber)
+// app.use('/api/login', loginRoute)
+// app.use('/api/send_verification_email', sendVerificationEmailRoute)
+// app.use('/api/verify_email', verifyEmailRoute)
+// app.use('/api/get_business_details', getBusinessDetails)
+// app.use('/upload/producto', uploadProductRoute)
+// app.use('/upload/rubro', uploadCategoriesRoute)
+// app.use('upload/estado_pedido', uploadOrderStateRoute)
+
+Object.entries(routes).forEach(([path, route]) => {
+    app.use(path, require(route));
+  });
 
 
 cron.schedule('0 0 * * *', async () => {

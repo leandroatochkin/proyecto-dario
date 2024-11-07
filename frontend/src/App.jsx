@@ -39,7 +39,7 @@ function App() {
             const clientTime = Date.now();
             const offset = serverTime - clientTime;
             setTimeOffset(offset);
-            console.log("Time Offset:", offset); // Log the time offset to check accuracy
+            
         };
 
         fetchServerTime();
