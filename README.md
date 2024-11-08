@@ -36,6 +36,7 @@ The app provides a simple interface for the client to update his product list an
 <p>2-Follow the instructions on the txt files, named INTERFACE-PRODUCTO and INTERFACE-RUBRO to upload your items and categories respectively.</p>
 
 ![producto interface](documentation_images/producto_txt.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fleandroatochkin%2Fproyecto-dario.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fleandroatochkin%2Fproyecto-dario?ref=badge_shield)
 
 <p>3-Once uploaded, the users can start ordering items online.</p>
 <div style="display: flex">
@@ -271,3 +272,7 @@ The app provides a simple interface for the client to update his product list an
   UNIQUE KEY `unique_active_email` (`email`,`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</p>
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fleandroatochkin%2Fproyecto-dario.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fleandroatochkin%2Fproyecto-dario?ref=badge_large)
