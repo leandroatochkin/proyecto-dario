@@ -92,7 +92,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
     // Now this runs whenever razSoc changes
   
   const handleBuy = (userId, order, address, total, receptor, commentary) => {
-    console.log(userId, order, address, total, receptor, commentary);
+
     createCheckout(userId, order, address, total, receptor, commentary);
     setCurrentOrder([]);
   };

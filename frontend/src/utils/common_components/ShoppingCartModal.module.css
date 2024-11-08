@@ -103,7 +103,10 @@
 .input{
   border-radius: 8px;
   border: none;
+  background-color: #212427;
+  color: white;
 }
+
 
 .inputWrong{
   border-radius: 8px;

@@ -33,12 +33,14 @@ const [comentary, setCommentary] = useState('')
 const [inputWrong, setInputWrong] = useState(false)
 const [loading, setLoading] = useState(false)
 const [playAnimation, setPlayAnimation] = useState(false)
-
-console.log(selectedAddress)
+const [disabled, setDisabled] = useState(false)
 
 const userId = userStore((state) => state.userId);
 
-console.log(hasDelivery)
+const check = itemsToMap.length === 0 || receptor === '' ||
+    (itemsToMap.length === 0 && receptor === '' && hasDelivery === '0') || 
+    (itemsToMap.length === 0 && hasDelivery === '1' && selectedAddress === null);
+
 useEffect(()=>{
 const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0);
 setTotal(total)
@@ -49,7 +51,8 @@ setSelectedAddress(addressToSend)
 },[itemsToMap])
 
 const handleBtn = () => {
-    setLoading(true)
+    if(!check){
+      setLoading(true)
     // Set selectedAddress based on delivery status
     const addressToSend = hasDelivery === 0
         ? { address: language.none, type: language.none }
@@ -57,7 +60,7 @@ const handleBtn = () => {
     setSelectedAddress(addressToSend)
   
     // Check if receptor and address (if delivery is required) are set properly
-    if (receptor) {
+ 
         buyFunction(
             userId,
             itemsToMap,
@@ -67,18 +70,15 @@ const handleBtn = () => {
             comentary
         );
         //setFunction(false);
-    } else {
-        // Trigger wrong input state
-        setInputWrong(true);
+    setDisabled(true)
+} else if(receptor === ''){
+  setInputWrong(true)
+  alert(language.please_enter_receptor)
+} else if(hasDelivery === '1' && selectedAddress === null){
+  alert(language.please_select_address)
+}
 
-        // Show appropriate alert based on missing input
-        if (!receptor) {
-            alert(language.please_enter_name);
-        } else if (hasDelivery === 1 && !addressToSend?.address) {
-            alert(language.please_select_address);
-        }
-    }
-};
+}
 
 useEffect(() => {
     const timer = setTimeout(() => {
@@ -168,8 +168,11 @@ useEffect(() => {
         <div className={style.totalText}>
             {ES_text.total + ': '}<span style={{fontWeight: 'bolder'}}>{'$' + total}</span>
         </div>
-        <MotionButton buttonText={buttonText1} onClick={() => setFunction()} className={style.button1}/>
-        <MotionButton buttonText={buttonText2} onClick={handleBtn} className={style.button2} disabled = {itemsToMap.length === 0}/>
+        <MotionButton buttonText={buttonText1} onClick={() => {
+          setFunction()
+          setDisabled(false)
+          }} className={style.button1}/>
+        <MotionButton buttonText={buttonText2} onClick={handleBtn} className={style.button2} disabled = {disabled}/>
         </div>
 </div>
     </motion.div>

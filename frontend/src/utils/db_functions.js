@@ -59,7 +59,7 @@ export const createCheckout = async (userId, order, address, total, receptor, co
                 commentary: commentary
             }))
         };
-        console.log(payload)
+
         const response = await fetch(index.create_checkout, {
             method: 'POST',
             headers: {

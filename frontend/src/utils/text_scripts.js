@@ -44,7 +44,8 @@ export const ES_text = {
     highlighted_discounts: 'ofertas destacadas',
     to: 'hasta el',
     see_more: 'ver más',
-    order_placed: 'Tu pedido fue registrado'
+    order_placed: 'Tu pedido fue registrado',
+    please_enter_receptor: 'Por favor, ingrese el nombre de quien recibirá el pedido.'
 }
 
 export const consoleMsg = `

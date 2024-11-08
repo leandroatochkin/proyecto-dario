@@ -85,7 +85,7 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
     if (loading) {
         return (
             <div className={style.containerLoader} aria-live="polite" aria-busy="true">
-                <MoonLoader />
+                <MoonLoader color="red" size={50} />
             </div>
         );
     }

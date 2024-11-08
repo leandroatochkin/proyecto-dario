@@ -154,28 +154,6 @@ const Login = ({language}) => {
         // User does not exist, proceed with registration
         setOpenModal(true);
         setEmail(email)
-        // Check if phone is valid before attempting registration
-        // if (phone  !== '' && openModal === false) {
-        //   console.log('Phone is valid, proceeding with registration');
-        //   try {
-        //     const response = await registerUser(email, null, phone, true);
-        //     console.log('Registration response:', response);
-  
-        //     if (response.success) {
-        //       setNewUser(false);
-        //       setLoginStatus(true, response.userId);
-  
-        //       // Navigate based on business presence
-        //       business.codRazSoc ? navigateToMenuIfId() : navigate('/');
-        //     } else {
-        //       console.error('Registration failed:', response);
-        //     }
-        //   } catch (e) {
-        //     console.error('Error registering user:', e);
-        //   }
-        // } else {
-        //   return
-        // }
       }
     } catch (e) {
       console.error('Error checking user:', e);
@@ -290,6 +268,7 @@ const Login = ({language}) => {
       </div>
 
       <footer className={style.footer}>
+        <p><a href='/documentation/attributions.html' target='_blank' rel="noopener noreferrer">about</a></p>
         <p>code by <a href='https://github.com/leandroatochkin'>lna</a></p>
         <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>blick</a></p>
       </footer>
