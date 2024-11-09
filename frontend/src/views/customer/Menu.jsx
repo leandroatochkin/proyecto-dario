@@ -38,6 +38,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [discountProducts, setDiscountProducts] = useState([])
   const [openFilters, setOpenFilters] = useState(false)
   const [filterValue, setFilterValue] = useState(null)
+  const [fixBackground, setFixbackground] = useState(false)
   
 
 
@@ -58,6 +59,20 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   
     retrieveBusinessDetails();
   }, []);
+
+  useEffect(() => {
+    console.log(fixBackground)
+    if (fixBackground) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    // Cleanup function to restore scroll when modal unmounts
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [fixBackground]);
   
 
 
@@ -72,7 +87,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
 
   useEffect(()=>{
 
-    isOpen ? setOpenClosedModal(false) :  (()=>{setOpenClosedModal(true), setGlobalOpenModal(true)})()
+    isOpen ? setOpenClosedModal(false) :  (()=>{setOpenClosedModal(true), setFixbackground(true)})()
     
   },[])
 
@@ -88,6 +103,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
       } catch (e) {
         console.log(e);
         setOpenErrorModal(true)
+        setFixbackground(true)
       }
       setIsLoading(false);
     };
@@ -106,7 +122,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   };
 
   const handleLogOut = () => {
-    setOpenLogOutModal(true); // Open the logout confirmation modal
+    setOpenLogOutModal(true);
+    setFixbackground(true) // Open the logout confirmation modal
   };
   
   const confirmLogOut = () => {
@@ -131,16 +148,17 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
     setOpenDiscountModal(false)
     setProduct(product)
     setOpenBuyModal(true)
+    setFixbackground(true)
   }
 
   return (
     <div className={style.background}>
       <LargeScreenNotice />
-      {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} language={language} schedule={schedule}/>)}
-      {discountProducts.length > 0 && !openClosedModal && openDiscountModal && (<DiscountsModal language={language} products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal}/>)}
-      {openLogOutModal && (<ModalTwoButton message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'}/>)}
-      {openErrorModal && (<ModalOneButton message={language.error_try_again_later} setFunction={setOpenErrorModal} buttonText={'ok'}/>)}
-      {openSettingsModal && (<SettingsModal language={language} setFunction={setOpenSettingsModal}/>)}
+      {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} language={language} schedule={schedule} setFixbackground={setFixbackground}/>)}
+      {discountProducts.length > 0 && !openClosedModal && openDiscountModal && (<DiscountsModal language={language} products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal} setFixbackground={setFixbackground}/>)}
+      {openLogOutModal && (<ModalTwoButton message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'} setFixbackground={setFixbackground}/>)}
+      {openErrorModal && (<ModalOneButton message={language.error_try_again_later} setFunction={setOpenErrorModal} buttonText={'ok'} setFixbackground={setFixbackground}/>)}
+      {openSettingsModal && (<SettingsModal language={language} setFunction={setOpenSettingsModal} setFixbackground={setFixbackground}/>)}
       <div className={style.container}>
       {loginStatus ? (<Suspense fallback={<MoonLoader color="#fff" />}>
         {openBuyModal && (
@@ -149,6 +167,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             setOpenBuyModal={setOpenBuyModal}
             setCurrentOrder={setCurrentOrder}
             language={language}
+            setFixbackground={setFixbackground}
           />
         )}
         {openCartModal && (
@@ -174,16 +193,29 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             buyFunction={handleBuy}
             language={language}
             hasDelivery={Number(hasDelivery)}
+            setFixbackground={setFixbackground}
         />)}
 
         <div className={style.topBtnContainer}>
-          <MotionButton buttonText={<BackArrow />} onClick={handleBack} className={style.backBtn}/>
-          <MotionButton buttonText={<LogOut />} onClick={handleLogOut} className={style.logOutBtn}/>
-          <MotionButton buttonText={<Settings />} onClick={() => setOpenSettingsModal(true)} className={style.settingsBtn}/>
+          <MotionButton buttonText={<BackArrow />} onClick={()=>{
+            handleBack()
+            setFixbackground(true)
+            }} className={style.backBtn}/>
+          <MotionButton buttonText={<LogOut />} onClick={()=>{
+            handleLogOut()
+            setFixbackground(true)
+            }} className={style.logOutBtn}/>
+          <MotionButton buttonText={<Settings />} onClick={() => {
+            setOpenSettingsModal(true)
+            setFixbackground(true)
+            }} className={style.settingsBtn}/>
         </div>
         <motion.button
   className={style.cartButton}
-  onClick={() => setOpenCartModal(!openCartModal)}
+  onClick={() => {
+    setOpenCartModal(!openCartModal)
+    setFixbackground(true)
+  }}
   initial={{ scale: '1' }}
   whileTap={{ scale: '0.95' }}
 >
@@ -251,6 +283,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                           if(isOpen){
                           setOpenBuyModal(true);
                           setProduct(product);
+                          setFixbackground(true)
                           } else {
                             setOpenClosedModal(true)
                           }

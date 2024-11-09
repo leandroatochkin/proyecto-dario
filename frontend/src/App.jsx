@@ -12,7 +12,7 @@ import { convertTimeToMinutes } from './utils/common_functions';
 import { getServerTime } from './utils/async_functions';
 import { consoleMsg } from './utils/text_scripts';
 import { MoonLoader } from 'react-spinners';
-
+import { UIStore } from '../src/utils/store'
 function App() {
     const [currentOrder, setCurrentOrder] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +25,7 @@ function App() {
     const [timeOffset, setTimeOffset] = useState(0);
 
     useEffect(() => console.log(consoleMsg), []);
+
 
     const navigate = useNavigate();
     const setLoginStatus = userStore((state) => state.setLoginStatus);

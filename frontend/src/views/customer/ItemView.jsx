@@ -8,7 +8,7 @@ import style from './ItemView.module.css';
 import { host } from '../../utils/index';
 
 
-const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
+const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixbackground }) => {
   const [value, setValue] = useState(1);
   const [pushingItem, setPushingItem] = useState({
     PD_cod_raz_soc: product.PD_cod_raz_soc,
@@ -36,6 +36,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
 
   const handleClose = () => {
     setOpenBuyModal(false);
+    setFixbackground(false)
   };
 
   const handleBuyBtn = (product) => {
@@ -81,7 +82,9 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
             </h1>
             <motion.button
               className={style.closeFormButton}
-              onClick={()=>setOpenBuyModal(false)}
+              onClick={()=>{
+                setFixbackground(false)
+                setOpenBuyModal(false)}}
               initial={{ scale: '1' }}
               whileTap={{ scale: '0.95' }}
               style={superOffer ? {color: '#e0e0e0'} : {color: '#212427'}}
@@ -123,7 +126,9 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language }) => {
               className={style.addToCartBtn}
               initial={{ scale: '1' }}
               whileTap={{ scale: '0.95' }}
-              onClick={() => handleBuyBtn(product)}
+              onClick={() => {
+                setFixbackground(false)
+                handleBuyBtn(product)}}
               //aria-label={`Add ${book.title} to shopping cart`}
             >
              {language.add_to_cart} 

@@ -2,13 +2,18 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Backdrop from './Backdrop';
 import style from './CloseModal.module.css';
+import { UIStore } from '../store';
 
 
-const ClosedModal = ({setFunction, language, schedule}) => {
+const ClosedModal = ({setFunction, language, schedule, setFixbackground}) => {
+  const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
+  const globalOpenModal = UIStore((state)=>state.globalOpenModal)
 
 
   const handleClick = () => {
     setFunction(false); // Close the modal
+    setGlobalOpenModal(false)
+    setFixbackground(false)
   };
 
 

@@ -9,9 +9,10 @@ import {userStore} from '../store'
 import { MoonLoader } from 'react-spinners';
 import Trashcan from '../Icons/Trashcan' 
 import MotionButton from '../buttons/MotionButton'
+import { UIStore } from '../store';
 
 
-const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language, hasDelivery }) => {
+const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language, hasDelivery, setFixbackground }) => {
 
 //     example usage for renderItem: renderItem={(product)=>(
 //       <div className={style.li}>
@@ -25,7 +26,8 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 //   )}
 
 
-
+const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
+const globalOpenModal = UIStore((state)=>state.globalOpenModal)
 const [selectedAddress, setSelectedAddress] = useState(null);
 const [total, setTotal] = useState(0)
 const [receptor, setReceptor] = useState('')
@@ -171,6 +173,7 @@ useEffect(() => {
         </div>
         <MotionButton buttonText={buttonText1} onClick={() => {
           setFunction()
+          setFixbackground(false)
           setDisabled(false)
           }} className={style.button1}/>
         <MotionButton buttonText={buttonText2} onClick={handleBtn} className={style.button2} disabled = {disabled}/>

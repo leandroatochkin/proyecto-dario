@@ -4,8 +4,11 @@ import Backdrop from './Backdrop';
 import style from './ModalOneButton.module.css';
 import { dropIn } from '../common_functions';
 import MotionButton from '../buttons/MotionButton';
+import { UIStore } from '../store';
 
-const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error }) => {
+const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error, setFixbackground }) => {
+  const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
+  const globalOpenModal = UIStore((state)=>state.globalOpenModal)
   const [areaCode, setAreaCode] = useState(''); // State for area code
   const [phoneNumber, setPhoneNumber] = useState(''); // State for phone number
   const [inputError, setInputError] = useState(false);
@@ -35,6 +38,7 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error }
 
   const handleClick = () => {
     setFunction(false); // Close the modal
+    setFixbackground(false)
   };
 
   return (

@@ -4,8 +4,11 @@ import style from './DiscountsModal.module.css';
 import { motion } from 'framer-motion';
 import { host } from '../../utils/index';
 import DoubleArrow from '../Icons/DoubleArrow';
+import { UIStore } from '../store';
 
-const DiscountsModal = ({ language, products, setFunction, seeMoreFunction }) => {
+const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setFixbackground }) => {
+  const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
+  const globalOpenModal = UIStore((state)=>state.globalOpenModal)
   const [isRotated, setIsRotated] = useState(false);
   const containerRef = useRef(null);
 
@@ -33,7 +36,10 @@ const DiscountsModal = ({ language, products, setFunction, seeMoreFunction }) =>
     <Backdrop aria-labelledby="discounts-modal">
       <button
         className={style.closeButton}
-        onClick={() => setFunction(false)}
+        onClick={() => {
+          setFunction(false)
+          setGlobalOpenModal(false)
+        }}
         aria-label={language.button_close}
       >
         {language.button_close}
@@ -70,7 +76,10 @@ const DiscountsModal = ({ language, products, setFunction, seeMoreFunction }) =>
                   <motion.button
                     initial={{ scale: '1' }}
                     whileTap={{ scale: '0.95' }}
-                    onClick={() => seeMoreFunction(product)}
+                    onClick={() => {
+                      seeMoreFunction(product)
+                      setFixbackground(false)
+                    }}
                     className={style.button}
                     aria-label={`${language.see_more} ${product.PD_des_pro}`}
                   >
