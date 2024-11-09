@@ -115,6 +115,8 @@
     .businessTitle{
         color: #212427;
         font-family: "Fredoka", roboto, sans-serif;
+        margin-top: 10%;
+        margin-bottom: 0;
     }
 
     .itemCount{
@@ -137,6 +139,8 @@
         justify-content: center;
         align-items: center;
     }
+
+    .li{display: flex;}
 
     .scInfo{
         width: 100%;
@@ -211,6 +215,37 @@
 
     .hidden{
         display: none;
+    }
+
+    .filtersBtn{
+        color: #212427;
+        background-color: transparent;
+        
+    }
+
+    .filters{
+        display: flex;
+        margin-left: 2%;
+        border-radius: 50px;
+background: #e0e0e0;
+box-shadow:  20px 20px 60px #bebebe,
+             -20px -20px 60px #ffffff;
+    }
+
+    .label{
+        color: #212427;
+        font-weight: bolder;
+    }
+
+    .filters{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .resetFiltersBtn{
+        background-color: transparent;
+        color: #212427  ;
     }
 
     @keyframes float {

@@ -1,5 +1,5 @@
 export const ES_text = {
-    add_address: 'Añade una dirección',
+    add_address: 'Añade un domicilio',
     add_to_cart: 'añadir al carrito',
     button_buy: 'comprar',
     button_close: 'cerrar',
@@ -16,7 +16,9 @@ export const ES_text = {
     delete_account_button: 'eliminar cuenta',
     delete_address: '¿Está seguro de que quiere eliminar este domicilio?',
     delivery_address: 'Dirección de envío',
+    discount: 'ofertas',
     error_try_again_later: 'Hubo un error. Por favor intente más tarde.',
+    filters: 'filtros',
     highlighted_discount: 'oferta destacada',
     highlighted_discounts: 'ofertas destacadas',
     has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.',
@@ -30,9 +32,11 @@ export const ES_text = {
     please_enter_receptor: 'Por favor, ingrese el nombre de quien recibirá el pedido.',
     please_log_in: 'Por favor ingrese con sus datos.',
     please_select_address: 'Por favor ingrese un domicilio.',
+    please_select_address_b: 'selecciona un domicilio',
     price: 'precio',
     quantity: 'unidades',
     receptor_input: 'Recibe:',
+    reset_filters: 'limpiar filtros',
     save: 'guardar',
     schedule: 'horario',
     select_home: 'Casa',
@@ -49,7 +53,8 @@ export const ES_text = {
     highlighted_discount: 'oferta destacada',
     create_account_preface: '¿Todavía no tienes una cuenta?',
     verification_message: 'Se enviará un correo al mail proporcionado. En caso de no recibirlo, por favor, revisa tu carpeta de spam.',
-    or_else: 'o también'
+    or_else: 'o también',
+    or_add_a_new_address: 'o añade uno nuevo'
 }
 
 
@@ -72,3 +77,4 @@ export const consoleMsg = `
       Hey there, sneaky! This is not the
       place you're looking for.
 `
+

@@ -6,6 +6,7 @@ export const userStore = create((set) => ({
   error: false,
   errorMsg: null,
   tokenData: null || {},
+
   
   // Function to log in and set the user ID
   setLoginStatus: (status, id) => set({
@@ -32,9 +33,14 @@ export const userStore = create((set) => ({
 export const UIStore = create((set)=>({
 openModal: false,
 loading: true,
+globalOpenModal: false,
 
 setOpenModal: (status) => set({
   openModal: status,
+}),
+
+setGlobalOpenModal: (status) => set({
+  globalOpenModal: status,
 }),
 
 setLoading: (status) => set({

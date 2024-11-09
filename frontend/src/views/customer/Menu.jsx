@@ -7,7 +7,7 @@ import { capitalize, returnDiscount } from '../../utils/common_functions';
 import { motion } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
-import {userStore} from '../../utils/store';
+import {UIStore, userStore} from '../../utils/store';
 import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import ModalTwoButton from '../../utils/common_components/ModalTwoButtons';
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
@@ -36,14 +36,14 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [hasDelivery, setHasDelivery] = useState(null)
   const [openDiscountModal, setOpenDiscountModal] = useState(true)
   const [discountProducts, setDiscountProducts] = useState([])
+  const [openFilters, setOpenFilters] = useState(false)
+  const [filterValue, setFilterValue] = useState(null)
   
 
 
   const location = useLocation();
   const { razSoc } = location.state || {}
   const {businessNameFromLogIn} =  location.state || {}
-
-
 
 
   useEffect(() => {
@@ -65,11 +65,15 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
 
   const setLoginStatus = userStore((state) => state.setLoginStatus)
   const loginStatus = userStore((state) => state.loggedIn)
+  const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
+  const globalOpenModal = UIStore((state)=>state.globalOpenModal)
 
   const navigate = useNavigate()
 
   useEffect(()=>{
-    isOpen ? setOpenClosedModal(false) :  setOpenClosedModal(true)
+
+    isOpen ? setOpenClosedModal(false) :  (()=>{setOpenClosedModal(true), setGlobalOpenModal(true)})()
+    
   },[])
 
   useEffect(() => {
@@ -128,24 +132,15 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
     setProduct(product)
     setOpenBuyModal(true)
   }
+
   return (
     <div className={style.background}>
       <LargeScreenNotice />
       {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} language={language} schedule={schedule}/>)}
       {discountProducts.length > 0 && !openClosedModal && openDiscountModal && (<DiscountsModal language={language} products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal}/>)}
-      {openLogOutModal && (
-        <ModalTwoButton message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'}/>
-      )}
-      {openErrorModal && (
-                <ModalOneButton
-                    message={language.error_try_again_later}
-                    setFunction={setOpenErrorModal}
-                    buttonText={'ok'}
-                />
-      )}
-      {openSettingsModal && (
-        <SettingsModal language={language} setFunction={setOpenSettingsModal}/>
-      )}
+      {openLogOutModal && (<ModalTwoButton message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'}/>)}
+      {openErrorModal && (<ModalOneButton message={language.error_try_again_later} setFunction={setOpenErrorModal} buttonText={'ok'}/>)}
+      {openSettingsModal && (<SettingsModal language={language} setFunction={setOpenSettingsModal}/>)}
       <div className={style.container}>
       {loginStatus ? (<Suspense fallback={<MoonLoader color="#fff" />}>
         {openBuyModal && (
@@ -179,8 +174,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             buyFunction={handleBuy}
             language={language}
             hasDelivery={Number(hasDelivery)}
-          />
-        )}
+        />)}
 
         <div className={style.topBtnContainer}>
           <MotionButton buttonText={<BackArrow />} onClick={handleBack} className={style.backBtn}/>
@@ -197,17 +191,45 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   <div className={style.itemCount}>{currentOrder.length}</div>
         </motion.button>
   <h1 className={ categories.length > 0 ? style.businessTitle : style.businessTitleHidden}>{businessName || businessNameFromLogIn}</h1>
+  <div className={style.filterContainer}>
+  <button className={style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.filters}</button>
+  <div className={openFilters ? style.filters : style.hidden}>
+  <button onClick={() => setFilterValue(null)} className={style.resetFiltersBtn}>
+    {language.reset_filters}
+  </button>
+  <div>
+  <label htmlFor='ofertas' className={style.label}>{language.discount}</label>
+  <input 
+    type="checkbox" 
+    value={product.PD_est === 'X' || product.PD_est === 'S'} 
+    name="ofertas" 
+    onChange={(e) => {
+      // When unchecked, set filterValue to null
+      if (!e.target.checked) {
+        setFilterValue(null);
+      } else {
+        // When checked, set the filters array to ['X', 'S']
+        setFilterValue(prev => ({
+          ...prev,
+          filters: ['X', 'S']
+        }));
+      }
+    }}
+  />
+</div>
+  </div>
+  </div>
         {/* Show loading animation if data is still being fetched */}
         {isLoading ? (
           <div className={style.loader}>
-            <MoonLoader color="red" size={60} />
+            <MoonLoader color="red" size={50} />
           </div>
         ) : (
           // Display categories and products after loading completes
           categories.length > 0 ? (
           categories.map((category, index) => (
             <div key={index}>
-              <h2 className={style.h2Rubro}>{category.RB_des_rub}</h2>
+              <h2 className={filterValue === null ? style.h2Rubro : style.hidden}>{category.RB_des_rub}</h2>
               <ul className={style.ul}>
                 {products &&
                   products
@@ -217,9 +239,15 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                       initial={{ scale: '1' }}
                         whileTap={{ scale: '0.95' }}
                         key={index}
-                        className={style.li}
-                        style={product.PD_est === 'B' ? {display: 'none'} : {display: 'flex'}}
-                        onClick={() => {
+                        className={
+                          filterValue === null
+                            ? (product.PD_est === 'B' ? style.hidden : style.li)
+                            : (filterValue.filters && Array.isArray(filterValue.filters) && filterValue.filters.length > 0 && 
+                                (filterValue.filters[0] === product.PD_est || filterValue.filters[1] === product.PD_est)
+                              ) ? style.li : style.hidden
+                        }
+                                             
+                          onClick={() => {
                           if(isOpen){
                           setOpenBuyModal(true);
                           setProduct(product);

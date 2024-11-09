@@ -5,6 +5,7 @@ import style from './AddressSelector.module.css';
 import { ES_text } from '../text_scripts';
 import { motion } from 'framer-motion';
 import { getAddressLabel } from '../common_functions';
+import { MoonLoader } from 'react-spinners';
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
@@ -14,6 +15,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const [inactive, setInactive] = useState(false);
   const [openDeleteAddressModal, setOpenDeleteAddressModal] = useState(null); // Store index of selected row
   const [showDeleteAddressModal, setShowDeleteAddressModal] = useState(false);
+  const [loading, setLoading] = useState(false)
 
 
   
@@ -84,19 +86,29 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
     }
   };
 
-  const handleDeleteAddress  = async (userId, addressId) => {
+  const handleDeleteAddress = async (userId, addressId) => {
+    setLoading(true)
+    try {
 
-    try{
-      const response = await deleteAddress(userId, addressId);
-      setShowDeleteAddressModal(!showDeleteAddressModal)
-      return
-
+      // Await the delete operation
+      await deleteAddress(userId, addressId);
+  
+      // Update the state to filter out the deleted address
+      setAddressesToMap((prevAddresses) =>
+        prevAddresses.filter((address) => address.addressId !== addressId)
+      );
+  
+      // Close the delete modal
+      setOpenDeleteAddressModal(null);
+      setShowDeleteAddressModal(false);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e){
-      console.log(e)
-    }
-  }
-
+    setTimeout(()=>{
+      setLoading(false)
+    },1500)
+  };
+  
 
 
   useEffect(() => {
@@ -105,8 +117,18 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
     }
   }, [loggedIn, userId]);
 
+  if (loading) {
+    return (
+      <div style={{display: 'flex'  ,justifyContent: 'center', alignItems: 'center', width: '100%', padding: '2%'}}>
+        <MoonLoader color="red" size={20} aria-label="Loading spinner" />
+      </div>
+    );
+  }
+
+
   return (
     <div className={style.container}>
+      <p style={{fontWeight: 'bolder', color: '#212427'}}>{language.please_select_address_b}{`(✔️) `}{language.or_add_a_new_address}</p>
       {addressesToMap.length > 0 && addressesToMap.map((address, index) => (
         <div 
           key={index} 

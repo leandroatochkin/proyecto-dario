@@ -37,7 +37,8 @@ const [disabled, setDisabled] = useState(false)
 
 const userId = userStore((state) => state.userId);
 
-const check = itemsToMap.length === 0 || receptor === '' ||
+const check = itemsToMap.length === 0 || receptor === '' || selectedAddress === null;
+
     (itemsToMap.length === 0 && receptor === '' && hasDelivery === '0') || 
     (itemsToMap.length === 0 && hasDelivery === '1' && selectedAddress === null);
 
