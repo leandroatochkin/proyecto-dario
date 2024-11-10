@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db.cjs');
 const parseFileData  = require('../../../parser.cjs');
+const {ServerError} = require('../../../middleware/error_handling/error_models.cjs')
+
 
 
 router.post('/', async (req, res) => {
@@ -59,8 +61,8 @@ router.post('/', async (req, res) => {
         await Promise.all(queries);
         res.send('Producto data uploaded');
     } catch (err) {
-        console.error(`Error uploading producto data: ${err.message}`);
-        res.status(500).json({ message: 'Database query error', error: err.message });
+        throw new ServerError('Database  error'), err;
+
     }
 });
 

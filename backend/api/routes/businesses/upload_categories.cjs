@@ -2,13 +2,16 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db.cjs');
 const parseFileData  = require('../../../parser.cjs');
+const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 
 router.post('/', (req, res) => {
     const rubroData = parseFileData(req.body.data, 'rubro');
 
     if (!rubroData) {
-        return res.status(400).json({ error: 'no data.' });
+
+        throw  new ValidationError('no data');
+
     }
     
     rubroData.forEach(item => {
@@ -19,7 +22,9 @@ router.post('/', (req, res) => {
         
         db.query(query, [RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est, RB_des_rub, RB_est], (err) => {
             if (err) {
-                return res.status(500).json({ message: 'Database query error', error: err });
+
+                throw new  ServerError('Database query error'), err;
+
             }
         });
     });

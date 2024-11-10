@@ -4,14 +4,16 @@ const db = require('../../db.cjs');
 const jwt = require('jsonwebtoken');
 const { decrypt } = require('../../../utils.cjs');
 const JWT_SECRET = process.env.JWT_SECRET;
+const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 router.post('/', (req, res) => {
-    console.log('Login route hit');
-    
+
     const { email, password } = req.body;
 
     if (!email) {
-        return res.status(400).json({ message: "Email is required" });
+
+        throw  new ValidationError("Email is required");
+
     }
     
     db.query(
@@ -20,7 +22,9 @@ router.post('/', (req, res) => {
         (err, results) => {
             if (err) {
                 console.error('Database query error:', err);
-                return res.status(500).json({ message: 'Database query error', error: err });
+
+                throw  new ServerError('Database query error'), err;
+
             }
 
             console.log('Database query successful:', results);
@@ -55,7 +59,8 @@ router.post('/', (req, res) => {
                 decryptedPassword = decrypt(parsedPassword);
             } catch (decryptionError) {
                 console.error('Password decryption error:', decryptionError);
-                return res.status(500).json({ message: 'Password decryption error' });
+                throw new  ServerError('Password decryption error'), err;
+
             }
 
             if (decryptedPassword !== password) {

@@ -3,17 +3,20 @@ const router = express.Router();
 const db = require('../../db.cjs');
 const jwt = require('jsonwebtoken');  // Import jsonwebtoken
 const JWT_SECRET = process.env.JWT_SECRET;  // Replace with your actual JWT secret
+const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 router.post('/', (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-        return res.status(400).send("email is required");
+        throw new  ValidationError("email is required");
       }
     
     db.query('SELECT id FROM users WHERE email = ? AND deleted_at IS NULL', [email], (err, results) => {
         if (err) {
-            return res.status(500).json({ message: 'Database query error', error: err });
+
+            throw new  ServerError('Database query', err);
+
         }
 
         if (results.length === 0) {

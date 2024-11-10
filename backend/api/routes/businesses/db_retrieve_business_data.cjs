@@ -8,13 +8,12 @@ router.post('/', ( req, res ) => {
     const { id } = req.body;
 
     if (!id) {
-      return res.status(400).json({ message: 'ID is required' });
+      throw new ValidationError('ID is requires')
   }    
     db.query('SELECT EM_cod_raz_soc, EM_nom_fant, EM_delivery FROM ST_RZMA1 WHERE EM_ID_suc = ?', [id], (err, results) => {
 
       if (err) {
-        res.status(500).json({ message: 'Database query error', error: err })
-        throw err;
+        throw  new ServerError('Database query error'), err;
       }
       if (results.length === 0) {
         return res.status(201).json({ are_there_businesses: false });

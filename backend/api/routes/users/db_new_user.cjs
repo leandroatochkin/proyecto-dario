@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { encrypt } = require('../../../utils.cjs');
 const db = require('../../db.cjs');
+const {ValidationError, ServerError, ConflictError} = require('../../../middleware/error_handling/error_models.cjs')
 
 // Helper function to validate email and phone
 const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
@@ -21,26 +22,37 @@ router.post('/', (req, res) => {
 
     // Validate required fields
     if (!email || !phone || !password && !isGoogle) {
-        return res.status(400).json({ error: 'Email, phone and password are required.' });
+
+        throw new  ValidationError('Email, phone and password are required.');
+
     }
 
     // Validate email and phone formats
     if (!isValidEmail(email)) {
-        return res.status(400).json({ error: 'Invalid email format.' });
+
+        throw new   ValidationError('Invalid email format.');
+
     }
+
     if (!isValidPhone(phone)) {
-        return res.status(400).json({ error: 'Invalid phone format.' });
+
+        throw new   ValidationError('Invalid phone format.');
+
     }
 
     if (!isValidPassword(password) && !isGoogle) {
-        return res.status(400).json({ error: 'Invalid password format.' });
+
+        throw  new  ValidationError('Invalid password format.');
+
     }
 
     // Check if email already exists
     db.query('SELECT * FROM users WHERE email = ?', [email], (err, result) => {
         if (err) {
             console.error("Error checking for existing email:", err);
-            return res.status(500).json({ error: 'Error checking for existing email' });
+
+            throw new  ServerError('Error checking for existing email'), err;
+
         }
 
         // Check for existing usersd
@@ -58,7 +70,9 @@ router.post('/', (req, res) => {
                     (err) => {
                         if (err) {
                             console.error("Error reactivating user:", err);
-                            return res.status(500).json({ error: 'Error reactivating user' });
+
+                            throw  new  ServerError('Error reactivating user'), err;
+
                         }
                         console.log("User reactivated successfully");
                         return res.status(200).json({ success: true, userId: id });
@@ -68,7 +82,7 @@ router.post('/', (req, res) => {
             }
 
             // Return conflict if email already exists for a non-deleted user
-            return res.status(409).json({ error: 'Email already exists.' });
+            throw new ConflictError('Email already exists')
         }
 
         // Proceed with user creation if email does not exist
@@ -83,10 +97,13 @@ router.post('/', (req, res) => {
                 if (err) {
                     // Handle duplicate entry error in case of race condition
                     if (err.code === 'ER_DUP_ENTRY') {
-                        return res.status(409).json({ error: 'Email already exists.' });
+
+                        throw new ConflictError('Email already exists')
                     }
                     console.error("Error inserting user:", err);
-                    return res.status(500).json({ error: 'Error inserting user' });
+
+                    throw  new ServerError('Error inserting user'), err;
+
                 }
 
                 console.log("User inserted successfully");

@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('../db.cjs');
 const {sendEmailNotification} = require('../../notification_mailer.cjs');
 const {getUserDetails, getProductName, getAddressType, getComission} = require('../../utils.cjs')
+const {ValidationError, ServerError} = require('../../middleware/error_handling/error_models.cjs')
 
 const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
 
@@ -15,7 +16,9 @@ router.post('/checkout', async (req, res) => {
 
   // Check if orderData is defined and is an array
   if (!orderData || !Array.isArray(orderData)) {
-    return res.status(400).send('Invalid order data');
+
+    throw  new ValidationError('Invalid order data');
+
   }
 
   // Generate a unique order ID for EACH order
@@ -113,7 +116,8 @@ const orderString = `D|${product.PD_cod_raz_soc.toString()}|${product.PD_cod_suc
     fs.appendFile(orderFilePath, fileContent, (err) => {
       if (err) {
         console.error('Failed to write order to file:', err);
-        return res.status(500).send('Failed to save order');
+
+        throw new ServerError('Failed to save order')
       }
 
       console.log('Order saved to file successfully!');
@@ -121,7 +125,9 @@ const orderString = `D|${product.PD_cod_raz_soc.toString()}|${product.PD_cod_suc
     });
   } catch (err) {
     console.error('Error inserting some orders:', err);
-    return res.status(500).json({ error: 'Error inserting some orders' });
+
+    throw new  ServerError('Error inserting some orders');
+
   }
 });
 

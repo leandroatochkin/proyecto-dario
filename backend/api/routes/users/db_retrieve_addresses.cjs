@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db.cjs');
 const { decrypt } = require('../../../utils.cjs');
+const { ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 router.post('/', (req, res) => {
     const { userId } = req.body;
@@ -9,7 +10,9 @@ router.post('/', (req, res) => {
     // Query to get all addresses for the user
     db.query('SELECT id, address, address_type FROM user_addresses WHERE user_id = ?', userId, (err, results) => {
         if (err) {
-            return res.status(500).json({ message: 'Database query error', error: err });
+
+            throw new  ServerError('Database query error'), err;
+
         }
 
         if (results.length === 0) {
@@ -38,7 +41,9 @@ router.post('/', (req, res) => {
             return res.status(200).json({ addresses: decryptedAddresses });
         } catch (error) {
             console.error('Error decrypting addresses:', error);
-            return res.status(500).json({ message: 'Error decrypting addresses', error });
+
+            throw new  ServerError('Error decrypting addresses'), error;
+
         }
     });
 });

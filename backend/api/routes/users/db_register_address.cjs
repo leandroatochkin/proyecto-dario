@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { encrypt } = require('../../../utils.cjs');
 const db = require('../../db.cjs');
+const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 router.post('/', (req, res) => {
     const { userId, addresses } = req.body;
@@ -11,7 +12,9 @@ router.post('/', (req, res) => {
 
     // Check if addresses array is present and contains at least one address
     if (!addresses || addresses.length === 0) {
-        return res.status(400).json({ error: 'At least one address is required.' });
+
+        throw new  ValidationError('At least one address is required.');
+
     }
 
     // Process each address in the array

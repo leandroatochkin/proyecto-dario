@@ -4,6 +4,7 @@ const db = require('../../db.cjs');
 const parseFileData  = require('../../../parser.cjs');
 const {sendEmailNotification} = require('../../../notification_mailer.cjs');
 const { getUserDetails, getUserIdFromOrder } = require('../../../utils.cjs');
+const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 router.post('/', (req, res) => {
     const stateData = parseFileData(req.body.data, 'estado_pedido');
@@ -11,7 +12,9 @@ router.post('/', (req, res) => {
     console.log(stateData)
 
     if (!stateData) {
-        return res.status(400).json({ error: 'no data.' });
+
+        throw  new ValidationError('no data');
+
     }
 
     stateData.forEach(item => {
@@ -26,7 +29,8 @@ router.post('/', (req, res) => {
         db.query(query, [EP_est, EP_tot_fin, EP_fecha, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
             if (err) {
                 console.error(`Failed to insert/update pedido: ${err.message}`);
-                return res.status(500).json({ message: 'Database query error', error: err });  
+                throw new  ServerError('Failed to insert/update pedido'), err;
+
             }
         });
 
@@ -43,7 +47,7 @@ router.post('/', (req, res) => {
                     db.query(checkNotificationQuery, [EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], async (err, results) => {
                         if (err) {
                             console.error("Error checking notification status:", err);
-                            return res.status(500).json({ message: 'Database query error', error: err });
+                            throw new ServerError('Database query error'), err
                         }
             
                         if (results.length && !results[0].notification_sent) {

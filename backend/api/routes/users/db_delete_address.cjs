@@ -1,21 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../db.cjs');
+const {ValidationError, ServerError, NotFoundError} = require('../../../middleware/error_handling/error_models.cjs')
 
 router.post('/', (req, res) => {
     const { userId, addressId } = req.body;
 
     if (!userId || !addressId) {
-        return res.status(400).json({ message: 'User ID and address ID are required' });
+
+        throw new  ValidationError('User ID and address ID are required');
+
     }
 
     db.query('DELETE FROM user_addresses WHERE user_id = ? AND id = ?', [userId, addressId], (err, result) => {
         if (err) {
-            return res.status(500).json({ message: 'Database deletion error', error: err });
+
+            throw  new ServerError('Database deletion error'), err;
+
         }
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Address not found or already deleted' });
+
+            throw new  NotFoundError('Address not found or already deleted'), err;
+
         }
 
         return res.status(200).json({ message: 'Address deleted successfully' });

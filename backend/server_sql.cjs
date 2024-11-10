@@ -8,6 +8,7 @@ const xss = require('xss-clean')
 const  helmet = require('helmet')
 const fs = require('fs');
 const routes = require('./routes.cjs')
+const centralizedErrorHandler = require('./middleware/error_handling/error_handler.cjs')
 
 
 
@@ -39,7 +40,7 @@ app.use(cors({
 }));
 
 
-
+app.use(centralizedErrorHandler)
 
 const options = {
     key: fs.readFileSync('C:/Users/leand/privkey.pem'),  // Replace with the correct path
