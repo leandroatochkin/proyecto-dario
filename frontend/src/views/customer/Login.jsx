@@ -34,6 +34,7 @@ const Login = ({language}) => {
   const [isGoogleLogin, setIsGoogleLogin] = useState(false)
   const [continueBtn, setContinueBtn] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [invalidCredentials, setInvalidCredentials] = useState(false)
 
 
 
@@ -84,7 +85,7 @@ const Login = ({language}) => {
       const { exists, userId, valid, emailVerified, token } = await loginUser(email, password);
 
       if(!valid){
-        alert('Invalid credentials')
+        setInvalidCredentials(true)
         return
       }
 
@@ -134,7 +135,11 @@ const Login = ({language}) => {
             }
           }
         } catch (e) {
-          console.error('Error registering user:', e);
+          if (e.response && e.response.status === 409) {
+            setInvalidCredentials(true); // Set the invalid credentials state
+          } else {
+            console.error('Error registering user:', e);
+          }
         }
       } 
     } else {
@@ -208,6 +213,15 @@ const Login = ({language}) => {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      
+      invalidCredentials ? setInvalidCredentials(false) :  null;
+
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [invalidCredentials]);
+
   if (loading) {
     return (
       <div className={style.container}>
@@ -248,7 +262,7 @@ const Login = ({language}) => {
                     <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='password'onChange={(e)=>setPassword(e.target.value)} className={style.inputPass}/>
                     <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
                 </div>
-
+                <p className={invalidCredentials ? style.invalidCredentials : style.hidden}>{language.invalid_credentials}</p>
                 <div className={newAccountMode ? style.inputLine : style.inputHidden}>
                     <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.inputPass : style.inputHidden}/>
                     <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>

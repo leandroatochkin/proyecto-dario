@@ -145,6 +145,7 @@ export const registerUser = async (email, password, phone, isGoogle) => {
         });
 
         const data = await response.json();
+        console.log(data)
         return data; // Expected response: { success: true, userId, token }
 
     } catch (e) {
