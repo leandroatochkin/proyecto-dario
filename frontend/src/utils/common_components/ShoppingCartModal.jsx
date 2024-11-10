@@ -26,8 +26,7 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 //   )}
 
 
-const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
-const globalOpenModal = UIStore((state)=>state.globalOpenModal)
+
 const [selectedAddress, setSelectedAddress] = useState(null);
 const [total, setTotal] = useState(0)
 const [receptor, setReceptor] = useState('')

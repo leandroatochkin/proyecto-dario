@@ -10,8 +10,6 @@ import MotionButton from '../buttons/MotionButton';
 import { UIStore } from '../store';
 
 const SettingsModal = ({language, setFunction, setFixbackground}) => {
-    const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
-    const globalOpenModal = UIStore((state)=>state.globalOpenModal)
 const[openErrorModal, setOpenErrorModal] =  useState(false);
 
 const userId = userStore((state)=>state.userId)
@@ -52,7 +50,7 @@ const handleDeleteUser = (userId)  => {
             <MotionButton buttonText={language.cancel} onClick={()=>{
                 setFunction(false) 
                 setFixbackground(false)}} className={style.button}/>
-            <MotionButton buttonText={language.delete_account_button} onClick={()=>handleDeleteUser(userId)} className={style.button}/>
+            <MotionButton buttonText={language.delete_account_button} onClick={()=>handleDeleteUser(userId)} className={style.deleteAccButton}/>
             </div>
         </motion.div>
     </Backdrop>

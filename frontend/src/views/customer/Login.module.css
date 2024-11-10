@@ -15,10 +15,8 @@
         justify-content: center;
         align-items: center;
         background: #e0e0e0;
-        
     }
-
-    
+ 
     .login{
         background-color: transparent;
         backdrop-filter: blur(20px);
@@ -29,7 +27,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 10px;
         box-shadow:  -20px -20px 60px #bebebe,
                     20px 20px 60px #ffffff; 
         width: 90%;            
@@ -39,21 +36,12 @@
         width: 100%;
         object-fit: scale-down;
     }
-    
-    .loginBtnContainer{
-        width: 100%;
-        height: auto;
-        color-scheme: light;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
+       
     .formContainer{
         display: flex;
         flex-direction: column;
-        height: 100%;
+        justify-content: center;
+        width: 80%;
     }
     
     .legend{
@@ -62,6 +50,8 @@
         border-radius: 8px;
         color: #212427;
         font-weight: bolder;
+        margin: 0;
+        padding: 0;
     }
 
     .createAccSpan{
@@ -70,42 +60,74 @@
         font-weight: bolder;
     }
 
+    .inputContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;  
+    }
+
     .input{
         border-radius: 8px;
         padding: 2%;
         border: none;
         font-size: 1.2rem;
-        margin-bottom: 1%;
         opacity: 1;
-      }
+        height: 2rem;
+        margin-bottom: 2%;
+        background-color: #212427;
+    }
+    
+    .inputPass{
+        border-radius: 8px 0px 0px 8px;
+        padding: 2%;
+        border: none;
+        font-size: 1.2rem;
+        opacity: 1;
+        height: 2rem;
+        background-color: #212427;
+        width: 85%;
+    }
+
+    .eyeButton{
+        background-color: #212427;
+        border-radius: 0px 8px 8px 0px;
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        color: #e0e0e0;
+        width: 15%;
+        padding: 2%;
+    }
       
-      .inputWrong{
+    .inputLine{
+        display: flex;
+        width: 100%;
+        margin-bottom: 2%;
+    }
+
+    .inputWrong{
         border-radius: 8px;
         border: 2px solid red;
-      }
-
-    
-    
+    }
+  
     .inputHidden{
         max-height: 0;
         opacity: 0;
         transition: max-height 0.4s ease, opacity 0.4s ease;
     }
-    
+
+    .loginBtnContainer{
+        width: 100%;
+    }
     
     .button{
         background: linear-gradient(10deg, #fa0, #ff6a00);
         border: none;
+        width: 50%;
+        color: #e0e0e0;
     }
-    
-    .title{
-        font-size: 24px;
-        font-weight: bolder;
-
-    }
-    .h3{
-        color: #edfa61;
-        text-shadow: 2px 2px 5px rgba(82,14,63,1);}
 
     .loaderContainer{
         background: #e0e0e0;
@@ -114,10 +136,6 @@
         align-items: center;
         height: 100vh;
         width: 100vw;
-    }
-
-    .verificationMsgHidden{
-        display: none;
     }
 
     .verificationMsg{
@@ -135,10 +153,6 @@
         color: #212427;
     }
 
-    .createAccPHidden{
-        display: none;
-    }
-
     .footer{
         position: absolute;
         bottom: 0;
@@ -146,9 +160,19 @@
         color: #212427;
         line-height: 1%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: flex-end;
         align-items: end;
+    }
+ 
+    .loginBtnContainer{
+        width: 100%;
+        height: auto;
+        color-scheme: light;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .continueBtn{
@@ -165,6 +189,11 @@
         color: aqua;
         animation: rotate360 1s linear forwards;
     }
+
+    .hidden{
+        display: none;
+    }
+
 
     @keyframes rotate360 {
         from {

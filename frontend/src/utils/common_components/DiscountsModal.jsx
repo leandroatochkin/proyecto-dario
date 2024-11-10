@@ -14,6 +14,7 @@ const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setF
 
   // This useEffect hook listens for scroll events on the discountContainer
   useEffect(() => {
+    setFixbackground(true)
     const handleScroll = () => {
       if (containerRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
@@ -28,9 +29,6 @@ const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setF
 
   }, []);
 
-  useEffect(()=>{
-    console.log(isRotated)
-  },[isRotated])
 
   return (
     <Backdrop aria-labelledby="discounts-modal">
@@ -38,7 +36,7 @@ const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setF
         className={style.closeButton}
         onClick={() => {
           setFunction(false)
-          setGlobalOpenModal(false)
+          setFixbackground(false)
         }}
         aria-label={language.button_close}
       >

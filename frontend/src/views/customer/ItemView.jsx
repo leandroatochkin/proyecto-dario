@@ -113,7 +113,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
           </p>
           
           <p className={ superOffer ? style.totalP : ''}>
-            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_est === 'X' || 'S' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven / 10000}{product.PD_est === 'X' || 'S' ? '(oferta)' : ''}             
+            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {product.PD_est === 'X' || 'S' ? returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000 : product.PD_pre_ven / 10000}{product.PD_est === 'X' || product.PD_est === 'S' ? '(oferta)' : ''}             
           </p>
           <p>
             <span style={{ fontWeight: 'bolder' }}>{language.quantity}:</span>

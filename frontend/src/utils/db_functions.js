@@ -76,7 +76,7 @@ export const createCheckout = async (userId, order, address, total, receptor, co
 };
 
 export const checkUser = async (email) => {
-    const userData = { email: email };
+    const userData = { email: email.toLowerCase() };
     
     try {
         const response = await fetch(index.check_user, {
@@ -101,7 +101,7 @@ export const checkUser = async (email) => {
 
 export const loginUser = async (email, password) => {
     const userData = { 
-        email: email,
+        email: email.toLowerCase(),
         password: password };
 
     
@@ -128,7 +128,7 @@ export const loginUser = async (email, password) => {
 
 export const registerUser = async (email, password, phone, isGoogle) => {
     const userData = {
-        email: email,
+        email: email.toLowerCase(),
         password: password,
         phone: phone,
         role: 'user',

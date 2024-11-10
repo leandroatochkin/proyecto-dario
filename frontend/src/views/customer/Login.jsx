@@ -11,6 +11,8 @@ import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import { passwordRegex, emailRegex, phoneRegex } from '../../utils/common_functions';
 import CustomGoogleLoginBtn from '../../utils/common_components/CustomGoogleLoginBtn';
 import { motion } from 'framer-motion';
+import EyeOpen from '../../utils/Icons/EyeOpen';
+import EyeClosed from '../../utils/Icons/EyeClosed';
 
 
 const Login = ({language}) => {
@@ -31,6 +33,9 @@ const Login = ({language}) => {
   const [repeatPassword, setRepeatPassword] = useState('')
   const [isGoogleLogin, setIsGoogleLogin] = useState(false)
   const [continueBtn, setContinueBtn] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+
 
   // Zustand store for login status
   const setLoginStatus = userStore((state) => state.setLoginStatus);
@@ -232,20 +237,32 @@ const Login = ({language}) => {
         
           <div className={style.formContainer} aria-label="Google login button container">
             
-            <div>
-              <legend className={style.legend} aria-label="Login form legend">login</legend>
-                <div  className={style.inputContainer}>
-
+            {/*-----------------------inputs container---------------------------*/}
+            <h4 className={style.legend} aria-label="Login form legend">login</h4>
+              <div  className={style.inputContainer}>
+                {/*-----------------------email input---------------------------*/}
                 <input type='text' name='email' placeholder='email' onChange={(e)=>setEmail(e.target.value)} className={style.input}/>
-                <input type='password' name='password'  placeholder='password'onChange={(e)=>setPassword(e.target.value)} className={style.input}/>
-                <input type='password' name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.input : style.inputHidden}/>
+
+
+                <div className={style.inputLine}>
+                    <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='password'onChange={(e)=>setPassword(e.target.value)} className={style.inputPass}/>
+                    <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
                 </div>
-              <button type='submit' onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
-              <div className={(!isGoogleLogin) ? style.verificationMsgHidden : style.verificationMsg}>{language.verification_message}</div>
-            </div>
 
-            <p className={!phone ? style.createAccP : style.createAccPHidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.create_account_button}</span></p>
+                <div className={newAccountMode ? style.inputLine : style.inputHidden}>
+                    <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.inputPass : style.inputHidden}/>
+                    <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
+                </div>
+              </div>
+              <div className={style.loginBtnContainer}>
+                    <button type='submit' onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
+              </div>
 
+              <div className={(!isGoogleLogin) ? style.hidden : style.verificationMsg}>{language.verification_message}</div>
+            
+
+            <p className={!phone ? style.createAccP : style.hidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.create_account_button}</span></p>
+          {/*-----------------------inputs container---------------------------*/}
             <div className={style.loginBtnContainer}>
             <p className={style.createAccP}>{language.or_else}</p>
             {!continueBtn ?
@@ -268,8 +285,8 @@ const Login = ({language}) => {
       </div>
 
       <footer className={style.footer}>
-        <p><a href='/documentation/attributions.html' target='_blank' rel="noopener noreferrer">about</a></p>
-        <p>code by <a href='https://github.com/leandroatochkin'>lna</a></p>
+        <p><a href='/documentation/attributions.html' target='_blank' rel="noopener noreferrer">about||</a></p>
+        <p>code by <a href='https://github.com/leandroatochkin'>lna||</a></p>
         <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>blick</a></p>
       </footer>
     </div>

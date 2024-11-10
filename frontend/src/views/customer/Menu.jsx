@@ -61,7 +61,6 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   }, []);
 
   useEffect(() => {
-    console.log(fixBackground)
     if (fixBackground) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -80,8 +79,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
 
   const setLoginStatus = userStore((state) => state.setLoginStatus)
   const loginStatus = userStore((state) => state.loggedIn)
-  const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
-  const globalOpenModal = UIStore((state)=>state.globalOpenModal)
+
 
   const navigate = useNavigate()
 

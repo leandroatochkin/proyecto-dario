@@ -7,13 +7,12 @@ import MotionButton from '../buttons/MotionButton';
 import { UIStore } from '../store';
 
 const ModalTwoButton = ({ message, setOpenModal, setAccept, buttonText1, buttonText2, setFixbackground }) => {
-  const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
-  const globalOpenModal = UIStore((state)=>state.globalOpenModal)
+
   
   const handleClickOk = () => {
     setAccept(true)
     setOpenModal(false); // Close the modal
-    setGlobalOpenModal(false)
+
   };
 
   const handleClickCancel = () => {
