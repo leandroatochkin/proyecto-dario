@@ -2,6 +2,20 @@
 
 .container{
     width: 100%;
+    height: 50%;
+}
+
+.addressesContainer{
+    max-height: 10vh;
+    overflow-y: scroll;   
+}
+
+.topP{
+    padding-top: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #212427;
+    font-weight: bolder;
 }
 
 .addressLine{
@@ -9,7 +23,7 @@
 }
 
 .input{
-    background-color: black;
+    background-color: #212427;
     border-radius: 8px;
     border: none;
     color: #e0e0e0;
@@ -18,11 +32,12 @@
 }
 
 .select{
-    background-color: black;
+    background-color: #212427;
     border-radius: 8px;
     border: none;
     color: #e0e0e0;
     height: 20px;
+    font-weight: bolder;
 }
 
 .addressInput{
@@ -75,5 +90,30 @@
     background-color: transparent;
     color: #212427;
     font-weight: bolder;
+}
+
+.arrowContainer{
+    color: #212427;
+    transform: rotateX('90deg');
+    padding: 0;
+    margin: 0;
+}
+
+.arrow{
+    transform: rotate(90deg);
+    animation: intermitent 2s ease-in-out infinite;
+}
+
+
+@keyframes intermitent {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1; /* Adjust the distance to control the float height */
+    }
+    100% {
+      opacity: 0;
+    }
 }
   }

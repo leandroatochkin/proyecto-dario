@@ -209,20 +209,20 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             }} className={style.settingsBtn}/>
         </div>
         <motion.button
-  className={style.cartButton}
-  onClick={() => {
-    setOpenCartModal(!openCartModal)
-    setFixbackground(true)
-  }}
-  initial={{ scale: '1' }}
-  whileTap={{ scale: '0.95' }}
->
+            className={style.cartButton}
+            onClick={() => {
+                      setOpenCartModal(!openCartModal)
+                      setFixbackground(true)
+                      }}
+            initial={{ scale: '1' }}
+            whileTap={{ scale: '0.95' }}
+          >
   <ShoppingCart />
   <div className={style.itemCount}>{currentOrder.length}</div>
         </motion.button>
   <h1 className={ categories.length > 0 ? style.businessTitle : style.businessTitleHidden}>{businessName || businessNameFromLogIn}</h1>
   <div className={style.filterContainer}>
-  <button className={style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.filters}</button>
+  <button className={isLoading ? style.hidden : style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.filters}</button>
   <div className={openFilters ? style.filters : style.hidden}>
   <button onClick={() => setFilterValue(null)} className={style.resetFiltersBtn}>
     {language.reset_filters}

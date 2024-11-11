@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {userStore} from '../store';
 import { getAddress, addAddress, deleteAddress } from '../db_functions';
 import style from './AddressSelector.module.css';
 import { ES_text } from '../text_scripts';
-import { motion } from 'framer-motion';
+import { motion, transform } from 'framer-motion';
 import { getAddressLabel } from '../common_functions';
 import { MoonLoader } from 'react-spinners';
+import Trashcan from '../Icons/Trashcan';
+import DoubleArrow from '../Icons/DoubleArrow';
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
@@ -16,7 +18,11 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const [openDeleteAddressModal, setOpenDeleteAddressModal] = useState(null); // Store index of selected row
   const [showDeleteAddressModal, setShowDeleteAddressModal] = useState(false);
   const [loading, setLoading] = useState(false)
+  const [isRotated, setIsRotated] = useState(false);
 
+  const containerRef = useRef(null);
+
+  useEffect(()=>{console.log(isRotated)},[isRotated])
 
   
   const loggedIn = userStore((state) => state.loggedIn);
@@ -63,6 +69,29 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
       console.log(e);
     }
   };
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+        
+        // If scrolled to the bottom, set `isRotated` to true, else false
+        setIsRotated(scrollTop + clientHeight >= scrollHeight - 10); // Adding a small buffer (10px) to detect scroll at the bottom
+      }
+    };
+  
+    const container = containerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
+  
+  
+  
 
 
   const retrieveAddress = async (userId) => {
@@ -128,7 +157,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
 
   return (
     <div className={style.container}>
-      <p style={{fontWeight: 'bolder', color: '#212427'}}>{language.please_select_address_b}{`(✔️) `}{language.or_add_a_new_address}</p>
+      <p className={style.topP}>{language.please_select_address_b}{`(✔️) `}{language.or_add_a_new_address}</p>
+      <div className={style.addressesContainer} ref={containerRef}>
       {addressesToMap.length > 0 && addressesToMap.map((address, index) => (
         <div 
           key={index} 
@@ -153,25 +183,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
                   setShowDeleteAddressModal(!showDeleteAddressModal)
                 }}
               >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  className="lucide lucide-trash-2"
-                  aria-hidden="true"
-                >
-                  <path d="M3 6h18" />
-                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                  <line x1="10" y1="11" x2="10" y2="17" />
-                  <line x1="14" y1="11" x2="14" y2="17" />
-                </svg>
+<Trashcan />
               </span>
             </div>
           )}
@@ -191,7 +203,14 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
           )}
         </div>
       ))}
-
+      </div>
+      <motion.div 
+      className={style.arrowContainer}
+      animate={{ rotate: isRotated ? 180 : 0 }}
+      transition={{ duration: 0.3 }}
+      >
+        {addressesToMap.length > 4 ? <DoubleArrow width={'30'} height={'30'} className={style.arrow}/> : ''}
+        </motion.div>
       <motion.button 
         onClick={() => {
           setShowInput(!showInput);
