@@ -35,6 +35,7 @@ const Login = ({language}) => {
   const [continueBtn, setContinueBtn] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [invalidCredentials, setInvalidCredentials] = useState(false)
+  const [userAlreadyExists, setUserAlreadyExists] = useState(false)
 
 
 
@@ -113,38 +114,48 @@ const Login = ({language}) => {
     }
   };
 
-  const handleRegister = async () => {
+ const handleRegister = async () => {
     if (password === repeatPassword && passwordRegex.test(password) && emailRegex.test(email)) {
-      setOpenModal(true);
-  
-      if (phone !== '' && phoneRegex.test(phone)) {
-        try {
-          const response = await registerUser(email, password, phone, false);
+      setLoading(true);
 
+      const userChecked = await checkUser(email)
+
+      setLoading(false)
+      if(userChecked.exists === false){
+        setOpenModal(true);
   
-          if (response.success) {
-            setNewUser(false);
-            setLoginStatus(true, response.userId);
-            sendVerification(email, response.userId)
+        if (phone !== '' && phoneRegex.test(phone)) {
+          try {
+            const response = await registerUser(email, password, phone, false);
   
-            // Navigate immediately after successful registration
-            if (business.codRazSoc) {
-              navigateToMenuIfId();
+    
+            if (response.success) {
+              setNewUser(false);
+              setLoginStatus(true, response.userId);
+              sendVerification(email, response.userId)
+    
+              // Navigate immediately after successful registration
+              if (business.codRazSoc) {
+                navigateToMenuIfId();
+              } else {
+                navigate('/home');
+              }
+            }
+          } catch (e) {
+            if (e.response && e.response.status === 409) {
+              setOpenModal(false)
+              setInvalidCredentials(true); // Set the invalid credentials state
             } else {
-              navigate('/home');
+              console.error('Error registering user:', e);
             }
           }
-        } catch (e) {
-          if (e.response && e.response.status === 409) {
-            setInvalidCredentials(true); // Set the invalid credentials state
-          } else {
-            console.error('Error registering user:', e);
-          }
-        }
-      } 
-    } else {
-      alert('Invalid input');
-    }
+        } 
+      } else {
+        setUserAlreadyExists(true);
+      }
+      }
+
+
   }; 
 
   const handleGoogleLoginRegister = async (email) => {
@@ -222,6 +233,15 @@ const Login = ({language}) => {
     return () => clearTimeout(timer);
   }, [invalidCredentials]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      
+      userAlreadyExists ? setUserAlreadyExists(false) :  null;
+
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [userAlreadyExists]);
+
   if (loading) {
     return (
       <div className={style.container}>
@@ -267,6 +287,7 @@ const Login = ({language}) => {
                     <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.inputPass : style.inputHidden}/>
                     <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
                 </div>
+                <p className={userAlreadyExists ? style.invalidCredentials : style.hidden}>{language.user_already_exists}</p>
               </div>
               <div className={style.loginBtnContainer}>
                     <button type='submit' onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
@@ -275,7 +296,8 @@ const Login = ({language}) => {
               <div className={(!isGoogleLogin) ? style.hidden : style.verificationMsg}>{language.verification_message}</div>
             
 
-            <p className={!phone ? style.createAccP : style.hidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.create_account_button}</span></p>
+            <p className={!newAccountMode ? style.createAccP : style.hidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.create_account_button}</span></p>
+            <span onClick={()=>setNewAccountMode(!newAccountMode)} style={{color: '#212427', fontWeight: 'bolder'}} className={newAccountMode ? '' : style.hidden}>{language.cancel}</span>
           {/*-----------------------inputs container---------------------------*/}
             <div className={style.loginBtnContainer}>
             <p className={style.createAccP}>{language.or_else}</p>
@@ -291,7 +313,7 @@ const Login = ({language}) => {
              className={style.continueBtn}
              onClick={handleContinue}>
               {language.continue}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="lucide lucide-circle-check" className={style.check}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={style.check}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
               </motion.button>}
             </div>
           </div>

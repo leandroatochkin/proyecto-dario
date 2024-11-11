@@ -23,7 +23,7 @@ export const ES_text = {
     filters: 'filtros',
     highlighted_discount: 'oferta destacada',
     highlighted_discounts: 'ofertas destacadas',
-    invalid_credentials: 'Email o contraseña incorrectos o ya existentes.',
+    invalid_credentials: 'Email o contraseña incorrectos.',
     has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.',
     large_screen: 'Esta aplicación no está disponible en pantallas grandes por el momento.',
     log_out: '¿Seguro que quiere salir?',
@@ -57,7 +57,8 @@ export const ES_text = {
     create_account_preface: '¿Todavía no tienes una cuenta?',
     verification_message: 'Se enviará un correo al mail proporcionado. En caso de no recibirlo, por favor, revisa tu carpeta de spam.',
     or_else: 'o también',
-    or_add_a_new_address: 'o añade uno nuevo'
+    or_add_a_new_address: 'o añade uno nuevo',
+    user_already_exists: 'usuario ya registrado.'
 }
 
 

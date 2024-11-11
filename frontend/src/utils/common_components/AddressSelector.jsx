@@ -94,8 +94,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
       await deleteAddress(userId, addressId);
   
       // Update the state to filter out the deleted address
-      setAddressesToMap((prevAddresses) =>
-        prevAddresses.filter((address) => address.addressId !== addressId)
+      setAddressesToMap(
+        addressesToMap.filter((address) => address.addressId !== addressId)
       );
   
       // Close the delete modal
