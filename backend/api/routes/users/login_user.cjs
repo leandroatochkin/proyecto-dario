@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
             if (err) {
                 console.error('Database query error:', err);
 
-                throw  new ServerError('Database query error'), err;
+                return next(new ServerError('Database query error', err))  
 
             }
 
@@ -59,7 +59,7 @@ router.post('/', (req, res) => {
                 decryptedPassword = decrypt(parsedPassword);
             } catch (decryptionError) {
                 console.error('Password decryption error:', decryptionError);
-                throw new  ServerError('Password decryption error'), err;
+                return next(new  ServerError('Password decryption error', err)) ;
 
             }
 

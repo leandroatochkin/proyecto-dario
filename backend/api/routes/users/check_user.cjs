@@ -9,13 +9,13 @@ router.post('/', (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-        throw new  ValidationError("email is required");
+        return next(new  ValidationError("email is required"))
       }
     
     db.query('SELECT id FROM users WHERE email = ? AND deleted_at IS NULL', [email], (err, results) => {
         if (err) {
 
-            throw new  ServerError('Database query', err);
+            return next( new  ServerError('Database query', err));
 
         }
 

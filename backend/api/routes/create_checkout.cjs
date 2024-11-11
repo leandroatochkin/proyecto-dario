@@ -17,7 +17,7 @@ router.post('/checkout', async (req, res) => {
   // Check if orderData is defined and is an array
   if (!orderData || !Array.isArray(orderData)) {
 
-    throw  new ValidationError('Invalid order data');
+    return next(new ValidationError('Invalid order data'))  
 
   }
 
@@ -117,7 +117,7 @@ const orderString = `D|${product.PD_cod_raz_soc.toString()}|${product.PD_cod_suc
       if (err) {
         console.error('Failed to write order to file:', err);
 
-        throw new ServerError('Failed to save order')
+        return next(new ServerError('Failed to save order', err)) 
       }
 
       console.log('Order saved to file successfully!');
@@ -126,7 +126,7 @@ const orderString = `D|${product.PD_cod_raz_soc.toString()}|${product.PD_cod_suc
   } catch (err) {
     console.error('Error inserting some orders:', err);
 
-    throw new  ServerError('Error inserting some orders');
+    return next(new  ServerError('Error inserting some orders', err));
 
   }
 });

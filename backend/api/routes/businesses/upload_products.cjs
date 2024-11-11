@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
         await Promise.all(queries);
         res.send('Producto data uploaded');
     } catch (err) {
-        throw new ServerError('Database  error'), err;
+        return next(new ServerError('Database  error', err)) 
 
     }
 });

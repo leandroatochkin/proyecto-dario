@@ -40,7 +40,7 @@ app.use(cors({
 }));
 
 
-app.use(centralizedErrorHandler)
+
 
 const options = {
     key: fs.readFileSync('C:/Users/leand/privkey.pem'),  // Replace with the correct path
@@ -79,19 +79,6 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
-// app.use(session({
-//     secret: 'your-secret-key',
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//         secure: true, // Ensures cookie is sent only over HTTPS
-//         httpOnly: true,
-//         sameSite: 'None' // Required for cross-origin cookies in recent browser versions
-//     }
-// }));
-
-
-
 app.use(xss())
 
 app.use(express.json()); // Parse incoming JSON data
@@ -108,6 +95,8 @@ app.use('/images', (req, res, next) => {
 Object.entries(routes).forEach(([path, route]) => {
     app.use(path, require(route));
   });
+
+app.use(centralizedErrorHandler)
 
 
 cron.schedule('0 0 * * *', async () => {

@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
 
     if (!stateData) {
 
-        throw  new ValidationError('no data');
+        return next(new ValidationError('no data'))  
 
     }
 
@@ -28,9 +28,8 @@ router.post('/', (req, res) => {
 
         db.query(query, [EP_est, EP_tot_fin, EP_fecha, EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], (err) => {
             if (err) {
-                console.error(`Failed to insert/update pedido: ${err.message}`);
-                throw new  ServerError('Failed to insert/update pedido'), err;
 
+                return next(new  ServerError('Failed to insert/update pedido', err))
             }
         });
 
@@ -47,7 +46,7 @@ router.post('/', (req, res) => {
                     db.query(checkNotificationQuery, [EP_cod_raz_soc, EP_cod_suc, EP_nro_ped], async (err, results) => {
                         if (err) {
                             console.error("Error checking notification status:", err);
-                            throw new ServerError('Database query error'), err
+                            return next(new ServerError('Database query error', err))
                         }
             
                         if (results.length && !results[0].notification_sent) {

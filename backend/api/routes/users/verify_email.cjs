@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
     // Check if addresses array is present and contains at least one address
     if (!userId) {
 
-        throw new  ValidationError('No id.');
+        return next(new  ValidationError('No id.')) 
 
     }
 
@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
         if (err) {
             console.error("Error verifying email:", err);
 
-            throw new  ServerError('Error verifying email'), err;
+            return next(new  ServerError('Error verifying email', err)) 
 
         } return res.status(200).json({ success: true });
     })

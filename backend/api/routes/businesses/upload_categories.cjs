@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
 
     if (!rubroData) {
 
-        throw  new ValidationError('no data');
+        return next(new ValidationError('no data'))  
 
     }
     
@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
         db.query(query, [RB_cod_raz, RB_cod_suc, RB_cod_rub, RB_des_rub, RB_est, RB_des_rub, RB_est], (err) => {
             if (err) {
 
-                throw new  ServerError('Database query error'), err;
+                return next(new  ServerError('Database query error', err))
 
             }
         });

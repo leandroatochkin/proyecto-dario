@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
     db.query('SELECT id, address, address_type FROM user_addresses WHERE user_id = ?', userId, (err, results) => {
         if (err) {
 
-            throw new  ServerError('Database query error'), err;
+            return next(new  ServerError('Database query error', err)) 
 
         }
 
@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
         } catch (error) {
             console.error('Error decrypting addresses:', error);
 
-            throw new  ServerError('Error decrypting addresses'), error;
+            return next(new  ServerError('Error decrypting addresses', error)) ;
 
         }
     });

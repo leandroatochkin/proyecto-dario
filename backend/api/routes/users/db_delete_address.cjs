@@ -8,20 +8,20 @@ router.post('/', (req, res) => {
 
     if (!userId || !addressId) {
 
-        throw new  ValidationError('User ID and address ID are required');
+        return next(new  ValidationError('User ID and address ID are required')) 
 
     }
 
     db.query('DELETE FROM user_addresses WHERE user_id = ? AND id = ?', [userId, addressId], (err, result) => {
         if (err) {
 
-            throw  new ServerError('Database deletion error'), err;
+            return next(new ServerError('Database deletion error', err))  
 
         }
 
         if (result.affectedRows === 0) {
 
-            throw new  NotFoundError('Address not found or already deleted'), err;
+            return next(new  NotFoundError('Address not found or already deleted', err));
 
         }
 

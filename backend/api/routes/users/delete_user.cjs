@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
 
     if (!userId) {
 
-        throw new  ValidationError("userId is required");
+        return next(new  ValidationError("userId is required")) 
 
     }
 
@@ -19,14 +19,14 @@ router.post('/', (req, res) => {
     db.query(firstQuery, [userId], (err) => {
         if (err) {
 
-            throw new ServerError('Error deleting user addresses'), err
+            return next(new ServerError('Error deleting user addresses', err)) 
         }
 
         // Mark user as deleted and nullify sensitive data
         db.query(secondQuery, [userId], (err) => {
             if (err) {
 
-                throw new  ServerError('Error updating user information'), err
+                return next(new  ServerError('Error updating user information', err)) 
 
             }
 

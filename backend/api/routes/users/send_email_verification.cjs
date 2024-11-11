@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     // Check if addresses array is present and contains at least one address
     if (!email && !userId) {
 
-        throw new  ValidationError('No email.');
+        return next(new  ValidationError('No email.')) 
 
     }
 

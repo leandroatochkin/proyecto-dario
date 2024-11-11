@@ -23,26 +23,26 @@ router.post('/', (req, res) => {
     // Validate required fields
     if (!email || !phone || !password && !isGoogle) {
 
-        throw new  ValidationError('Email, phone and password are required.');
+        return next(new  ValidationError('Email, phone and password are required.'))
 
     }
 
     // Validate email and phone formats
     if (!isValidEmail(email)) {
 
-        throw new   ValidationError('Invalid email format.');
+        return next (new   ValidationError('Invalid email format.'));
 
     }
 
     if (!isValidPhone(phone)) {
 
-        throw new   ValidationError('Invalid phone format.');
+        return next(new   ValidationError('Invalid phone format.'))
 
     }
 
     if (!isValidPassword(password) && !isGoogle) {
 
-        throw  new  ValidationError('Invalid password format.');
+        return next(new  ValidationError('Invalid password format.')) 
 
     }
 
@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
         if (err) {
             console.error("Error checking for existing email:", err);
 
-            throw new  ServerError('Error checking for existing email'), err;
+            return next(new  ServerError('Error checking for existing email', err)) 
 
         }
 
@@ -82,7 +82,7 @@ router.post('/', (req, res) => {
             }
 
             // Return conflict if email already exists for a non-deleted user
-            throw new ConflictError('Email already exists')
+            return next(new ConflictError('Email already exists')) 
         }
 
         // Proceed with user creation if email does not exist
@@ -98,11 +98,11 @@ router.post('/', (req, res) => {
                     // Handle duplicate entry error in case of race condition
                     if (err.code === 'ER_DUP_ENTRY') {
 
-                        throw new ConflictError('Email already exists')
+                        return next(new ConflictError('Email already exists')) 
                     }
                     console.error("Error inserting user:", err);
 
-                    throw  new ServerError('Error inserting user'), err;
+                    return next(new ServerError('Error inserting user', err))  ;
 
                 }
 

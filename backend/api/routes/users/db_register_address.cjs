@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
     // Check if addresses array is present and contains at least one address
     if (!addresses || addresses.length === 0) {
 
-        throw new  ValidationError('At least one address is required.');
+        return next(new  ValidationError('At least one address is required.')) 
 
     }
 

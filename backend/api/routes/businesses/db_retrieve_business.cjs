@@ -7,7 +7,7 @@ const {ServerError} = require('../../../middleware/error_handling/error_models.c
 router.get('/', ( req, res ) => {//get products
     db.query('SELECT * FROM ST_RZMA1', (err, results) => {
       if (err) {
-        throw  new ServerError('Database query error'), err;
+        return next(new ServerError('Database query error', err))  
 
       }
       if (results.length === 0) {
