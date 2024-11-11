@@ -15,7 +15,7 @@ const isValidPassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$
 //Contains at least one digit
 //Contains at least one special character (e.g., !@#$%^&*())
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const { email, phone, password, role, isGoogle } = req.body;
     console.log(email, phone, password, role, isGoogle)
 

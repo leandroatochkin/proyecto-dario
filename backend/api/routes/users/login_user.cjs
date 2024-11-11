@@ -6,7 +6,7 @@ const { decrypt } = require('../../../utils.cjs');
 const JWT_SECRET = process.env.JWT_SECRET;
 const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
 
     const { email, password } = req.body;
 

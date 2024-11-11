@@ -6,7 +6,7 @@ const error_logger  = require('../../../middleware/error_handling/error_logger.c
 
 
 
-router.post('/', ( req, res ) => {//get products
+router.post('/', ( req, res, next ) => {//get products
 
 
     const  { id } = req.body;

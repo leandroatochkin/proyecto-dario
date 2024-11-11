@@ -11,7 +11,7 @@ const {ValidationError, ServerError} = require('../../middleware/error_handling/
 const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
 
 // Endpoint for order checkout
-router.post('/checkout', async (req, res) => {
+router.post('/checkout', async (req, res, next) => {
   const { orderData } = req.body;
 
   // Check if orderData is defined and is an array

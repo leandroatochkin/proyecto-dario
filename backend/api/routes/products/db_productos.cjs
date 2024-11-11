@@ -4,7 +4,7 @@ const db = require('../../db.cjs');
 const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 
-router.post('/', ( req, res ) => {//get products
+router.post('/', ( req, res, next ) => {//get products
   const {raz_social} =  req.body;
   if (!raz_social) {
     return next(new ValidationError('raz_social is required')) 

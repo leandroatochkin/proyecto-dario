@@ -4,7 +4,7 @@ const db = require('../../db.cjs');
 const { decrypt } = require('../../../utils.cjs');
 const { ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const { userId } = req.body;
 
     // Query to get all addresses for the user

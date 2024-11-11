@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../../db.cjs');
 const {ValidationError, ServerError, NotFoundError} = require('../../../middleware/error_handling/error_models.cjs')
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const { userId, addressId } = req.body;
 
     if (!userId || !addressId) {

@@ -6,7 +6,7 @@ const {ValidationError} = require('../../../middleware/error_handling/error_mode
 
 const frontEndHost = process.env.FRONT_END_HOST
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const { email, userId } = req.body;
 
     const link = `${frontEndHost}/verification?id=${userId}`

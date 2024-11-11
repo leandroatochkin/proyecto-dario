@@ -6,7 +6,7 @@ const {ServerError} = require('../../../middleware/error_handling/error_models.c
 
 
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     try {
         const productoData = parseFileData(req.body.data, 'producto');
 

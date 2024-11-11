@@ -4,7 +4,7 @@ const db = require('../../db.cjs');
 const {ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 
-router.get('/', ( req, res ) => {//get products
+router.get('/', ( req, res, next ) => {//get products
     db.query('SELECT * FROM ST_RZMA1', (err, results) => {
       if (err) {
         return next(new ServerError('Database query error', err))  

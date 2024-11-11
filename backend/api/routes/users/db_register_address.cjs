@@ -5,7 +5,7 @@ const { encrypt } = require('../../../utils.cjs');
 const db = require('../../db.cjs');
 const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const { userId, addresses } = req.body;
 
     const isValidAddress = (address) => /^[a-zA-Z0-9\s.,#\-\/]+$/.test(address);

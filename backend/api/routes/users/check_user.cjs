@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');  // Import jsonwebtoken
 const JWT_SECRET = process.env.JWT_SECRET;  // Replace with your actual JWT secret
 const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const { email } = req.body;
 
     if (!email) {

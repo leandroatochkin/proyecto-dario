@@ -6,7 +6,7 @@ const {sendEmailNotification} = require('../../../notification_mailer.cjs');
 const { getUserDetails, getUserIdFromOrder } = require('../../../utils.cjs');
 const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const stateData = parseFileData(req.body.data, 'estado_pedido');
 
     console.log(stateData)

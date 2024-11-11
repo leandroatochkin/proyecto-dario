@@ -5,7 +5,7 @@ const parseFileData  = require('../../../parser.cjs');
 const {ValidationError, ServerError} = require('../../../middleware/error_handling/error_models.cjs')
 
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const rubroData = parseFileData(req.body.data, 'rubro');
 
     if (!rubroData) {
