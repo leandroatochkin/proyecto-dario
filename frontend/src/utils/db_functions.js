@@ -40,8 +40,45 @@ export const getCategories = async(raz_soc) =>{
     }
 }
 
-export const createCheckout = async (userId, order, address, total, receptor, commentary) => {
+// export const createCheckout = async (userId, order, address, total, receptor, commentary) => {
 
+//     try {
+//         const payload = {
+//             orderData: order.map((product) => ({
+//                 user_Id: userId,
+//                 PD_cod_raz_soc: product.PD_cod_raz_soc,
+//                 PD_cod_suc: product.PD_cod_suc,
+//                 PD_cod_pro: product.PD_cod_pro,
+//                 PD_pre_ven: product.PD_pre_ven,
+//                 quantity: product.quantity,
+//                 address: address.address,
+//                 type: address.type,
+//                 total: total,
+//                 state: 1,
+//                 receptor: receptor,
+//                 commentary: commentary
+//             }))
+//         };
+
+//         const response = await fetch(index.create_checkout, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify(payload),
+//         });
+
+//         const data = await response.json();
+//         return data;  // Return the response data if needed
+//     } catch (e) {
+//         console.log(e);
+//     }
+// };
+
+// Import your index object if needed
+// import index from 'path-to-your-index-file';
+
+export const createCheckout = async (userId, order, address, total, receptor, commentary) => {
     try {
         const payload = {
             orderData: order.map((product) => ({
@@ -60,20 +97,39 @@ export const createCheckout = async (userId, order, address, total, receptor, co
             }))
         };
 
-        const response = await fetch(index.create_checkout, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
+        // Fetch both endpoints in parallel
+        const [response1, response2] = await Promise.all([
+            fetch(index.create_checkout, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            }),
+            fetch('https://jqkccp38-8080.brs.devtunnels.ms/checkout', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+        ]);
 
-        const data = await response.json();
-        return data;  // Return the response data if needed
-    } catch (e) {
-        console.log(e);
+        // Check if both responses are OK
+        if (response1.ok && response2.ok) {
+            const data1 = await response1.json();
+            const data2 = await response2.json();
+            return { data1, data2 }; // Return data from both endpoints if needed
+        } else {
+            console.error('One or both requests failed', response1.status, response2.status);
+            throw new Error('One or both requests failed');
+        }
+
+    } catch (error) {
+        console.error('Error in createCheckout:', error);
     }
 };
+
 
 export const checkUser = async (email) => {
     const userData = { email: email.toLowerCase() };

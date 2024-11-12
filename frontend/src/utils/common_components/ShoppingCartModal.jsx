@@ -9,7 +9,7 @@ import {userStore} from '../store'
 import { MoonLoader } from 'react-spinners';
 import Trashcan from '../Icons/Trashcan' 
 import MotionButton from '../buttons/MotionButton'
-import { UIStore } from '../store';
+
 
 
 const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language, hasDelivery, setFixbackground }) => {
@@ -40,8 +40,6 @@ const userId = userStore((state) => state.userId);
 
 const check = itemsToMap.length === 0 || receptor === '' || selectedAddress === null;
 
-    (itemsToMap.length === 0 && receptor === '' && hasDelivery === '0') || 
-    (itemsToMap.length === 0 && hasDelivery === '1' && selectedAddress === null);
 
 useEffect(()=>{
 const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0);
@@ -72,27 +70,39 @@ const handleBtn = () => {
             comentary
         );
         //setFunction(false);
-    setDisabled(true)
+
+
 } else if(receptor === ''){
   setInputWrong(true)
   alert(language.please_enter_receptor)
 } else if(hasDelivery === '1' && selectedAddress === null){
   alert(language.please_select_address)
+} else if(itemsToMap.length === 0){
+  alert(language.empty_shopping_cart)
 }
 
 }
 
 useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false);
+      if(loading){
+        setLoading(false);
       setPlayAnimation(true)
+      } else{
+        return
+      }
     }, 1000);
     return () => clearTimeout(timer);
   }, [loading]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setPlayAnimation(false)
+      if(playAnimation){
+        setPlayAnimation(false)
+        setFunction(false)
+      } else {
+        return
+      }
     }, 1000);
     return () => clearTimeout(timer);
   }, [playAnimation]);

@@ -76,6 +76,7 @@
         height: 2rem;
         margin-bottom: 2%;
         background-color: #212427;
+        color: #e0e0e0;
     }
     
     .inputPass{
@@ -86,6 +87,7 @@
         opacity: 1;
         height: 2rem;
         background-color: #212427;
+        color: #e0e0e0;
         width: 85%;
     }
 

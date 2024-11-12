@@ -8,6 +8,7 @@ import { getAddressLabel } from '../common_functions';
 import { MoonLoader } from 'react-spinners';
 import Trashcan from '../Icons/Trashcan';
 import DoubleArrow from '../Icons/DoubleArrow';
+import {UIStore} from '../store.js'
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
@@ -16,17 +17,19 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const [addressesToMap, setAddressesToMap] = useState([]); // To map addresses
   const [inactive, setInactive] = useState(false);
   const [openDeleteAddressModal, setOpenDeleteAddressModal] = useState(null); // Store index of selected row
-  const [showDeleteAddressModal, setShowDeleteAddressModal] = useState(false);
-  const [loading, setLoading] = useState(false)
   const [isRotated, setIsRotated] = useState(false);
 
   const containerRef = useRef(null);
 
   useEffect(()=>{console.log(isRotated)},[isRotated])
 
-  
+  const setLoading = UIStore((state) => state.setLoading);
+  const loading =  UIStore((state) => state.loading);
   const loggedIn = userStore((state) => state.loggedIn);
-  const userId = userStore((state) => state.userId);  
+  const userId = userStore((state) => state.userId);
+  const openModal = UIStore((state)=>state.globalOpenModal) 
+  const setOpenModal = UIStore((state)=>state.setGlobalOpenModal)
+
 
   const isValidAddress = (address) => /^[a-zA-Z0-9\s.,#\-\/]+$/.test(address);
 
@@ -129,7 +132,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   
       // Close the delete modal
       setOpenDeleteAddressModal(null);
-      setShowDeleteAddressModal(false);
+      //setShowDeleteAddressModal(false);
+      setOpenModal(false)
     } catch (e) {
       console.log(e);
     }
@@ -180,7 +184,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
                 onClick={(e) => {
                   e.stopPropagation(); // Prevents triggering row selection
                   setOpenDeleteAddressModal(index); // Set to the selected row's index
-                  setShowDeleteAddressModal(!showDeleteAddressModal)
+                  //setShowDeleteAddressModal(!showDeleteAddressModal)
+                  setOpenModal(!openModal)
                 }}
               >
 <Trashcan />
@@ -196,7 +201,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
               
               handleDeleteAddress(userId, selectedAddress.addressId)
              }}
-             style={showDeleteAddressModal ? {display: 'flex', fontWeight: 'bolder'} : {display: 'none'}}
+             style={openModal ? {display: 'flex', fontWeight: 'bolder'} : {display: 'none'}}
              >
               {'¿' + language.delete + '?'}
             </div>

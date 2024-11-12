@@ -64,7 +64,6 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
 
   return (
     <Backdrop
-    onClick={()=>setOpenBuyModal(false)}
     >
       <motion.div
         className={style.itemView}
@@ -83,8 +82,9 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
             <motion.button
               className={style.closeFormButton}
               onClick={()=>{
-                setFixbackground(false)
-                setOpenBuyModal(false)}}
+                setFixbackground(false) 
+                setOpenBuyModal(false)}
+              }
               initial={{ scale: '1' }}
               whileTap={{ scale: '0.95' }}
               style={superOffer ? {color: '#e0e0e0'} : {color: '#212427'}}

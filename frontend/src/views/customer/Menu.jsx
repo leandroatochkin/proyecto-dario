@@ -220,8 +220,10 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   <ShoppingCart />
   <div className={style.itemCount}>{currentOrder.length}</div>
         </motion.button>
-  <h1 className={ categories.length > 0 ? style.businessTitle : style.businessTitleHidden}>{businessName || businessNameFromLogIn}</h1>
-  <div className={style.filterContainer}>
+<div className={style.headerContainer}>
+<h1 className={ categories.length > 0 ? style.businessTitle : style.businessTitleHidden}>{businessName || businessNameFromLogIn}</h1>
+<div className={style.filterContainer}>
+
   <button className={isLoading ? style.hidden : style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.filters}</button>
   <div className={openFilters ? style.filters : style.hidden}>
   <button onClick={() => setFilterValue(null)} className={style.resetFiltersBtn}>
@@ -248,7 +250,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   />
 </div>
   </div>
-  </div>
+</div>
+</div>
         {/* Show loading animation if data is still being fetched */}
         {isLoading ? (
           <div className={style.loader}>

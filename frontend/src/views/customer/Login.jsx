@@ -290,7 +290,7 @@ const Login = ({language}) => {
                 <p className={userAlreadyExists ? style.invalidCredentials : style.hidden}>{language.user_already_exists}</p>
               </div>
               <div className={style.loginBtnContainer}>
-                    <button type='submit' onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
+                    <button onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
               </div>
 
               <div className={(!isGoogleLogin) ? style.hidden : style.verificationMsg}>{language.verification_message}</div>

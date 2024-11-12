@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -8,7 +9,7 @@ const {sendEmailNotification} = require('../../notification_mailer.cjs');
 const {getUserDetails, getProductName, getAddressType, getComission} = require('../../utils.cjs')
 const {ValidationError, ServerError} = require('../../middleware/error_handling/error_models.cjs')
 
-const orderFilePath = path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
+const orderFilePath = process.env.CHECKOUT_PATH || path.join("C:/Malbec/Archivos/Pedidos", 'GO_STCFIN1.txt'); // Update with the folder path
 
 // Endpoint for order checkout
 router.post('/checkout', async (req, res, next) => {
