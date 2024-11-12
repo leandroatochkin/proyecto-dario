@@ -320,11 +320,11 @@ const Login = ({language}) => {
         
       </div>
 
-      <footer className={style.footer}>
+      {/* <footer className={style.footer}>
         <p><a href='/documentation/attributions.html' target='_blank' rel="noopener noreferrer">about||</a></p>
         <p>code by <a href='https://github.com/leandroatochkin'>lna||</a></p>
         <p>logos by <a href='https://www.instagram.com/andres_actis?igsh=dDA5ejYxbmVtOW51'>blick</a></p>
-      </footer>
+      </footer> */}
     </div>
   );
 };

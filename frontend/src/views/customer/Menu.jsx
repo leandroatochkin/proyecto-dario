@@ -263,12 +263,12 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
           categories.map((category, index) => (
             <div key={index}>
               <h2 className={filterValue === null ? style.h2Rubro : style.hidden}>{category.RB_des_rub}</h2>
-              <ul className={style.ul}>
+              <div className={style.ul}>
                 {products &&
                   products
                     .filter((product) => product.PD_cod_rub === category.RB_cod_rub)
                     .map((product, index) => (
-                      <motion.li
+                      <motion.div
                       initial={{ scale: '1' }}
                         whileTap={{ scale: '0.95' }}
                         key={index}
@@ -301,9 +301,9 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                           </h3>
                               <p className={product.PD_est === 'A' ? style.p : style.pDiscount} name='offer'><span className={product.PD_est === 'A' ? style.hidden : style.oldPrice}><span style={{fontWeight: 'bolder'}}>oferta! </span> <span className={style.crossedText}>{product.PD_pre_ven/10000}</span></span><span></span>{product.PD_discount === '00' ? product.PD_pre_ven / 10000 : returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000}</p>
                             </div>
-                      </motion.li>
+                      </motion.div>
                     ))}
-              </ul>
+              </div>
             </div>
           ))) : (
             <div className={style.emptyDataContainer}>

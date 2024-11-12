@@ -106,7 +106,7 @@ export const createCheckout = async (userId, order, address, total, receptor, co
                 },
                 body: JSON.stringify(payload),
             }),
-            fetch('https://jqkccp38-8080.brs.devtunnels.ms/checkout', { 
+            fetch('https://7105xlt6-8080.brs.devtunnels.ms/checkout', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

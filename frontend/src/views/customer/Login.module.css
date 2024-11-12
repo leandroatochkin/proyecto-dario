@@ -156,9 +156,6 @@
     }
 
     .footer{
-        position: absolute;
-        bottom: 0;
-        right: 1%;
         color: #212427;
         line-height: 1%;
         display: flex;

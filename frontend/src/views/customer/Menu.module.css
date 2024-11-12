@@ -29,8 +29,7 @@
         font-weight: bolder;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        width: 80%;
+        width: 100%;
     }
 
     .li{
@@ -41,7 +40,7 @@
         box-shadow:  -20px -20px 60px #bebebe,
                     20px 20px 60px #ffffff;
         margin-bottom: 5%;
-        width: 100%;
+        width: 95%;
                    
     }
 
