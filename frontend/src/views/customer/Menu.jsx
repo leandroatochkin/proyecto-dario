@@ -4,7 +4,7 @@ import ItemView from './ItemView';
 import { getCategories, getProducts, createCheckout, getBusinessesNumber, getBusinessesDetails } from '../../utils/db_functions';
 import style from './Menu.module.css';
 import { capitalize, returnDiscount } from '../../utils/common_functions';
-import { motion } from 'framer-motion';
+import { motion, sync } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
 import {UIStore, userStore} from '../../utils/store';
@@ -199,22 +199,29 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             setFixbackground={setFixbackground}
         />)}
   
-        <div className={style.profileBtnContainer}>
-        <MotionButton buttonText={<Account/>} onClick={()=>{setShowSidebar(!showSidebar)}} className={!showSidebar ? style.sidebarBtn : style.hidden}/>
+        <div className={!showSidebar ?style.profileBtnContainer : style.hidden}>
+        <MotionButton buttonText={<Account/>} onClick={()=>{setShowSidebar(!showSidebar)}} className={style.sidebarBtn}/>
+        <p className={style.btnLegend}>{language.options}</p>
         </div>
         <div className={showSidebar ? style.topBtnContainer : style.topBtnContainerHidden}>
           {/* <MotionButton buttonText={<BackArrow />} onClick={()=>{
             handleBack()
             setFixbackground(true)
             }} className={style.backBtn}/> */}
+          <div className={style.menuBtnContainer}>
           <MotionButton buttonText={<LogOut />} onClick={()=>{
             handleLogOut()
             setFixbackground(true)
             }} className={style.logOutBtn}/>
+            <p className={style.btnLegend}>{language.exit}</p>
+          </div>
+          <div className={style.menuBtnContainer}>
           <MotionButton buttonText={<DeleteAccount />} onClick={() => {
             setOpenSettingsModal(true)
             setFixbackground(true)
             }} className={style.settingsBtn}/>
+            <p className={style.btnLegend}>{language.delete_account_button}</p>
+          </div>
           <MotionButton buttonText={<Cross />} onClick={()=>{setShowSidebar(!showSidebar)}} className={style.hideMenu}/>
         </div>
         <motion.button

@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-      }
+    }
 
     .hidden{
       display: none;
@@ -32,122 +32,113 @@
     .superOfferItemView{
       color: #e0e0e0;
     }  
-      .modalItemInfo{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-        height: 100%;
-        position: absolute;
 
-      }
+    .modalItemInfo{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: space;
+      z-index: 999;
+      height: 100%;
+      position: absolute;
+
+    }
       
-      .dialogueTitle{
- 
-        font-size: 2.5rem;
-      }
-      .closeButtonContainerS{
-        display: flex;
-        flex-direction: row;
-        width: 90%;
-        height: 20%;
-        justify-content: space-between;
-        align-items: center;
-        color: var(--dark-text);
-        background-color: rgba(0,0,0,0.3);
-        border-radius: 16px;
-      }
+    .dialogueTitle{
+      font-size: 2.5rem;
+      padding-left: 1%;
+      padding-right: 1%;
+    }
 
-      .closeButtonContainer{
-        display: flex;
-        flex-direction: row;
-        width: 90%;
-        height: 20%;
-        justify-content: space-between;
-        align-items: center;
-        color: var(--dark-text);
-        border-radius: 16px;
-      }
-      
-      .closeFormButton{
-        background-color: transparent;
-        color: black;
-      }
-      
-
-      .itemModalDescription{
-        text-wrap:wrap;
-        color: var(--dark-text);
-        padding: 1%;
-        border-radius: 8px;
-      }
-
-      .itemModalDescriptionS{
-        text-wrap:wrap;
-        color: var(--dark-text);
-        background-color: rgba(0,0,0,0.3);
-        padding: 1%;
-        border-radius: 8px;
-      }
-
-      .totalP{
-        background-color: rgba(0,0,0,0.3);
-      }
-      
-      .operationBtnContainer{
-        margin-top: 5%;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .addToCartBtn{
-        background: linear-gradient(10deg, #fa0, #ff6a00);
-        color: black;
-      }
-
-      .pickerContainer{
+    .descriptionContainer{
        display: flex;
-       justify-content: center;
-       margin-bottom: 3%;   
-      }
+    }
+      
+    .itemModalDescription{
+      text-wrap:wrap;
+      color: var(--dark-text);
+      padding: 1%;
+      border-radius: 8px;
+      width: 70%;
+    }
 
-      .topContainer{
-        height: 60%;
-        width: 100%;
-      }
+    .listImage{
+      width: 25%;
+    }
 
-      .infoContainer{
-        width: 100%;
-        height: 40%;
-        background-color: #e0e0e0;
-        margin-bottom: 0;
-        border-radius: 0 0 32px 32px;
-      }
-
-      .dialogueTitleAlt{
-        color: #212427;
-        font-size: 1.7rem;
-        display: flex;
-        margin-left: 2%;
-        font-weight: bolder;
-      }
-
-      .totalPalt{
-        display: flex;
-        justify-content: flex-end;
-        margin-right: 2%;
-        color: red;
-        height: 30%;
-      }
-
-      .closeFormButtonAlt{
+    .closeButtonContainer{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+       width: 100%;
+    }
+ 
+    .closeFormButton{
         background-color: transparent;
-        margin-right: 2%;
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-      }
+        color: black;
+        width: auto;  
+    }
+
+    .totalP{
+      background-color: rgba(0,0,0,0.3);
+    }
+      
+    .operationBtnContainer{
+      margin-top: 5%;
+      display: flex;
+      flex-direction: column;
+    }
+      
+    .addToCartBtn{
+      background: linear-gradient(10deg, #fa0, #ff6a00);
+       color: #e0e0e0;
+    }
+
+    .pickerContainer{
+      display: flex;
+      justify-content: center;
+      margin-bottom: 3%;   
+    }
+
+    .topContainer{
+      border-radius: 32px 32px 0 0;
+      height: 60%;
+      width: 100%;
+    }
+
+    .infoContainer{
+      width: 100%;
+      height: 40%;
+      background-color: #e0e0e0;
+      margin-bottom: 0;
+      border-radius: 0 0 32px 32px;
+    }
+
+    .dialogueTitleAlt{
+      color: #212427;
+      font-size: 1.7rem;
+      display: flex;
+      font-weight: bolder;
+      padding: 0;
+      margin: 0;
+    }
+
+    .totalPalt{
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 2%;
+      color: red;
+      height: 30%;
+    }
+
+    .closeFormButtonAlt{
+      background-color: transparent;
+      margin-top: 2%;
+      margin-right: 2%;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
       
   }
 

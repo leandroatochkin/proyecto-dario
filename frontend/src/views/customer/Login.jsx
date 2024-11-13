@@ -36,6 +36,7 @@ const Login = ({language}) => {
   const [showPassword, setShowPassword] = useState(false)
   const [invalidCredentials, setInvalidCredentials] = useState(false)
   const [userAlreadyExists, setUserAlreadyExists] = useState(false)
+ 
 
 
 
@@ -80,8 +81,9 @@ const Login = ({language}) => {
 
   // Handle Google login response
   const handleLogin = async () => {
-    setLoading(true);
 
+    setLoading(true);
+    console.log('click')
     try {
       const { exists, userId, valid, emailVerified, token } = await loginUser(email, password);
 
@@ -110,6 +112,7 @@ const Login = ({language}) => {
     } catch (e) {
       console.error('Error checking user:', e);
     } finally {
+
       setLoading(false);
     }
   };
@@ -283,15 +286,21 @@ const Login = ({language}) => {
                     <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
                 </div>
                 <p className={invalidCredentials ? style.invalidCredentials : style.hidden}>{language.invalid_credentials}</p>
-                <div className={newAccountMode ? style.inputLine : style.inputHidden}>
+                <div className={newAccountMode ? style.inputLine : style.hidden}>
                     <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.inputPass : style.inputHidden}/>
                     <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
                 </div>
                 <p className={userAlreadyExists ? style.invalidCredentials : style.hidden}>{language.user_already_exists}</p>
               </div>
               <div className={style.loginBtnContainer}>
+{/*-----------------------login button---------------------------*/}
+
                     <button onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
+             
+{/*-----------------------login button---------------------------*/}
               </div>
+
+
 
               <div className={(!isGoogleLogin) ? style.hidden : style.verificationMsg}>{language.verification_message}</div>
             
