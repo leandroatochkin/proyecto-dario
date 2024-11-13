@@ -57,13 +57,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 10vh;
   }
 
   .removeItem{
     background-color: #e0e0e0;
     color: #212427;
-    border-radius: 50%;
-    height: 5%;
+    border-radius:  0 16px 16px 0;
+    height: 100%;
     padding: 1%;
   }
 

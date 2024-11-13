@@ -17,11 +17,13 @@ const session = require('express-session');
 const {updateDiscountStatus} = require('./api/routes/businesses/client_check_discounts.cjs')
 
 const fontendURL = process.env.FRONTEND_URL
+const fontendALTURL = process.env.FRONTEND_ALT
 
 const allowedOrigins = [
     'https://localhost:5173',
     fontendURL, // Vercel URL
-    'https://localhost:4173'
+    'https://localhost:4173',
+    fontendALTURL
 ];
 
 app.use(cors({

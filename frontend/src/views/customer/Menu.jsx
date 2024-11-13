@@ -180,12 +180,12 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             buttonText2={language.button_buy}
             itemsToMap={currentOrder}
             renderItem={(product) => (
-              <div className={style.li}>
-                <img src={`${host}/images/${product.PD_ubi_imagen}`} className={style.listImage} />
+              <div className={style.shoppingCartLine}>
+                <img src={`${host}/images/${product.PD_ubi_imagen}`} className={style.listImageSC} />
                 <div className={style.scInfo}>
-                  <div className={style.liInfo}>
+                  <div className={style.liShoppingCart}>
                   <span className={style.h2}>{capitalize(product.PD_des_pro).length > 20 ? capitalize(product.PD_des_pro).slice(0, 20) + '...' :  capitalize(product.PD_des_pro)}</span>
-                  <span className={style.h2}>{product.PD_pre_ven}</span>
+                  <span className={style.h2}>{'$'}{product.PD_pre_ven}</span>
 
                   </div>
                   <span className={style.h2}>{language.quantity}:{product.quantity}</span>

@@ -36,6 +36,8 @@ const [loading, setLoading] = useState(false)
 const [playAnimation, setPlayAnimation] = useState(false)
 const [disabled, setDisabled] = useState(false)
 
+useEffect(()=>{console.log(selectedAddress)},[])
+
 const userId = userStore((state) => state.userId);
 
 const check = itemsToMap.length === 0 || receptor === '' || selectedAddress === null;
@@ -75,7 +77,7 @@ const handleBtn = () => {
 } else if(receptor === ''){
   setInputWrong(true)
   alert(language.please_enter_receptor)
-} else if(hasDelivery === '1' && selectedAddress === null){
+} else if(hasDelivery == '1' && selectedAddress === null){
   alert(language.please_select_address)
 } else if(itemsToMap.length === 0){
   alert(language.empty_shopping_cart)
