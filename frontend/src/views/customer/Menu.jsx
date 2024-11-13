@@ -20,6 +20,10 @@ import LogOut from '../../utils/Icons/LogOut';
 import Settings from '../../utils/Icons/Settings';
 import ShoppingCart from '../../utils/Icons/ShoppingCart';
 import MotionButton from '../../utils/buttons/MotionButton';
+import Cross from '../../utils/Icons/Cross';
+import DeleteAccount from '../../utils/Icons/DeleteAccount';
+import Account from '../../utils/Icons/Account';
+
 
 const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, schedule, businessName }) => {
   const [categories, setCategories] = useState([]);
@@ -39,6 +43,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [openFilters, setOpenFilters] = useState(false)
   const [filterValue, setFilterValue] = useState(null)
   const [fixBackground, setFixbackground] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(false)
   
 
 
@@ -193,20 +198,24 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             hasDelivery={Number(hasDelivery)}
             setFixbackground={setFixbackground}
         />)}
-
-        <div className={style.topBtnContainer}>
-          <MotionButton buttonText={<BackArrow />} onClick={()=>{
+  
+        <div className={style.profileBtnContainer}>
+        <MotionButton buttonText={<Account/>} onClick={()=>{setShowSidebar(!showSidebar)}} className={!showSidebar ? style.sidebarBtn : style.hidden}/>
+        </div>
+        <div className={showSidebar ? style.topBtnContainer : style.topBtnContainerHidden}>
+          {/* <MotionButton buttonText={<BackArrow />} onClick={()=>{
             handleBack()
             setFixbackground(true)
-            }} className={style.backBtn}/>
+            }} className={style.backBtn}/> */}
           <MotionButton buttonText={<LogOut />} onClick={()=>{
             handleLogOut()
             setFixbackground(true)
             }} className={style.logOutBtn}/>
-          <MotionButton buttonText={<Settings />} onClick={() => {
+          <MotionButton buttonText={<DeleteAccount />} onClick={() => {
             setOpenSettingsModal(true)
             setFixbackground(true)
             }} className={style.settingsBtn}/>
+          <MotionButton buttonText={<Cross />} onClick={()=>{setShowSidebar(!showSidebar)}} className={style.hideMenu}/>
         </div>
         <motion.button
             className={style.cartButton}
@@ -261,7 +270,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
           // Display categories and products after loading completes
           categories.length > 0 ? (
           categories.map((category, index) => (
-            <div key={index}>
+            <div key={index} className={style.categoryContainer}>
               <h2 className={filterValue === null ? style.h2Rubro : style.hidden}>{category.RB_des_rub}</h2>
               <div className={style.ul}>
                 {products &&
@@ -297,9 +306,10 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                         />
                         <div className={style.itemInfo}>
                           <h3 className={style.h3}>
-                            {capitalize(product.PD_des_pro.length > 29 ? product.PD_des_pro.slice(0, 20) + '...' : product.PD_des_pro)}
+                            {capitalize(product.PD_des_pro)}
+                            {/* product.PD_des_pro.length > 29 ? product.PD_des_pro.slice(0, 20) + '...' :  */}
                           </h3>
-                              <p className={product.PD_est === 'A' ? style.p : style.pDiscount} name='offer'><span className={product.PD_est === 'A' ? style.hidden : style.oldPrice}><span style={{fontWeight: 'bolder'}}>oferta! </span> <span className={style.crossedText}>{product.PD_pre_ven/10000}</span></span><span></span>{product.PD_discount === '00' ? product.PD_pre_ven / 10000 : returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000}</p>
+                              <p className={product.PD_est === 'A' ? style.p : style.pDiscount} name='offer'><span className={product.PD_est === 'A' ? style.hidden : style.oldPrice}><span style={{fontWeight: 'bolder'}}>oferta! </span> <span className={style.crossedText}>{'$'}{product.PD_pre_ven/10000}</span></span><span></span>{product.PD_discount === '00' ? '$' + product.PD_pre_ven / 10000 : returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000}</p>
                             </div>
                       </motion.div>
                     ))}

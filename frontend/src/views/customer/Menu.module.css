@@ -2,11 +2,10 @@
     .background{
         background: #e0e0e0;
         width: 100vw;
-        height: 100%;
+        height: 100vh;
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
-        padding-top: 9%;
     }
 
     .container{
@@ -23,6 +22,12 @@
         flex-direction: column;
     }
 
+    .categoryContainer{
+        margin-bottom: 5%;
+        box-shadow:  -20px -20px 60px #bebebe,
+                    20px 20px 60px #ffffff;
+    }
+
     .ul{
         list-style: none;
         color: #212427;
@@ -33,15 +38,13 @@
     }
 
     .li{
-        height: 7vh;
         display: flex;
-        border-radius: 20px;
         background: #e0e0e0;
-        box-shadow:  -20px -20px 60px #bebebe,
-                    20px 20px 60px #ffffff;
-        margin-bottom: 5%;
-        width: 95%;
-                   
+        /* box-shadow:  -20px -20px 60px #bebebe,
+                    20px 20px 60px #ffffff; */
+        width: 100%;
+        border-bottom: 1px solid lightsteelblue;
+        height: 10vh;
     }
 
     .h3, .p{
@@ -50,26 +53,31 @@
 
     .h3{
         text-align: start;
-        height: 50%;
+        padding: 0;
+        margin: 0;
     }
 
     .p{
         text-align: end;
+        padding: 0;
+        margin: 0;
     }
 
     .listImage{
-        border-radius: 20px;
-        height: 100%;
+        height: 10vh;
+        width: auto;
     }
 
     .itemInfo{
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         width: 100%;
-        line-height: 0;
         padding-left: 1%;
         padding-right: 2%;
         height: 100%;
+        padding-top: 0;
+        padding-bottom: 0;
     }
 
     .cartButton{
@@ -87,12 +95,47 @@
     }
 
     .topBtnContainer{
-        position: fixed;
-        left: 1%;
-        top: 1%;
+
+        margin-left: 1%;
+        margin-top  : 1%;
         display: flex;
         gap: 2%;
-        z-index: 5;
+        width: 70%;
+        transition: width 1s ease-in-out;
+    }
+
+    .topBtnContainerHidden{
+width: 0%;
+height: 0%;
+opacity: 0;
+pointer-events: none;
+    }
+    .profileBtnContainer{
+        width: 70%;
+        display: flex;
+        
+    }
+
+    .sidebarBtn{
+        margin-top: 1%;
+        margin-left: 1%;
+        background-color: transparent;
+        color: #212427;
+        border-radius: 50%;
+        height: 5vh;
+        width: 5vh;
+        display: flex;
+        padding: 0;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        box-shadow:  -20px -20px 60px #bebebe,
+        20px 20px 60px #ffffff;
+    }
+
+    .hideMenu{
+        background-color: transparent;
+        color: #212427;
     }
 
     .logOutBtn{
@@ -147,8 +190,6 @@
         align-items: center;
     }
 
-    .li{display: flex;}
-
     .scInfo{
         width: 100%;
     }
@@ -200,14 +241,12 @@
     .pDiscount{
         display: flex;
         justify-content: flex-end;
-        padding: 5%;
-        border: 2px solid white;
-        background-color: red;
-        color: white;
+        /* padding: 5%; */
+        color: red;
         border-radius: 8px;
         width: 70%;
         margin-left: 30%;
-        animation: float 3s ease-in-out infinite;
+        /* animation: float 3s ease-in-out infinite; */
         z-index: 4;
     }
 
@@ -254,6 +293,8 @@ box-shadow:  20px 20px 60px #bebebe,
         background-color: transparent;
         color: #212427  ;
     }
+
+  
 
     @keyframes float {
         0% {

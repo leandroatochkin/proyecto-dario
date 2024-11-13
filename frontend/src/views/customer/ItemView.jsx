@@ -6,6 +6,7 @@ import { capitalize, dropIn, returnDiscount, returnDiscountDate } from '../../ut
 import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import style from './ItemView.module.css';
 import { host } from '../../utils/index';
+import Cross from '../../utils/Icons/Cross';
 
 
 const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixbackground }) => {
@@ -73,7 +74,8 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
         animate="visible"
         exit="exit"
       >
-        <div className={style.modalItemInfo}>
+        {
+          !superOffer ? <div className={style.modalItemInfo}>
           <p className={product.PD_est === 'S' ? style.discountTag : style.hidden}><span style={{fontWeight: 'bolder'}}>{language.highlighted_discount}</span>{' '}{language.to}{' '}{date}</p>
           <div className={superOffer ? style.closeButtonContainerS : style.closeButtonContainer}>
             <h1 className={style.dialogueTitle} aria-label={`Title: ${product.PD_des_pro}`} style={product.PD_est === 'S'  ? {color: '#e0e0e0'} : {color: '#212427'}}>
@@ -134,7 +136,50 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
              {language.add_to_cart} 
             </motion.button>
           </div>
-        </div>
+        </div> :
+        <>
+        <div className={style.topContainer}>
+          
+        <motion.button
+              className={style.closeFormButtonAlt}
+              onClick={()=>{
+                setFixbackground(false) 
+                setOpenBuyModal(false)}
+              }
+              initial={{ scale: '1' }}
+              whileTap={{ scale: '0.95' }}
+              style={superOffer ? {color: '#e0e0e0'} : {color: '#212427'}}
+              aria-label="Close book details"
+            >
+<Cross />
+
+            </motion.button>
+          </div> 
+          <div className={style.infoContainer}>
+          <div className={style.dialogueTitleAlt} aria-label={`Title: ${product.PD_des_pro}`}>
+              {capitalize(product.PD_des_pro)}
+            </div>
+
+            <div className={ superOffer ? style.totalPalt : ''}>
+            <p><span style={{textDecoration: 'line-through'}}>{'$'}{product.PD_pre_ven / 10000}</span> {'$'}{`${returnDiscount(product.PD_pre_ven, product.PD_discount) / 10000}`}</p>            
+          </div>
+          <div className={style.pickerContainer}>
+              <QuantityPicker min={1} max={10} value={value} setValue={setValue} product={product} aria-label="Select quantity" />
+            </div>
+            <motion.button
+              className={style.addToCartBtn}
+              initial={{ scale: '1' }}
+              whileTap={{ scale: '0.95' }}
+              onClick={() => {
+                setFixbackground(false)
+                handleBuyBtn(product)}}
+              //aria-label={`Add ${book.title} to shopping cart`}
+            >
+             {language.add_to_cart} 
+            </motion.button>    
+          </div>
+        </>
+        }
       </motion.div>
       {openMsg && <ModalOneButton message={'Artículo añadido al carrito'} setFunction={setOpenBuyModal} buttonText={'Ok'}/>}
     
