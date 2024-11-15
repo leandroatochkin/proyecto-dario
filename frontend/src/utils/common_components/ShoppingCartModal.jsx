@@ -5,14 +5,14 @@ import style from './ShoppingCartModal.module.css'
 import { dropIn } from '../common_functions'
 import AddressSelector from './AddressSelector'
 import { ES_text } from '../text_scripts'
-import {userStore} from '../store'
+import {userStore, UIStore} from '../store'
 import { MoonLoader } from 'react-spinners';
 import Trashcan from '../svg_icons/Trashcan' 
 import MotionButton from '../buttons/MotionButton'
 
 
 
-const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, language, hasDelivery, setFixbackground }) => {
+const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, renderItem, handleRemove, buyFunction, hasDelivery, setFixbackground }) => {
 
 //     example usage for renderItem: renderItem={(product)=>(
 //       <div className={style.li}>
@@ -25,6 +25,7 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 //     </div>
 //   )}
 
+const language = UIStore((state)=>state.language)
 
 
 const [selectedAddress, setSelectedAddress] = useState(null);
@@ -47,7 +48,7 @@ useEffect(()=>{
 const total = itemsToMap.reduce((acc, item) => acc + item.quantity * item.PD_pre_ven, 0);
 setTotal(total)
 const addressToSend = hasDelivery === 0
-        ? { address: language.none, type: 2 }
+        ? { address: language.general_ui_text.none, type: 2 }
         : selectedAddress;
 setSelectedAddress(addressToSend)
 },[itemsToMap])
@@ -57,7 +58,7 @@ const handleBtn = () => {
       setLoading(true)
     // Set selectedAddress based on delivery status
     const addressToSend = hasDelivery === 0
-        ? { address: language.none, type: language.none }
+        ? { address: language.general_ui_text.none, type: language.general_ui_text.none }
         : selectedAddress;
     setSelectedAddress(addressToSend)
   
@@ -76,11 +77,11 @@ const handleBtn = () => {
 
 } else if(receptor === ''){
   setInputWrong(true)
-  alert(language.please_enter_receptor)
+  alert(language.warning_messages.please_enter_receptor)
 } else if(hasDelivery == '1' && selectedAddress === null){
-  alert(language.please_select_address)
+  alert(language.warning_messages.please_select_address)
 } else if(itemsToMap.length === 0){
-  alert(language.empty_shopping_cart)
+  alert(language.warning_messages.empty_shopping_cart)
 }
 
 }
@@ -129,7 +130,7 @@ useEffect(() => {
   {
     playAnimation && <div>
         <img src='/images/place_order.gif'/>
-        <h3 style={{color: '#212427'}}>{language.order_placed}</h3>
+        <h3 style={{color: '#212427'}}>{language.info_messages.order_placed}</h3>
     </div>
   }         
 <div className={loading || playAnimation ? style.hidden : style.topContainer}>
@@ -146,18 +147,18 @@ useEffect(() => {
             
         )) :
         <div className={style.noItems}>
-            {language.empty_shopping_cart}
+            {language.warning_messages.empty_shopping_cart}
         </div>       
         }
 </div>
         <div style={hasDelivery === 1 ? {display: 'flex'} :  {display: 'none'}}>
 
-        <AddressSelector buttonText1={language.add_address} language={language} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
+        <AddressSelector buttonText1={language.button_text.add_address} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
         </div>
         <div className={style.inputContainer}>
         <label htmlFor='receptor' 
         className={style.label}
-        >{language.receptor_input}</label>
+        >{language.general_ui_text.receptor_input}</label>
         <input name='receptor'
          onChange={(e)=>{
             setInputWrong(false)
@@ -167,13 +168,13 @@ useEffect(() => {
          maxLength={'20'}
         />
         </div>
-        <p className={hasDelivery === 1 ? style.hidden : style.p}>{language.has_not_delivery}</p>
+        <p className={hasDelivery === 1 ? style.hidden : style.p}>{language.info_messages.has_not_delivery}</p>
 
         <div className={style.inputContainer}>
         <label htmlFor='commentary' 
         className={style.label}
-        >{language.commentary_input}</label>
-        <input className={style.input} type='textarea' name='commentary' placeholder={language.commentary_input_example} onChange={(e)=>setCommentary(e.target.value)} maxLength={50}/>
+        >{language.general_ui_text.commentary_input}</label>
+        <input className={style.input} type='textarea' name='commentary' placeholder={language.general_ui_text.commentary_input_example} onChange={(e)=>setCommentary(e.target.value)} maxLength={50}/>
         </div>
 
 

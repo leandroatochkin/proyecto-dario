@@ -5,15 +5,15 @@ import Backdrop from './Backdrop';
 import style from './SettingsModal.module.css';
 import { deleteUser } from '../db_functions';
 import ModalOneButton from './ModalOneButton';
-import {userStore} from '../store';
+import {userStore, UIStore} from '../store';
 import MotionButton from '../buttons/MotionButton';
-import { UIStore } from '../store';
 
-const SettingsModal = ({language, setFunction, setFixbackground}) => {
+
+const SettingsModal = ({ setFunction, setFixbackground}) => {
 const[openErrorModal, setOpenErrorModal] =  useState(false);
 
 const userId = userStore((state)=>state.userId)
-
+const language = UIStore((state)=>state.language)
 
 
 const  navigate = useNavigate();
@@ -36,7 +36,7 @@ const handleDeleteUser = (userId)  => {
         {openErrorModal && 
         (
             <ModalOneButton 
-            message={language.error_try_again_later}
+            message={language.error_messages.error_try_again_later}
             setFunction={setOpenErrorModal}
             buttonText={'ok'}
             />
@@ -45,12 +45,12 @@ const handleDeleteUser = (userId)  => {
         <motion.div
         className={style.messageContainer}
         >
-            <h1 className={style.message}>{language.delete_account}</h1>
+            <h1 className={style.message}>{language.warning_messages.delete_account}</h1>
             <div className={style.buttonContainer}>
-            <MotionButton buttonText={language.cancel} onClick={()=>{
+            <MotionButton buttonText={language.button_text.cancel} onClick={()=>{
                 setFunction(false) 
                 setFixbackground(false)}} className={style.button}/>
-            <MotionButton buttonText={language.delete_account_button} onClick={()=>handleDeleteUser(userId)} className={style.deleteAccButton}/>
+            <MotionButton buttonText={language.button_text.delete_account_button} onClick={()=>handleDeleteUser(userId)} className={style.deleteAccButton}/>
             </div>
         </motion.div>
     </Backdrop>

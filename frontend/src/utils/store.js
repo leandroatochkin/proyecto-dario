@@ -1,4 +1,5 @@
 import {create} from 'zustand';
+import { ES_text } from './text_scripts';
 
 export const userStore = create((set) => ({
   loggedIn: false,
@@ -31,11 +32,16 @@ export const userStore = create((set) => ({
 }));
 
 export const UIStore = create((set)=>({
+language: ES_text,
 openModal: false,
 loading: true,
 globalOpenModal: false,
 openErrorModal: false,
 error: '',
+
+setLanguage: (language) => set({
+  language: language,
+}),
 
 setOpenModal: (status) => set({
   openModal: status,

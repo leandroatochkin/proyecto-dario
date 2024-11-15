@@ -18,6 +18,7 @@ const {updateDiscountStatus} = require('./api/routes/businesses/client_check_dis
 
 const fontendURL = process.env.FRONTEND_URL
 const fontendALTURL = process.env.FRONTEND_ALT
+const frontendShort = process.env.FRONTEND_SHORT
 
 const allowedOrigins = [
     'https://localhost:5173',

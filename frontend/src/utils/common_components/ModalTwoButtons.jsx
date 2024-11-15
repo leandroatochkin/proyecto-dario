@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Backdrop from './Backdrop';
 import style from './ModalOneButton.module.css';
-import { dropIn } from '../common_functions';
 import MotionButton from '../buttons/MotionButton';
-import { UIStore } from '../store';
+
 
 const ModalTwoButton = ({ message, setOpenModal, setAccept, buttonText1, buttonText2, setFixbackground }) => {
 

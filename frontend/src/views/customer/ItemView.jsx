@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 
 import { capitalize, dropIn, returnDiscount, returnDiscountDate } from '../../utils/common_functions';
 
+import { UIStore } from '../../utils/store';
+
 import style from './ItemView.module.css';
 import { host } from '../../utils/index';
 
@@ -11,7 +13,7 @@ import {Backdrop, ModalOneButton, QuantityPicker} from '../../utils/common_compo
 import {Cross} from '../../utils/svg_icons';
 
 
-const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixbackground }) => {
+const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, setFixbackground }) => {
   const [value, setValue] = useState(1);
   const [pushingItem, setPushingItem] = useState({
     PD_cod_raz_soc: product.PD_cod_raz_soc,
@@ -25,6 +27,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
     quantity: 1,
   });
 
+  const language = UIStore((state)=>state.language)
 
   const superOffer =  product.PD_est === 'S' ? true : false
 
@@ -77,7 +80,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
       >
         {
           !superOffer ? <div className={style.modalItemInfo}>
-          <p className={product.PD_est === 'S' ? style.discountTag : style.hidden}><span style={{fontWeight: 'bolder'}}>{language.highlighted_discount}</span>{' '}{language.to}{' '}{date}</p>
+          <p className={product.PD_est === 'S' ? style.discountTag : style.hidden}><span style={{fontWeight: 'bolder'}}>{language.general_ui_text.highlighted_discount}</span>{' '}{language.general_ui_text.to}{' '}{date}</p>
           <div className={style.closeButtonContainer}>
           <motion.button
               className={style.closeFormButton}
@@ -105,10 +108,10 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
           </p>
           </div>
           <p className={ superOffer ? style.totalP : ''}>
-            <span style={{ fontWeight: 'bolder' }}>{language.price}:</span> {'$' + product.PD_pre_ven / 10000  }          
+            <span style={{ fontWeight: 'bolder' }}>{language.general_ui_text.price}:</span> {'$' + product.PD_pre_ven / 10000  }          
           </p>
           <p>
-            <span style={{ fontWeight: 'bolder' }}>{language.quantity}:</span>
+            <span style={{ fontWeight: 'bolder' }}>{language.general_ui_text.quantity}:</span>
           </p>
           <div className="operation-btn-container">
             <div className={style.pickerContainer}>
@@ -122,7 +125,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
                 setFixbackground(false)
                 handleBuyBtn(product)}}
             >
-             {language.add_to_cart} 
+             {language.button_text.add_to_cart} 
             </motion.button>
           </div>
         </div> :
@@ -166,7 +169,7 @@ const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixb
                 handleBuyBtn(product)}}
 
             >
-             {language.add_to_cart} 
+             {language.button_text.add_to_cart} 
             </motion.button>    
           </div>
         </>

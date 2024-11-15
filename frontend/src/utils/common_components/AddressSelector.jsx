@@ -11,7 +11,7 @@ import DoubleArrow from '../svg_icons/DoubleArrow.jsx';
 import {UIStore} from '../store.js'
 import MotionButton from '../buttons/MotionButton.jsx';
 
-const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
+const AddressSelector = ({ buttonText1, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
   const [openAddAddress, setOpenAddAddress] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -21,6 +21,8 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
   const [isRotated, setIsRotated] = useState(false);
 
   const containerRef = useRef(null);
+
+  const language = UIStore((state)=>state.language)
 
 
   const setLoading = UIStore((state) => state.setLoading);
@@ -161,7 +163,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
 
   return (
     <div className={style.container}>
-      <p className={style.topP}>{language.please_select_address_b}{`(✔️) `}{language.or_add_a_new_address}</p>
+      <p className={style.topP}>{language.warning_messages.please_select_address_b}{`(✔️) `}{language.warning_messages.or_add_a_new_address}</p>
       <div className={style.addressesContainer} ref={containerRef}>
       {addressesToMap.length > 0 && addressesToMap.map((address, index) => (
         <div 
@@ -203,7 +205,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
              }}
              style={openModal ? {display: 'flex', fontWeight: 'bolder'} : {display: 'none'}}
              >
-              {'¿' + language.delete + '?'}
+              {'¿' + language.button_text.delete + '?'}
             </div>
           )}
         </div>
@@ -234,7 +236,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
               name='address'
               value={item.address}
               onChange={(e) => handleAddressChange(index, 'address', e.target.value)}
-              placeholder={ES_text.add_address}
+              placeholder={language.button_text.add_address}
               className={style.input}
               maxLength={'50'}
               aria-label="Enter new address"
@@ -246,9 +248,9 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
               className={style.select}
               aria-label="Select address type"
             >
-              <option value='1'>{language.select_home}</option>
-              <option value='2'>{language.select_work}</option>
-              <option value='3'>{language.select_other}</option>
+              <option value='1'>{language.general_ui_text.select_home}</option>
+              <option value='2'>{language.general_ui_text.select_work}</option>
+              <option value='3'>{language.general_ui_text.select_other}</option>
             </select>
           </div>
         ))}
@@ -270,7 +272,7 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
           aria-label="Save addresses"
           whileTap={{ scale: '0.95' }}
         >
-          {language.save}
+          {language.button_text.save}
         </motion.button>
       </div>
     </div>

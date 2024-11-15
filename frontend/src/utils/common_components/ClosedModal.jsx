@@ -5,7 +5,7 @@ import style from './CloseModal.module.css';
 import { UIStore } from '../store';
 
 
-const ClosedModal = ({setFunction, language, schedule, setFixbackground}) => {
+const ClosedModal = ({setFunction, schedule, setFixbackground}) => {
   const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
   const globalOpenModal = UIStore((state)=>state.globalOpenModal)
 
@@ -16,15 +16,16 @@ const ClosedModal = ({setFunction, language, schedule, setFixbackground}) => {
     setFixbackground(false)
   };
 
+  const language = UIStore((state)=>state.language)
 
 
   return (
     <Backdrop>
       <div className={style.messageContainer}>
-        <h1 className={style.message}>{language.closed_business}</h1>
+        <h1 className={style.message}>{language.info_messages.closed_business}</h1>
         
         <img src='/images/clock.png' className={style.image}/>
-        <p className={style.p}><span style={{fontWeight: 'bolder'}}>{language.schedule}:</span>
+        <p className={style.p}><span style={{fontWeight: 'bolder'}}>{language.general_ui_text.schedule}:</span>
         {!schedule.EM_corte ?
          schedule.EM_hora_ap.slice(0, -2)+':'+schedule.EM_hora_ap.slice(2, 4)+'hs. - ' + schedule.EM_hora_cierre.slice(0, -2)+':'+schedule.EM_hora_cierre.slice(2, 4) + 'hs.' 
          : 

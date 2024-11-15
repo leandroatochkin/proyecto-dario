@@ -13,7 +13,7 @@ import {LargeScreenNotice, ModalOneButton, CustomGoogleLoginBtn} from '../../uti
 
 
 
-const Login = ({language}) => {
+const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -48,7 +48,9 @@ const Login = ({language}) => {
   const error = UIStore((state)=>state.error)
   const setError = UIStore((state)=>state.setError)
   const openErrorModal = UIStore((state)=>state.openErrorModal)
-  const setOpenErrorModal = UIStore((state)=>state.setOpenErrorModal)                                        
+  const setOpenErrorModal = UIStore((state)=>state.setOpenErrorModal)     
+           
+  const language = UIStore((state)=>state.language)
 
 
   // Fetch business number based on id
@@ -297,31 +299,31 @@ const Login = ({language}) => {
                     <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='password'onChange={(e)=>setPassword(e.target.value)} className={style.inputPass}/>
                     <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
                 </div>
-                <p className={invalidCredentials ? style.invalidCredentials : style.hidden}>{language.invalid_credentials}</p>
+                <p className={invalidCredentials ? style.invalidCredentials : style.hidden}>{language.error_messages.invalid_credentials}</p>
                 <div className={newAccountMode ? style.inputLine : style.hidden}>
                     <input type={showPassword ? 'text' : 'password'} name='password'  placeholder='repetir password'onChange={(e)=>setRepeatPassword(e.target.value)} className={newAccountMode ? style.inputPass : style.inputHidden}/>
                     <button className={style.eyeButton} onClick={()=>setShowPassword(!showPassword)}><span id="togglePassword" className={style.eye}>{showPassword ? <EyeClosed />  : <EyeOpen />}</span></button>
                 </div>
-                <p className={userAlreadyExists ? style.invalidCredentials : style.hidden}>{language.user_already_exists}</p>
+                <p className={userAlreadyExists ? style.invalidCredentials : style.hidden}>{language.error_messages.user_already_exists}</p>
               </div>
               <div className={style.loginBtnContainer}>
 {/*-----------------------login button---------------------------*/}
 
-                    <button onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.create_account_button : 'siguiente')}</button>
+                    <button onClick={!newAccountMode ? handleLogin : handleRegister} className={style.button}>{!newAccountMode ? 'login' : (!phone ? language.button_text.create_account_button : 'siguiente')}</button>
              
 {/*-----------------------login button---------------------------*/}
               </div>
 
 
 
-              <div className={(!isGoogleLogin) ? style.hidden : style.verificationMsg}>{language.verification_message}</div>
+              <div className={(!isGoogleLogin) ? style.hidden : style.verificationMsg}>{language.info_messages.verification_message}</div>
             
 
-            <p className={!newAccountMode ? style.createAccP : style.hidden}>{language.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.create_account_button}</span></p>
-            <span onClick={()=>setNewAccountMode(!newAccountMode)} style={{color: '#212427', fontWeight: 'bolder'}} className={newAccountMode ? '' : style.hidden}>{language.cancel}</span>
+            <p className={!newAccountMode ? style.createAccP : style.hidden}>{language.info_messages.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.button_text.create_account_button}</span></p>
+            <span onClick={()=>setNewAccountMode(!newAccountMode)} style={{color: '#212427', fontWeight: 'bolder'}} className={newAccountMode ? '' : style.hidden}>{language.button_text.cancel}</span>
           {/*-----------------------inputs container---------------------------*/}
             <div className={style.loginBtnContainer}>
-            <p className={style.createAccP}>{language.or_else}</p>
+            <p className={style.createAccP}>{language.info_messages.or_else}</p>
             {!continueBtn ?
              <CustomGoogleLoginBtn 
              handleGoogleLoginRegister={handleGoogleLoginRegister} 
@@ -333,7 +335,7 @@ const Login = ({language}) => {
              whileTap={{ scale: '0.95' }}
              className={style.continueBtn}
              onClick={handleContinue}>
-              {language.continue}
+              {language.button_text.continue}
               <CircleCheck className={style.check}/>
               </motion.button>}
             </div>

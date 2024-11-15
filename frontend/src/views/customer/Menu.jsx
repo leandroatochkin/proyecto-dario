@@ -14,7 +14,7 @@ import { LogOut, ShoppingCart, Cross, DeleteAccount, Account } from '../../utils
 import {LargeScreenNotice, ModalTwoButtons, ModalOneButton, SettingsModal, ClosedModal, DiscountsModal} from '../../utils/common_components'
 
 
-const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, schedule, businessName }) => {
+const Menu = ({ setCurrentOrder, currentOrder, codRazSoc, isOpen, schedule, businessName }) => {
   const [categories, setCategories] = useState([]);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);
@@ -34,6 +34,8 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   const [fixBackground, setFixbackground] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
   
+  const language = UIStore((state)=>state.language)
+
 
 
   const location = useLocation();
@@ -146,11 +148,11 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
   return (
     <div className={style.background}>
       <LargeScreenNotice />
-      {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} language={language} schedule={schedule} setFixbackground={setFixbackground}/>)}
-      {discountProducts.length > 0 && !openClosedModal && openDiscountModal && (<DiscountsModal language={language} products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal} setFixbackground={setFixbackground}/>)}
-      {openLogOutModal && (<ModalTwoButtons message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'} setFixbackground={setFixbackground}/>)}
-      {openErrorModal && (<ModalOneButton message={language.error_try_again_later} setFunction={setOpenErrorModal} buttonText={'ok'} setFixbackground={setFixbackground}/>)}
-      {openSettingsModal && (<SettingsModal language={language} setFunction={setOpenSettingsModal} setFixbackground={setFixbackground}/>)}
+      {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} schedule={schedule} setFixbackground={setFixbackground}/>)}
+      {discountProducts.length > 0 && !openClosedModal && openDiscountModal && (<DiscountsModal products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal} setFixbackground={setFixbackground}/>)}
+      {openLogOutModal && (<ModalTwoButtons message={language.warning_messages.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'} setFixbackground={setFixbackground}/>)}
+      {openErrorModal && (<ModalOneButton message={language.error_messages.error_try_again_later} setFunction={setOpenErrorModal} buttonText={'ok'} setFixbackground={setFixbackground}/>)}
+      {openSettingsModal && (<SettingsModal setFunction={setOpenSettingsModal} setFixbackground={setFixbackground}/>)}
       <div className={style.container}>
       {loginStatus ? (<Suspense fallback={<MoonLoader color="#fff" />}>
         {openBuyModal && (
@@ -158,15 +160,14 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             product={product}
             setOpenBuyModal={setOpenBuyModal}
             setCurrentOrder={setCurrentOrder}
-            language={language}
             setFixbackground={setFixbackground}
           />
         )}
         {openCartModal && (
           <ShoppingCartModal
             setFunction={setOpenCartModal}
-            buttonText1={language.button_close}
-            buttonText2={language.button_buy}
+            buttonText1={language.button_text.button_close}
+            buttonText2={language.button_text.button_buy}
             itemsToMap={currentOrder}
             renderItem={(product) => (
               <div className={style.shoppingCartLine}>
@@ -177,20 +178,19 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
                   <span className={style.h2}>{'$'}{product.PD_pre_ven}</span>
 
                   </div>
-                  <span className={style.h2}>{language.quantity}:{product.quantity}</span>
+                  <span className={style.h2}>{language.general_ui_text.quantity}:{product.quantity}</span>
                 </div>
               </div>
             )}
             handleRemove={handleRemove}
             buyFunction={handleBuy}
-            language={language}
             hasDelivery={Number(hasDelivery)}
             setFixbackground={setFixbackground}
         />)}
   
         <div className={!showSidebar ?style.profileBtnContainer : style.hidden}>
         <MotionButton buttonText={<Account/>} onClick={()=>{setShowSidebar(!showSidebar)}} className={style.sidebarBtn}/>
-        <p className={style.btnLegend}>{language.options}</p>
+        <p className={style.btnLegend}>{language.button_text.options}</p>
         </div>
         <div className={showSidebar ? style.topBtnContainer : style.topBtnContainerHidden}>
           {/* <MotionButton buttonText={<BackArrow />} onClick={()=>{
@@ -202,14 +202,14 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             handleLogOut()
             setFixbackground(true)
             }} className={style.logOutBtn}/>
-            <p className={style.btnLegend}>{language.exit}</p>
+            <p className={style.btnLegend}>{language.button_text.exit}</p>
           </div>
           <div className={style.menuBtnContainer}>
           <MotionButton buttonText={<DeleteAccount />} onClick={() => {
             setOpenSettingsModal(true)
             setFixbackground(true)
             }} className={style.settingsBtn}/>
-            <p className={style.btnLegend}>{language.delete_account_button}</p>
+            <p className={style.btnLegend}>{language.button_text.delete_account_button}</p>
           </div>
           <MotionButton buttonText={<Cross />} onClick={()=>{setShowSidebar(!showSidebar)}} className={style.hideMenu}/>
         </div>
@@ -229,13 +229,13 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
 <h1 className={ categories.length > 0 ? style.businessTitle : style.businessTitleHidden}>{businessName || businessNameFromLogIn}</h1>
 <div className={style.filterContainer}>
 
-  <button className={isLoading ? style.hidden : style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.filters}</button>
+  <button className={isLoading ? style.hidden : style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.button_text.filters}</button>
   <div className={openFilters ? style.filters : style.hidden}>
   <button onClick={() => setFilterValue(null)} className={style.resetFiltersBtn}>
-    {language.reset_filters}
+    {language.button_text.reset_filters}
   </button>
   <div>
-  <label htmlFor='ofertas' className={style.label}>{language.discount}</label>
+  <label htmlFor='ofertas' className={style.label}>{language.general_ui_text.discount}</label>
   <input 
     type="checkbox" 
     value={product.PD_est === 'X' || product.PD_est === 'S'} 
@@ -315,12 +315,12 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
             <div className={style.emptyDataContainer}>
               <img src='/images/404-error.png' className={style.emptyLogo}/>
               <a href="https://www.freepik.com/icon/404-error_2431561#fromView=search&page=1&position=23&uuid=77337db2-b66f-4709-bb54-b36d22c844d1">Icon by Good Ware</a>
-              <h3>{language.no_data_yet}</h3>
+              <h3>{language.error_messages.no_data_yet}</h3>
             </div>
           )
         )}
       </Suspense>) : (
-        <div className={style.notLogged}>{language.please_log_in}</div>
+        <div className={style.notLogged}>{language.warning_messages.please_log_in}</div>
       )}
       
       </div>

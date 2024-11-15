@@ -6,11 +6,13 @@ import { host } from '../../utils/index';
 import DoubleArrow from '../svg_icons/DoubleArrow';
 import { UIStore } from '../store';
 
-const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setFixbackground }) => {
+const DiscountsModal = ({ products, setFunction, seeMoreFunction, setFixbackground }) => {
   const setGlobalOpenModal = UIStore((state)=>state.setGlobalOpenModal)
   const globalOpenModal = UIStore((state)=>state.globalOpenModal)
   const [isRotated, setIsRotated] = useState(false);
   const containerRef = useRef(null);
+
+  const language = UIStore((state)=>state.language)
 
   // This useEffect hook listens for scroll events on the discountContainer
   useEffect(() => {
@@ -38,15 +40,15 @@ const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setF
           setFunction(false)
           setFixbackground(false)
         }}
-        aria-label={language.button_close}
+        aria-label={language.button_text.button_close}
       >
-        {language.button_close}
+        {language.button_text.button_close}
       </button>
 
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <div className={style.header}>
           <h2 id="discounts-modal" className={style.headerText}>
-            {language.highlighted_discounts}
+            {language.general_ui_text.highlighted_discounts}
           </h2>
         </div>
 
@@ -79,9 +81,9 @@ const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setF
                       setFixbackground(false)
                     }}
                     className={style.button}
-                    aria-label={`${language.see_more} ${product.PD_des_pro}`}
+                    aria-label={`${language.button_text.see_more} ${product.PD_des_pro}`}
                   >
-                    {language.see_more}
+                    {language.button_text.see_more}
                   </motion.button>
                 </div>
               ))}

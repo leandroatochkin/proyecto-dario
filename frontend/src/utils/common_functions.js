@@ -34,11 +34,11 @@ export const convertTimeToMinutes = (time) => {
 export const getAddressLabel = (language, type) => {
     switch (type) {
       case '1':
-        return language.select_home;
+        return language.general_ui_text.select_home;
       case '2':
-        return language.select_work;
+        return language.general_ui_text.select_work;
       case '3':
-        return language.select_other;
+        return language.general_ui_text.select_other;
       default:
         return 'Dirección';
     }

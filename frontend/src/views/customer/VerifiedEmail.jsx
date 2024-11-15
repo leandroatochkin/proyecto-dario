@@ -8,12 +8,15 @@ import MotionButton from '../../utils/buttons/MotionButton';
 
 
 
-const VerifiedEmail = ({language}) => {
+const VerifiedEmail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get('id');
     const [verified, setVerified] = useState(false);
+
+    const language = UIStore((state)=>state.language)
+
 
     useEffect(()=>{
         try{
@@ -37,8 +40,8 @@ const VerifiedEmail = ({language}) => {
 
   return (
     <div className={style.container}>
-        <LargeScreenNotice language={language} />
-        <h1>{language.thanks_for_verifying}</h1>
+        <LargeScreenNotice />
+        <h1>{language.info_messages.thanks_for_verifying}</h1>
         <img src='/public/images/verification.png' className={style.image}/>
         <MotionButton buttonText={'ok'} onClick={handleClick} className={style.button}/>
     </div>

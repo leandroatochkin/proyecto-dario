@@ -6,8 +6,9 @@ import {userStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import {ModalOneButton, LargeScreenNotice} from '../../utils/common_components';
+import { UIStore } from '../../utils/store';
 
-const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
+const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     const [businesses, setBusinesses] = useState({});
     const [loading, setLoading] = useState(true);
     const [openErrorModal, setOpenErrorModal] = useState(false);
@@ -15,7 +16,7 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
 
     const navigate = useNavigate();
 
-
+    const language = UIStore((state)=>state.language)
 
     const loginStatus = userStore((state) => state.loggedIn); // Get login status
 
@@ -98,7 +99,7 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
             <LargeScreenNotice />
             {openErrorModal && (
                 <ModalOneButton
-                    message={language.error_try_again_later}
+                    message={language.error_messages.error_try_again_later}
                     setFunction={setOpenErrorModal}
                     buttonText={'ok'}
 

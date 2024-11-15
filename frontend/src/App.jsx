@@ -20,11 +20,12 @@ function App() {
     const [codRazSoc, setCodRazSoc] = useState('');
     const [businessName, setBusinessName] = useState('');
     const [schedule, setSchedule] = useState([]);
-    const [language, setLanguage] = useState(ES_text);
+    //const [language, setLanguage] = useState(ES_text);
     const [isOpen, setIsOpen] = useState(true);
     const [timeOffset, setTimeOffset] = useState(0);
 
-    useEffect(() => console.log(consoleMsg), []);
+
+
 
 
     const navigate = useNavigate();
@@ -85,11 +86,11 @@ function App() {
 
     return (
         <Routes>
-            <Route path="/" element={<Login language={ES_text} />} />
-            <Route path="/login" element={<Login language={ES_text} />} />
-            <Route path="/home" element={<Home setCodRazSoc={setCodRazSoc} setRazSoc={setRazSoc} razSoc={razSoc} language={language} setSchedule={setSchedule} setBusinessName={setBusinessName}/>} />
-            <Route path="/menu" element={<Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder} language={language} codRazSoc={codRazSoc} razSoc={razSoc} isOpen={isOpen} schedule={schedule} businessName={businessName}/>} />
-            <Route path="/verification" element={<VerifiedEmail language={language}/>}/>                                                                                                                        
+            <Route path="/" element={<Login  />} />
+            <Route path="/login" element={<Login  />} />
+            <Route path="/home" element={<Home setCodRazSoc={setCodRazSoc} setRazSoc={setRazSoc} razSoc={razSoc}  setSchedule={setSchedule} setBusinessName={setBusinessName}/>} />
+            <Route path="/menu" element={<Menu setCurrentOrder={setCurrentOrder} currentOrder={currentOrder}  codRazSoc={codRazSoc} razSoc={razSoc} isOpen={isOpen} schedule={schedule} businessName={businessName}/>} />
+            <Route path="/verification" element={<VerifiedEmail />}/>                                                                                                                        
         </Routes>
     );
 }
