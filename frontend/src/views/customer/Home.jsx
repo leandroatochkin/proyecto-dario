@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Home.module.css';
 import { getBusinesses, getSchedule } from '../../utils/db_functions';
-import {userStore} from '../../utils/store';
+import {userStore, UIStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import {ModalOneButton, LargeScreenNotice} from '../../utils/common_components';
-import { UIStore } from '../../utils/store';
 
 const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     const [businesses, setBusinesses] = useState({});
@@ -91,7 +90,7 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     }
 
     if (!businesses || Object.keys(businesses).length === 0) {
-        return <div className={style.container}><p>No businesses available</p></div>;
+        return <div className={style.container}><p>{language.error_messages.no_data}</p></div>;
     }
 
     return (
@@ -139,12 +138,12 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
                         </motion.div>
                     ))
                 ) : (
-                    <p>Error: Expected an array but got something else.</p>
+                    <p>{language.error_messages.expected_array}</p>
                 )}
             </div>
         ))
     ) : (
-        <p>No businesses found.</p>
+        <p>{language.error_messages.no_data}</p>
     )}
 </div>
 

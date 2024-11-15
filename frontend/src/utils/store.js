@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import { ES_text } from './text_scripts';
+import { cubicBezier } from 'framer-motion';
 
 export const userStore = create((set) => ({
   loggedIn: false,
@@ -63,3 +64,15 @@ setError: (msg) => set({
   error: msg,
 }),
 }))
+
+export const businessDataStore = create((set) => ({
+  currentOrder: [],
+
+
+  
+  // Function to log in and set the user ID
+  setCurrentOrder: (data) => set({
+    currentOrder: data,
+  }),
+
+}));

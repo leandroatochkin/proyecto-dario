@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Login from './views/customer/Login';
-import Menu from './views/customer/Menu';
-import Home from './views/customer/Home';
-import VerifiedEmail from './views/customer/VerifiedEmail';
+import {Login, Menu, Home, VerifiedEmail} from './views/customer';
 import './App.css';
-import { ES_text } from './utils/text_scripts';
 import { Route, Routes } from 'react-router-dom';
 import {userStore} from './utils/store';
 import { convertTimeToMinutes } from './utils/common_functions';
 import { getServerTime } from './utils/async_functions';
-import { consoleMsg } from './utils/text_scripts';
-import { MoonLoader } from 'react-spinners';
-import { UIStore } from '../src/utils/store'
+
 function App() {
     const [currentOrder, setCurrentOrder] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +14,6 @@ function App() {
     const [codRazSoc, setCodRazSoc] = useState('');
     const [businessName, setBusinessName] = useState('');
     const [schedule, setSchedule] = useState([]);
-    //const [language, setLanguage] = useState(ES_text);
     const [isOpen, setIsOpen] = useState(true);
     const [timeOffset, setTimeOffset] = useState(0);
 

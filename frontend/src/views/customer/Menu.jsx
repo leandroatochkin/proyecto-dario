@@ -7,14 +7,14 @@ import { capitalize, returnDiscount } from '../../utils/common_functions';
 import { motion } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
-import {UIStore, userStore} from '../../utils/store';
+import {businessDataStore, UIStore, userStore} from '../../utils/store';
 import { host } from '../../utils/index';
 import MotionButton from '../../utils/buttons/MotionButton';
 import { LogOut, ShoppingCart, Cross, DeleteAccount, Account } from '../../utils/svg_icons';
 import {LargeScreenNotice, ModalTwoButtons, ModalOneButton, SettingsModal, ClosedModal, DiscountsModal} from '../../utils/common_components'
 
 
-const Menu = ({ setCurrentOrder, currentOrder, codRazSoc, isOpen, schedule, businessName }) => {
+const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, businessName }) => {
   const [categories, setCategories] = useState([]);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);

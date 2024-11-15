@@ -26,7 +26,9 @@ export const ES_text = {
         large_screen: 'Esta aplicación no está disponible en pantallas grandes por el momento.',
         no_data_yet: 'Aún no tenemos datos de este negocio. Vuelve pronto :)',
         error_try_again_later: 'Hubo un error. Por favor intente más tarde.',
-        user_already_exists: 'usuario ya registrado.'
+        user_already_exists: 'usuario ya registrado.',
+        expected_array: 'Error: Datos inválidos.',
+        no_data: 'Sin datos'
     },
     warning_messages:{
         delete_account: '¿Está seguro de que quiere eliminar su cuenta?',
@@ -49,7 +51,7 @@ export const ES_text = {
         thanks_for_verifying: 'Gracias por verificar tu cuenta!',
         order_placed: 'Tu pedido fue registrado',
         or_else: 'o también',
-        has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.', 
+        has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.',
     },
     general_ui_text:{
         commentary_input: 'Comentarios',
@@ -78,25 +80,4 @@ export const ES_text = {
     
 
 }
-
-
-export const consoleMsg = `
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~.-"      "-.~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~/            \\~~~~~~~~~~~~~~~
-~~~_~~~~~~~~~~|              |~~~~~~~~~~_~~~
-~~( \\~~~~~~~~~|,  .-.  .-.  ,|~~~~~~~~~/ )~~
-~~~> "=._~~~~~| )(__/  \\__)( |~~~~~_.=" <~~~
-~~(_/"=._"=._~|/     /\\     \\|~_.="_.="\\_)~~
-~~~~~~~~~"=._ (_     ^^     _)"_.="~~~~~~~~~
-~~~~~~~~~~~~~"=\\__|IIIIII|__/="~~~~~~~~~~~~~
-~~~~~~~~~~~~_.="| \\IIIIII/ |"=._~~~~~~~~~~~~
-~~_ ~~~~_.="_.="\\          /"=._"=._~~~~~_~~
-~( \\_.="_.="~~~~~'--------'~~~~~"=._"=._/ )~
-~~> _.="~~~~~~~~~~~~~~~~~~~~~~~~~~~~"=._ <~~
-~(_/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\_)~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    
-      Hey there, sneaky! This is not the
-      place you're looking for.
-`
 
