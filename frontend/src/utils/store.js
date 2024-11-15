@@ -34,6 +34,8 @@ export const UIStore = create((set)=>({
 openModal: false,
 loading: true,
 globalOpenModal: false,
+openErrorModal: false,
+error: '',
 
 setOpenModal: (status) => set({
   openModal: status,
@@ -45,5 +47,13 @@ setGlobalOpenModal: (status) => set({
 
 setLoading: (status) => set({
   loading: status,
-})
+}),
+
+setOpenErrorModal: (status) => set({
+  openErrorModal: status,
+}),
+
+setError: (msg) => set({
+  error: msg,
+}),
 }))

@@ -4,25 +4,14 @@ import ItemView from './ItemView';
 import { getCategories, getProducts, createCheckout, getBusinessesNumber, getBusinessesDetails } from '../../utils/db_functions';
 import style from './Menu.module.css';
 import { capitalize, returnDiscount } from '../../utils/common_functions';
-import { motion, sync } from 'framer-motion';
+import { motion } from 'framer-motion';
 import ShoppingCartModal from '../../utils/common_components/ShoppingCartModal';
 import { MoonLoader } from 'react-spinners';
 import {UIStore, userStore} from '../../utils/store';
-import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
-import ModalTwoButton from '../../utils/common_components/ModalTwoButtons';
-import ModalOneButton from '../../utils/common_components/ModalOneButton';
-import SettingsModal from '../../utils/common_components/SettingsModal';
-import ClosedModal from '../../utils/common_components/ClosedModal';
-import DiscountsModal from '../../utils/common_components/DiscountsModal';
 import { host } from '../../utils/index';
-import BackArrow from '../../utils/Icons/BackArrow';
-import LogOut from '../../utils/Icons/LogOut';
-import Settings from '../../utils/Icons/Settings';
-import ShoppingCart from '../../utils/Icons/ShoppingCart';
 import MotionButton from '../../utils/buttons/MotionButton';
-import Cross from '../../utils/Icons/Cross';
-import DeleteAccount from '../../utils/Icons/DeleteAccount';
-import Account from '../../utils/Icons/Account';
+import { LogOut, ShoppingCart, Cross, DeleteAccount, Account } from '../../utils/svg_icons';
+import {LargeScreenNotice, ModalTwoButtons, ModalOneButton, SettingsModal, ClosedModal, DiscountsModal} from '../../utils/common_components'
 
 
 const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, schedule, businessName }) => {
@@ -159,7 +148,7 @@ const Menu = ({ setCurrentOrder, currentOrder, language, codRazSoc, isOpen, sche
       <LargeScreenNotice />
       {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} language={language} schedule={schedule} setFixbackground={setFixbackground}/>)}
       {discountProducts.length > 0 && !openClosedModal && openDiscountModal && (<DiscountsModal language={language} products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal} setFixbackground={setFixbackground}/>)}
-      {openLogOutModal && (<ModalTwoButton message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'} setFixbackground={setFixbackground}/>)}
+      {openLogOutModal && (<ModalTwoButtons message={language.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'} setFixbackground={setFixbackground}/>)}
       {openErrorModal && (<ModalOneButton message={language.error_try_again_later} setFunction={setOpenErrorModal} buttonText={'ok'} setFixbackground={setFixbackground}/>)}
       {openSettingsModal && (<SettingsModal language={language} setFunction={setOpenSettingsModal} setFixbackground={setFixbackground}/>)}
       <div className={style.container}>

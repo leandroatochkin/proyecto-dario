@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import Backdrop from '../../utils/common_components/Backdrop';
-import QuantityPicker from '../../utils/common_components/QuantityPicker';
+
+
 import { capitalize, dropIn, returnDiscount, returnDiscountDate } from '../../utils/common_functions';
-import ModalOneButton from '../../utils/common_components/ModalOneButton';
+
 import style from './ItemView.module.css';
 import { host } from '../../utils/index';
-import Cross from '../../utils/Icons/Cross';
+
+import {Backdrop, ModalOneButton, QuantityPicker} from '../../utils/common_components';
+import {Cross} from '../../utils/svg_icons';
 
 
 const ItemView = ({ product, setCurrentOrder, setOpenBuyModal, language, setFixbackground }) => {

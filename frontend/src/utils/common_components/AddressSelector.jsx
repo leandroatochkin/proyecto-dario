@@ -6,9 +6,10 @@ import { ES_text } from '../text_scripts';
 import { motion, transform } from 'framer-motion';
 import { getAddressLabel } from '../common_functions';
 import { MoonLoader } from 'react-spinners';
-import Trashcan from '../Icons/Trashcan';
-import DoubleArrow from '../Icons/DoubleArrow';
+import Trashcan from '../svg_icons/Trashcan.jsx';
+import DoubleArrow from '../svg_icons/DoubleArrow.jsx';
 import {UIStore} from '../store.js'
+import MotionButton from '../buttons/MotionButton.jsx';
 
 const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAddress }) => {
   const [addresses, setAddresses] = useState([{ address: '', type: '1' }]);
@@ -21,7 +22,6 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
 
   const containerRef = useRef(null);
 
-  useEffect(()=>{console.log(isRotated)},[isRotated])
 
   const setLoading = UIStore((state) => state.setLoading);
   const loading =  UIStore((state) => state.loading);
@@ -216,19 +216,15 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
       >
         {addressesToMap.length > 4 ? <DoubleArrow width={'30'} height={'30'} className={style.arrow}/> : ''}
         </motion.div>
-      <motion.button 
-        onClick={() => {
+      <MotionButton 
+      buttonText={buttonText1}
+      onClick={() => {
           setShowInput(!showInput);
           setInactive(inactive);
         }}
+
         disabled={inactive}
-        className={style.addAddressBtn}
-        aria-label="Add a new address"
-        style={{ transform: "scale(1)" }}
-        whileTap={{ scale: '0.95' }}
-      >
-        {buttonText1}
-      </motion.button>
+        className={style.addAddressBtn} />
 
       {showInput &&
         addresses.map((item, index) => (
@@ -258,14 +254,15 @@ const AddressSelector = ({ buttonText1, language, setSelectedAddress, selectedAd
         ))}
         
       <div className={style.btnContainer}>
-        <motion.button 
-          onClick={addNewAddress}
-          style={!inactive ? { display: 'none' } : { display: 'flex', transform: "scale(1)" }}
-          aria-label="Add another address field"
-          whileTap={{ scale: '0.95' }}
-        >
-          +
-        </motion.button>
+
+        {/* <MotionButton 
+        buttonText={'+'}
+        style={inactive ? { display: 'none' } : { display: 'flex' }}
+        onClick={addNewAddress}
+        aria-label="Add another address field"
+        />
+ */}
+
         
         <motion.button 
           onClick={handleSendAddresses} 

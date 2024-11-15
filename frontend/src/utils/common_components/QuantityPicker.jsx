@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import style from './QuantityPicker.module.css';
-import PlusIcon from '../Icons/PlusIcon';
-import MinusIcon from '../Icons/MinusIcon';
+import PlusIcon from '../svg_icons/PlusIcon';
+import MinusIcon from '../svg_icons/MinusIcon';
 
 const QuantityPicker = ({ min, max, value, setValue, product }) => {
   const [disableDec, setDisableDec] = useState(value <= min);

@@ -8,7 +8,7 @@
   @media only screen and (max-width: 640px){
     .itemView{
         background-color: #e0e0e0;
-        height: 60%;
+        height: 70%;
         width: 90%;
         color: #212427;
         border-radius: 32px;
@@ -92,6 +92,7 @@
     .addToCartBtn{
       background: linear-gradient(10deg, #fa0, #ff6a00);
        color: #e0e0e0;
+       
     }
 
     .pickerContainer{
@@ -121,6 +122,7 @@
       font-weight: bolder;
       padding: 0;
       margin: 0;
+      line-height: 1.1;
     }
 
     .totalPalt{

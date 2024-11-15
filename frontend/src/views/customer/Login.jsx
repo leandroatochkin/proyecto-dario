@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import style from './login.module.css';
-import ModalOneButton from '../../utils/common_components/ModalOneButton';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ES_text } from '../../utils/text_scripts';
 import { handleResponse, sendVerification } from '../../utils/async_functions';
 import { checkUser, getBusinessesNumber, loginUser, registerUser } from '../../utils/db_functions';
 import {userStore, UIStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
-import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
 import { passwordRegex, emailRegex, phoneRegex } from '../../utils/common_functions';
-import CustomGoogleLoginBtn from '../../utils/common_components/CustomGoogleLoginBtn';
 import { motion } from 'framer-motion';
-import EyeOpen from '../../utils/Icons/EyeOpen';
-import EyeClosed from '../../utils/Icons/EyeClosed';
+import {EyeOpen, EyeClosed, CircleCheck} from '../../utils/svg_icons'
+import {LargeScreenNotice, ModalOneButton, CustomGoogleLoginBtn} from '../../utils/common_components'
+
 
 
 const Login = ({language}) => {
@@ -22,7 +20,6 @@ const Login = ({language}) => {
   const id = queryParams.get('id'); // Get 'id' from query params
   const [newUser, setNewUser] = useState(null);
   const [phone, setPhone] = useState('');
-  //const [data, setData] = useState({}); 
   const [business, setBusiness] = useState({
                                             codRazSoc:null,
                                             businessName: null
@@ -36,7 +33,7 @@ const Login = ({language}) => {
   const [showPassword, setShowPassword] = useState(false)
   const [invalidCredentials, setInvalidCredentials] = useState(false)
   const [userAlreadyExists, setUserAlreadyExists] = useState(false)
- 
+
 
 
 
@@ -47,7 +44,11 @@ const Login = ({language}) => {
   const setLoading = UIStore((state) => state.setLoading);
   const loading =  UIStore((state) => state.loading);
   const setOpenModal = UIStore((state) => state.setOpenModal);
-  const openModal = UIStore((state)=>state.openModal)                                        
+  const openModal = UIStore((state)=>state.openModal)
+  const error = UIStore((state)=>state.error)
+  const setError = UIStore((state)=>state.setError)
+  const openErrorModal = UIStore((state)=>state.openErrorModal)
+  const setOpenErrorModal = UIStore((state)=>state.setOpenErrorModal)                                        
 
 
   // Fetch business number based on id
@@ -83,7 +84,7 @@ const Login = ({language}) => {
   const handleLogin = async () => {
 
     setLoading(true);
-    console.log('click')
+
     try {
       const { exists, userId, valid, emailVerified, token } = await loginUser(email, password);
 
@@ -111,6 +112,8 @@ const Login = ({language}) => {
       }
     } catch (e) {
       console.error('Error checking user:', e);
+      setOpenErrorModal(true)
+      setError('Servidores apagados para realizar la demo.')
     } finally {
 
       setLoading(false);
@@ -256,6 +259,15 @@ const Login = ({language}) => {
   return (
     <div className={style.container} aria-label="Login container">
       <LargeScreenNotice />
+      {
+        openErrorModal && (
+          <ModalOneButton 
+          message={error}
+          setFunction={setOpenErrorModal}
+          buttonText={'ok'}
+          />
+        )
+      }
       {openModal && (
         <ModalOneButton
           message={ES_text.phone_modal}
@@ -322,7 +334,7 @@ const Login = ({language}) => {
              className={style.continueBtn}
              onClick={handleContinue}>
               {language.continue}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={style.check}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <CircleCheck className={style.check}/>
               </motion.button>}
             </div>
           </div>

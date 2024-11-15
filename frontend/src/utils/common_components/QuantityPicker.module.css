@@ -23,8 +23,7 @@
     width: auto;
    height: 100%;
    display: flex;
-   box-shadow:  -20px -20px 60px #bebebe,
-                    20px 20px 60px #ffffff;
+
 }
 
 .display{

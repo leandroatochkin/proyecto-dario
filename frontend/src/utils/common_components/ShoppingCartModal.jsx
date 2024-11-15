@@ -7,7 +7,7 @@ import AddressSelector from './AddressSelector'
 import { ES_text } from '../text_scripts'
 import {userStore} from '../store'
 import { MoonLoader } from 'react-spinners';
-import Trashcan from '../Icons/Trashcan' 
+import Trashcan from '../svg_icons/Trashcan' 
 import MotionButton from '../buttons/MotionButton'
 
 
@@ -36,7 +36,7 @@ const [loading, setLoading] = useState(false)
 const [playAnimation, setPlayAnimation] = useState(false)
 const [disabled, setDisabled] = useState(false)
 
-useEffect(()=>{console.log(selectedAddress)},[])
+
 
 const userId = userStore((state) => state.userId);
 

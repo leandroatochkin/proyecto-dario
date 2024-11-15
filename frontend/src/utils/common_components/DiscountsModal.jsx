@@ -3,7 +3,7 @@ import Backdrop from './Backdrop';
 import style from './DiscountsModal.module.css';
 import { motion } from 'framer-motion';
 import { host } from '../../utils/index';
-import DoubleArrow from '../Icons/DoubleArrow';
+import DoubleArrow from '../svg_icons/DoubleArrow';
 import { UIStore } from '../store';
 
 const DiscountsModal = ({ language, products, setFunction, seeMoreFunction, setFixbackground }) => {

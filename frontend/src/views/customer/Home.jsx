@@ -5,8 +5,7 @@ import { getBusinesses, getSchedule } from '../../utils/db_functions';
 import {userStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
-import ModalOneButton from '../../utils/common_components/ModalOneButton';
-import LargeScreenNotice from '../../utils/common_components/LargeScreenNotice';
+import {ModalOneButton, LargeScreenNotice} from '../../utils/common_components';
 
 const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
     const [businesses, setBusinesses] = useState({});
@@ -102,6 +101,7 @@ const Home = ({ setCodRazSoc, language, setSchedule, setBusinessName }) => {
                     message={language.error_try_again_later}
                     setFunction={setOpenErrorModal}
                     buttonText={'ok'}
+
                 />
             )}
             <div className={style.logoContainer}>

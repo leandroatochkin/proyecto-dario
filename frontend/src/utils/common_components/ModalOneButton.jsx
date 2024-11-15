@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import Backdrop from './Backdrop';
 import style from './ModalOneButton.module.css';
-import { dropIn } from '../common_functions';
 import MotionButton from '../buttons/MotionButton';
-import { UIStore } from '../store';
 
 const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error, setFixbackground }) => {
 
@@ -37,7 +34,8 @@ const ModalOneButton = ({ message, setFunction, buttonText, stateSetter, error, 
 
   const handleClick = () => {
     setFunction(false); // Close the modal
-    setFixbackground(false)
+    setFixbackground ? setFixbackground(false) : null;
+    
   };
 
   return (
