@@ -4,6 +4,7 @@ import Backdrop from './Backdrop'
 import { argentinaMap } from '../cities';
 import style from './CitySelector.module.css'
 import { UIStore, userStore } from '../store';
+import { motion } from 'framer-motion';
 
 
 
@@ -14,8 +15,6 @@ const [filteredResults, setFilteredResults] = useState([]);
 
 const language = UIStore((state)=>state.language)
 const setCity = userStore((state)=>state.setCity)
-
-const city = userStore((state)=>state.city)
 
 
 
@@ -54,15 +53,20 @@ const handleClick = (city) => {
           <input
             type="text"
             onChange={handleSearch}
-            placeholder="Area Code"
+            placeholder={language.general_ui_text.type_your_city}
             className={style.inputCorrect}
             name='area'
           />
           <ul style={{ listStyle: 'none', padding: 0, marginTop: '10px' }} className={style.resultContainer}>
         {filteredResults.map((city) => (
-          <li key={city.id} style={{ padding: '5px', textAlign: 'left' }} className={style.resultLine} onClick={()=>{handleClick(city.nombre)}}>
+          <motion.li
+          initial={{ scale: '1' }}
+          whileTap={{ scale: '0.95' }} 
+          key={city.id} 
+          className={style.resultLine} 
+          onClick={()=>{handleClick(city.nombre)}}>
             {city.nombre}
-          </li>
+          </motion.li>
         ))}
         {filteredResults.length === 0 && searchValue !== '' && (
           <li style={{ padding: '5px', color: 'gray' }}>No results found</li>

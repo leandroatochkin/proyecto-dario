@@ -36,6 +36,14 @@
         width: auto;
     }
 
+    .indexTitle{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 95%;
+
+    }
+
     .indexContainer{
         background-color: transparent;
         backdrop-filter: blur(20px);
@@ -74,8 +82,18 @@
         cursor: pointer;
     }
     
+   .noResults{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   } 
     
-    
+   .noResultsImage{
+    height: 30%;
+   }
     
 
     .loaderContainer{

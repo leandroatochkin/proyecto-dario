@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Home.module.css';
-import { getBusinesses, getBusinessesByCity, getSchedule } from '../../utils/db_functions';
+import { getBusinessesByCity, getSchedule } from '../../utils/db_functions';
 import {userStore, UIStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import {ModalOneButton, LargeScreenNotice, CitySelector} from '../../utils/common_components';
+import {MapLocation} from '../../utils/svg_icons'
 
 
 const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
@@ -27,6 +28,7 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     const error = userStore((state) => state.error); // Get error from user store
 
     const setError = userStore((state) => state.setError); // Set error in user store
+
 
     const filterUniqueBusinesses = (businessesArray) => {
         const uniqueBusinesses = [];
@@ -82,9 +84,14 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
             try {
                 if (city !== '') {
                     const retrievedBusinesses = await getBusinessesByCity(city.trim());
-                    const uniqueBusinesses = filterUniqueBusinesses(retrievedBusinesses);
-                    const groupedBusinesses = groupBusinessesByLetter(uniqueBusinesses);
-                    setBusinesses(groupedBusinesses);
+                    if(retrievedBusinesses.length > 0){
+                        const uniqueBusinesses = filterUniqueBusinesses(retrievedBusinesses);
+                        const groupedBusinesses = groupBusinessesByLetter(uniqueBusinesses);
+                        setBusinesses(groupedBusinesses);
+                    } else {
+                        setBusinesses([])
+                    }
+
                 } else {
                     setOpenCityModal(true); // Show the modal for empty city
                     return; // Exit early as there's no city to fetch
@@ -101,6 +108,10 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     }, [city]); // Add `city` as a dependency
     
 
+    const handleLocationClick = () => {
+        setOpenCityModal(true);
+    }
+
     if (loading) {
         return (
             <div className={style.containerLoader} aria-live="polite" aria-busy="true">
@@ -109,9 +120,6 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
         );
     }
 
-    // if (!businesses || Object.keys(businesses).length === 0) {
-    //     return <div className={style.container}><p>{language.error_messages.no_data}</p></div>;
-    // }
 
     return (
         <div className={style.container} role="main" aria-labelledby="business-list-heading">
@@ -135,7 +143,9 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
                 />
             </div>
             <div className={style.indexContainer}>
-    <h2>{`Negocios en ${city}`}</h2>
+    <div className={style.indexTitle}>
+    <h2>{`Negocios en ${city}`}</h2><span onClick={handleLocationClick}><MapLocation  /></span>
+    </div>
     {businesses && Object.keys(businesses).length > 0 ? (
         Object.keys(businesses).map((letter, index) => (
             <div key={index}>
@@ -167,7 +177,10 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
             </div>
         ))
     ) : (
-        <p>{language.error_messages.no_data}</p>
+        <div className={style.noResults}>
+        <img src='/images/no_locations.png' className={style.noResultsImage}/>
+        <p>{language.info_messages.no_bussinesses_in_this_location_yet}</p>
+        </div>
     )}
 </div>
 

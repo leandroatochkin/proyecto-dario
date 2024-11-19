@@ -53,6 +53,7 @@ export const ES_text = {
         or_else: 'o también',
         has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.',
         select_city: 'Por favor, selecciona tu ciudad',
+        no_bussinesses_in_this_location_yet: 'Aún no hay negocios en esta ubicación.',
     },
     general_ui_text:{
         commentary_input: 'Comentarios',
@@ -74,7 +75,8 @@ export const ES_text = {
         total: 'Total',
         highlighted_discounts: 'ofertas destacadas',
         highlighted_discount: 'oferta destacada',
-        select: 'select'
+        select: 'seleccionar',
+        type_your_city: 'escribe tu ciudad...'
     }
     
 

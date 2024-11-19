@@ -27,11 +27,11 @@ function App() {
             navigator.geolocation.getCurrentPosition(
               async (position) => {
                 const { latitude, longitude } = position.coords;
-                console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
     
                 const city = await getUserCity(latitude, longitude);
                 setCity(city);
-                console.log("User's city:", city);
+
               },
               (error) => {
                 console.error('Error fetching location:', error);
