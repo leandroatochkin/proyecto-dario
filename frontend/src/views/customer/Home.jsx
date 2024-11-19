@@ -5,12 +5,14 @@ import { getBusinesses, getBusinessesByCity, getSchedule } from '../../utils/db_
 import {userStore, UIStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
-import {ModalOneButton, LargeScreenNotice} from '../../utils/common_components';
+import {ModalOneButton, LargeScreenNotice, CitySelector} from '../../utils/common_components';
+
 
 const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     const [businesses, setBusinesses] = useState({});
     const [loading, setLoading] = useState(true);
     const [openErrorModal, setOpenErrorModal] = useState(false);
+    const [openCityModal, setOpenCityModal] = useState(false)
 
 
     const navigate = useNavigate();
@@ -21,6 +23,7 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
 
     const city = userStore((state) => state.city); // Get city from user store
 
+    
     const error = userStore((state) => state.error); // Get error from user store
 
     const setError = userStore((state) => state.setError); // Set error in user store
@@ -69,25 +72,34 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
         navigate('/menu');
     };
 
+    useEffect(()=>{
+        city === '' ? setOpenCityModal(true) : null
+    },[])
+
     useEffect(() => {
         const db_businesses = async () => {
+            setLoading(true)
             try {
-                //const retrievedBusinesses = await getBusinesses();
-                const retrievedBusinesses = await getBusinessesByCity(city.trim());
-                const uniqueBusinesses = filterUniqueBusinesses(retrievedBusinesses);
-                const groupedBusinesses = groupBusinessesByLetter(uniqueBusinesses);
-                setBusinesses(groupedBusinesses);
+                if (city !== '') {
+                    const retrievedBusinesses = await getBusinessesByCity(city.trim());
+                    const uniqueBusinesses = filterUniqueBusinesses(retrievedBusinesses);
+                    const groupedBusinesses = groupBusinessesByLetter(uniqueBusinesses);
+                    setBusinesses(groupedBusinesses);
+                } else {
+                    setOpenCityModal(true); // Show the modal for empty city
+                    return; // Exit early as there's no city to fetch
+                }
             } catch (e) {
                 console.log(e);
-                setError('404')
-                
+                setError('404');
             } finally {
                 setLoading(false);
             }
         };
-
+    
         db_businesses();
-    }, []);
+    }, [city]); // Add `city` as a dependency
+    
 
     if (loading) {
         return (
@@ -97,9 +109,9 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
         );
     }
 
-    if (!businesses || Object.keys(businesses).length === 0) {
-        return <div className={style.container}><p>{language.error_messages.no_data}</p></div>;
-    }
+    // if (!businesses || Object.keys(businesses).length === 0) {
+    //     return <div className={style.container}><p>{language.error_messages.no_data}</p></div>;
+    // }
 
     return (
         <div className={style.container} role="main" aria-labelledby="business-list-heading">
@@ -112,6 +124,9 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
 
                 />
             )}
+            {openCityModal && (
+                <CitySelector stateSetter={setOpenCityModal}/>
+            )}
             <div className={style.logoContainer}>
                 <img
                     src={'/images/malbec_logo_transparente(s_reflejo).PNG'}
@@ -120,7 +135,7 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
                 />
             </div>
             <div className={style.indexContainer}>
-                <h2>{`Negocios en ${city}`}</h2>
+    <h2>{`Negocios en ${city}`}</h2>
     {businesses && Object.keys(businesses).length > 0 ? (
         Object.keys(businesses).map((letter, index) => (
             <div key={index}>

@@ -52,6 +52,7 @@ export const ES_text = {
         order_placed: 'Tu pedido fue registrado',
         or_else: 'o también',
         has_not_delivery: 'Este negocio no posee delivery. En cuanto tu pedido esté listo te avisarán telefónicamente.',
+        select_city: 'Por favor, selecciona tu ciudad',
     },
     general_ui_text:{
         commentary_input: 'Comentarios',
@@ -73,6 +74,7 @@ export const ES_text = {
         total: 'Total',
         highlighted_discounts: 'ofertas destacadas',
         highlighted_discount: 'oferta destacada',
+        select: 'select'
     }
     
 

@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import { ES_text } from './text_scripts';
-import { cubicBezier } from 'framer-motion';
+
 
 export const userStore = create((set) => ({
   loggedIn: false,
@@ -32,8 +32,8 @@ export const userStore = create((set) => ({
     userId: null,
   }),
 
-  setCity: (city) => set({
-    city: city,
+  setCity: (newCity) => set({
+    city: newCity,
   }),
 }));
 
