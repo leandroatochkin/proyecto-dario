@@ -8,6 +8,7 @@ export const userStore = create((set) => ({
   error: false,
   errorMsg: null,
   tokenData: null || {},
+  city: '',
 
   
   // Function to log in and set the user ID
@@ -29,6 +30,10 @@ export const userStore = create((set) => ({
   logout: () => set({
     loggedIn: false,
     userId: null,
+  }),
+
+  setCity: (city) => set({
+    city: city,
   }),
 }));
 

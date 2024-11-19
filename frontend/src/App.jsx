@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import {userStore} from './utils/store';
 import { convertTimeToMinutes } from './utils/common_functions';
 import { getServerTime } from './utils/async_functions';
+import { getUserCity } from './utils/db_functions';
 
 function App() {
     const [currentOrder, setCurrentOrder] = useState([]);
@@ -18,6 +19,31 @@ function App() {
     const [timeOffset, setTimeOffset] = useState(0);
 
 
+    const setCity = userStore((state)=>state.setCity)
+
+    useEffect(() => {
+        const fetchLocation = async () => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                const { latitude, longitude } = position.coords;
+                console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    
+                const city = await getUserCity(latitude, longitude);
+                setCity(city);
+                console.log("User's city:", city);
+              },
+              (error) => {
+                console.error('Error fetching location:', error);
+              }
+            );
+          } else {
+            console.error('Geolocation is not supported by this browser.');
+          }
+        };
+    
+        fetchLocation();
+      }, []);
 
 
 

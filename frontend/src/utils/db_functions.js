@@ -1,6 +1,23 @@
 import { index } from "."
 
 
+export const getUserCity = async(lat, long) => {
+    try{
+        const response = await fetch(`https://nominatim.openstreetmap.org/search.php?q=${lat}%2C+${long}&format=jsonv2`,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                }
+        })
+        const data = await response.json()
+        return data[0].display_name.split(',')[3]
+    } catch(e){
+        console.log(e)
+    }
+}
+
+
+
 export const getProducts = async(raz_soc) =>{
     try{
 
@@ -129,7 +146,6 @@ export const createCheckout = async (userId, order, address, total, receptor, co
         console.error('Error in createCheckout:', error);
     }
 };
-
 
 export const checkUser = async (email) => {
     const userData = { email: email.toLowerCase() };
@@ -260,6 +276,33 @@ export const getAddress = async(userId) => {
 export const getBusinesses = async() =>{
     try{
         const response = await fetch(index.get_businesses)
+        const data = await response.json()
+        return data
+    } catch(e){
+        console.log(e)
+        return e
+    }
+}
+
+export const getBusinessesByCity = async(city) =>{
+
+    const lowerCaseCity = city.toLowerCase()
+
+    const payload = {
+        city: lowerCaseCity
+    }
+
+
+
+
+    try{
+        const response = await fetch(index.get_city_businessess_by_city,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+            body: JSON.stringify(payload)
+        })
         const data = await response.json()
         return data
     } catch(e){

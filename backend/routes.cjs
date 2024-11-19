@@ -12,6 +12,8 @@ const routes = {
     '/api/get_current_time': './api/routes/other/server_time.cjs',
     '/api/delete_address': './api/routes/users/db_delete_address.cjs',
     '/api/get_business_number': './api/routes/businesses/db_retrieve_business_data.cjs',
+    '/api/get_city_businesses': './api/routes/businesses/db_retrieve_businesses_locations.cjs',
+    '/api/get_city_businesses_by_city': './api/routes/businesses/db_retrieve_city_businesses_by_city.cjs',
     '/api/login': './api/routes/users/login_user.cjs',
     '/api/send_verification_email': './api/routes/users/send_email_verification.cjs',
     '/api/verify_email': './api/routes/users/verify_email.cjs',

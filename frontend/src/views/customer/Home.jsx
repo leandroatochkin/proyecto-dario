@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Home.module.css';
-import { getBusinesses, getSchedule } from '../../utils/db_functions';
+import { getBusinesses, getBusinessesByCity, getSchedule } from '../../utils/db_functions';
 import {userStore, UIStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
@@ -18,6 +18,12 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     const language = UIStore((state)=>state.language)
 
     const loginStatus = userStore((state) => state.loggedIn); // Get login status
+
+    const city = userStore((state) => state.city); // Get city from user store
+
+    const error = userStore((state) => state.error); // Get error from user store
+
+    const setError = userStore((state) => state.setError); // Set error in user store
 
     const filterUniqueBusinesses = (businessesArray) => {
         const uniqueBusinesses = [];
@@ -66,13 +72,15 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     useEffect(() => {
         const db_businesses = async () => {
             try {
-                const retrievedBusinesses = await getBusinesses();
+                //const retrievedBusinesses = await getBusinesses();
+                const retrievedBusinesses = await getBusinessesByCity(city.trim());
                 const uniqueBusinesses = filterUniqueBusinesses(retrievedBusinesses);
                 const groupedBusinesses = groupBusinessesByLetter(uniqueBusinesses);
                 setBusinesses(groupedBusinesses);
             } catch (e) {
                 console.log(e);
-                setOpenErrorModal(true);
+                setError('404')
+                
             } finally {
                 setLoading(false);
             }
@@ -112,6 +120,7 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
                 />
             </div>
             <div className={style.indexContainer}>
+                <h2>{`Negocios en ${city}`}</h2>
     {businesses && Object.keys(businesses).length > 0 ? (
         Object.keys(businesses).map((letter, index) => (
             <div key={index}>
