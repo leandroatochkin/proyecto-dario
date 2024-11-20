@@ -67,6 +67,13 @@
         justify-content: flex-start;
         width: 100%;
     }
+
+    .selectLocationBtn{
+        border: 1px solid red;
+        padding: 1%;
+        border-radius: 8px;
+        box-shadow:  5px 5px 10px #212427;
+    }
     
     .businessName{
         width: 100%;
@@ -95,6 +102,7 @@
     height: 30%;
    }
     
+
 
     .loaderContainer{
         background: #e0e0e0;

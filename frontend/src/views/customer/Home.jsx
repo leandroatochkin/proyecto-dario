@@ -144,7 +144,14 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
             </div>
             <div className={style.indexContainer}>
     <div className={style.indexTitle}>
-    <h2>{`Negocios en ${city}`}</h2><span onClick={handleLocationClick}><MapLocation  /></span>
+    <h2>{`Negocios en ${city}`}</h2><motion.span 
+    onClick={handleLocationClick} 
+    className={style.selectLocationBtn}
+    initial={{ scale: '1' }}
+    whileTap={{ scale: '0.95' }}
+    >
+        <MapLocation  />
+    </motion.span>
     </div>
     {businesses && Object.keys(businesses).length > 0 ? (
         Object.keys(businesses).map((letter, index) => (
