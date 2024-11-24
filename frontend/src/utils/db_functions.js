@@ -437,3 +437,24 @@ export const verifyEmail = async (userId) => {
         throw new Error('Error deleting user');
     }
 };
+
+export const searchBusiness = async(searchValue) => {
+    const payload = {
+        searchValue: searchValue
+        };
+        try {
+            const response = await fetch(index.search, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                    });
+                    const data = await response.json();
+                    return data;
+                } catch(e){
+                    console.error('Error searching business:', e)
+                    throw new Error('Error searching business')
+                }
+
+}

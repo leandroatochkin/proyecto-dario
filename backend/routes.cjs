@@ -21,6 +21,7 @@ const routes = {
     '/upload/producto': './api/routes/businesses/upload_products.cjs',
     '/upload/rubro': './api/routes/businesses/upload_categories.cjs',
     '/upload/estado_pedido': './api/routes/orders/upload_order_state.cjs',
+    '/search': './api/routes/businesses/db_search_business.cjs',
   };
 
 module.exports  = routes;

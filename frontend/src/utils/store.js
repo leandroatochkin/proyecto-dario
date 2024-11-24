@@ -44,6 +44,7 @@ loading: true,
 globalOpenModal: false,
 openErrorModal: false,
 error: '',
+needsDelivery: true,
 
 setLanguage: (language) => set({
   language: language,
@@ -67,6 +68,10 @@ setOpenErrorModal: (status) => set({
 
 setError: (msg) => set({
   error: msg,
+}),
+
+setNeedsDelivery: (status) => set({
+  needsDelivery: status,
 }),
 }))
 

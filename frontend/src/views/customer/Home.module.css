@@ -19,6 +19,57 @@
         background: #e0e0e0;
     }
 
+    .container.blurred::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        backdrop-filter: blur(5px); /* Applies the blur effect */
+        z-index: 1; /* Ensure it sits behind the search bar and results box */
+      }
+      
+      .searchbarContainer {
+        position: relative;
+        z-index: 10; /* Above the blurred background */
+      }
+      
+      .searchbar {
+        width: 95%;
+        height: 2rem;
+        border-radius: 16px;
+        background-color: #e0e0e0;
+        border: none;
+        box-shadow: -20px -20px 60px #bebebe, 20px 20px 60px #ffffff;
+        z-index: 999; /* Ensure it's above the blurred layer */
+        color: #212427;
+        font-weight: bolder;
+      }
+      
+      .resultsBox {
+        position: absolute;
+        top: 25%;
+        left: 2.5%;
+        width: 95%;
+        max-height: 200px;
+        overflow-y: auto;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        z-index: 999; /* Above the blurred background */
+        color: #212427;
+      }
+    
+      .container.blurred::before {
+  transition: backdrop-filter 0.3s ease, background 0.3s ease;
+}
+
+
+
+
+
+
     .logoContainer{
         width: 100%;
         height: 5%;
@@ -40,13 +91,48 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        width: 95%;
+        width: 100%;
 
     }
 
+    .cityTitle{
+        padding: 0;
+        margin-top: 2%;
+    }
+
+    
+
+    .searchIcon{
+        position: absolute;
+        top: 60%;
+        right: 10px; /* Position the icon inside the input */
+        transform: translateY(-50%);
+        color: #212427; /* Icon color */
+        pointer-events: none; /* Prevent clicks on the icon */
+    }
+
+
+      
+      .resultItem {
+        padding: 0.75rem;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+      }
+      
+      .resultItem:hover {
+        background: #f9f9f9;
+      }
+      
+      .noResultsMessage {
+        padding: 0.75rem;
+        color: #999;
+        text-align: center;
+      }
+    
+
     .indexContainer{
         background-color: transparent;
-        backdrop-filter: blur(20px);
+
         background: #e0e0e0;
         border-radius: 16px;
         padding: 1%;
@@ -72,7 +158,7 @@
         border: 1px solid red;
         padding: 1%;
         border-radius: 8px;
-        box-shadow:  5px 5px 10px #212427;
+        box-shadow:  3px 3px 5px #212427;
     }
     
     .businessName{

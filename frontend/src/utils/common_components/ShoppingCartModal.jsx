@@ -37,7 +37,9 @@ const [loading, setLoading] = useState(false)
 const [playAnimation, setPlayAnimation] = useState(false)
 const [disabled, setDisabled] = useState(false)
 
+const needsDelivery = UIStore((state)=>state.needsDelivery)
 
+useEffect(()=>{console.log(needsDelivery)},[needsDelivery])
 
 const userId = userStore((state) => state.userId);
 
@@ -111,7 +113,12 @@ useEffect(() => {
   }, [playAnimation]);
 
 
-  
+  function getStyle(hasDelivery, needsDelivery) {
+    if (hasDelivery === 1 && needsDelivery) {
+      return { display: 'flex' };
+    }
+    return { display: 'none' };
+  }
 
 
 
@@ -151,14 +158,15 @@ useEffect(() => {
         </div>       
         }
 </div>
-        <div style={hasDelivery === 1 ? {display: 'flex'} :  {display: 'none'}}>
+        <div style={getStyle(hasDelivery, needsDelivery)}>
 
         <AddressSelector buttonText1={language.button_text.add_address} setSelectedAddress={setSelectedAddress} selectedAddress={selectedAddress}/>
+
         </div>
         <div className={style.inputContainer}>
         <label htmlFor='receptor' 
         className={style.label}
-        >{language.general_ui_text.receptor_input}</label>
+        >{needsDelivery ? language.general_ui_text.receptor_input : language.general_ui_text.picker_input}</label>
         <input name='receptor'
          onChange={(e)=>{
             setInputWrong(false)
@@ -181,7 +189,7 @@ useEffect(() => {
         <div className={style.buttonsContainer}>
           
         <div className={style.totalText}>
-            {ES_text.total + ': '}<span style={{fontWeight: 'bolder'}}>{'$' + total}</span>
+            {ES_text.general_ui_text.total + ': '}<span style={{fontWeight: 'bolder'}}>{'$' + total}</span>
         </div>
         <MotionButton buttonText={buttonText1} onClick={() => {
           setFunction()

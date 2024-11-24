@@ -12,6 +12,7 @@ import { host } from '../../utils/index';
 import MotionButton from '../../utils/buttons/MotionButton';
 import { LogOut, ShoppingCart, Cross, DeleteAccount, Account } from '../../utils/svg_icons';
 import {LargeScreenNotice, ModalTwoButtons, ModalOneButton, SettingsModal, ClosedModal, DiscountsModal} from '../../utils/common_components'
+import Slide from '../../utils/buttons/Slide';
 
 
 const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, businessName }) => {
@@ -33,6 +34,7 @@ const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, busi
   const [filterValue, setFilterValue] = useState(null)
   const [fixBackground, setFixbackground] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
+
   
   const language = UIStore((state)=>state.language)
 
@@ -228,8 +230,11 @@ const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, busi
 <div className={style.headerContainer}>
 <h1 className={ categories.length > 0 ? style.businessTitle : style.businessTitleHidden}>{businessName || businessNameFromLogIn}</h1>
 <div className={style.filterContainer}>
-
-  <button className={isLoading ? style.hidden : style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.button_text.filters}</button>
+          
+ <div className={isLoading ? style.hidden : style.sliderContainer}>
+ <button className={style.filtersBtn} onClick={()=>setOpenFilters(!openFilters)}>{language.button_text.filters}</button>
+ <Slide />
+ </div>
   <div className={openFilters ? style.filters : style.hidden}>
   <button onClick={() => setFilterValue(null)} className={style.resetFiltersBtn}>
     {language.button_text.reset_filters}
@@ -255,6 +260,7 @@ const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, busi
   />
 </div>
   </div>
+
 </div>
 </div>
         {/* Show loading animation if data is still being fetched */}

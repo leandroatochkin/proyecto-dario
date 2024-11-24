@@ -1,0 +1,118 @@
+/* From Uiverse.io by JaydipPrajapati1910 */ 
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #212427;
+    gap: 1%;
+  }
+
+  .slide {
+    height: 1.5rem;
+    width: 5rem;
+    background-color: #fcce8a;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 2%;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 15px -3px rgba(0,0,0,0.6) inset;
+  }
+  
+  .slider {
+    height: 100%;
+    width: 50%;
+    
+    background-color: #e0e0e0;
+    border-radius: 16px;
+    position: absolute;
+    left: 0;
+    transition: transform 0.3s ease; /* Smooth sliding */
+  }
+  
+  .slide-start .slider {
+    transform: translateX(0);
+  }
+  
+  .slide-end .slider {
+    transform: translateX(100%);
+  }
+  
+
+
+
+
+/*   
+  .btnColorModeSwitch {
+    display: inline-block;
+    margin: 0px;
+    position: relative;
+  }
+  
+  .btnColorModeSwitch > .btnColorModeSwitchInner {
+    margin: 0px;
+    width: 100px;
+    height: 30px;
+    background-color: #fcce8a;
+    border-radius: 26px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0px 0px 8px 0px rgba(17, 17, 17, 0.34) inset;
+    display: block;
+  }
+  
+  .btnColorModeSwitch > .btnColorModeSwitchInner:before {
+    position: absolute;
+    font-size: 20px;
+    font-weight: 600;
+    top: 7px;
+    right: 20px;
+    color: #222;
+  }
+  
+  .btnColorModeSwitch > .btnColorModeSwitchInner:after {
+    width: 40px;
+    height: 25px;
+    background: #e0e0e0;
+    border-radius: 26px;
+    position: absolute;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    left: 2px;
+    top: 2px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0px 0px 6px -2px #111;
+
+    color: #222;
+    font-weight: 600;
+  }
+  
+  .btnColorModeSwitch input[type="checkbox"] {
+    cursor: pointer;
+    width: 50px;
+    height: 25px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    margin: 0px;
+  }
+  
+  .btnColorModeSwitch input[type="checkbox"]:checked + .btnColorModeSwitchInner {
+    background-color: #fcce8a;
+  }
+  
+  .btnColorModeSwitch input[type="checkbox"]:checked + .btnColorModeSwitchInner:after {
+    left: 58px;
+  }
+  
+  .btnColorModeSwitch input[type="checkbox"]:checked + .btnColorModeSwitchInner:before {
+    right: auto;
+    left: 20px;
+  }
+   */
+  

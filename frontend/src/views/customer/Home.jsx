@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Home.module.css';
-import { getBusinessesByCity, getSchedule } from '../../utils/db_functions';
+import { getBusinessesByCity, getSchedule, searchBusiness } from '../../utils/db_functions';
 import {userStore, UIStore} from '../../utils/store';
 import { MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import {ModalOneButton, LargeScreenNotice, CitySelector} from '../../utils/common_components';
-import {MapLocation} from '../../utils/svg_icons'
+import {MagnifyingGlass, MapLocation} from '../../utils/svg_icons'
 
 
 const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
@@ -14,6 +14,11 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     const [loading, setLoading] = useState(true);
     const [openErrorModal, setOpenErrorModal] = useState(false);
     const [openCityModal, setOpenCityModal] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResults, setSearchResults]=useState([])
+    const [isSearching, setIsSearching] = useState(false);
+
+    useEffect(()=>{console.log(searchResults)},[searchResults])
 
 
     const navigate = useNavigate();
@@ -107,10 +112,49 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
         db_businesses();
     }, [city]); // Add `city` as a dependency
     
-
     const handleLocationClick = () => {
         setOpenCityModal(true);
     }
+
+    const handleSearch = async (e) => {
+        const searchValue = e.target.value;
+        setSearchTerm(searchValue);
+    
+        if (searchValue.trim() !== '') {
+          setIsSearching(true); // Activate search mode
+          try {
+            const results = await searchBusiness(searchValue.toLowerCase());
+            setSearchResults(results);
+          } catch (error) {
+            console.error('Error searching businesses:', error);
+          }
+        } else {
+          setIsSearching(false); // Exit search mode
+          setSearchResults([]);
+        }
+      };
+
+    // useEffect(() => {
+    //     // Only execute when there's a search term
+    //     if (searchTerm !== '' || searchTerm !== null) {
+    //       let isMounted = true; // Flag to prevent state updates on unmounted components
+      
+    //       const fetchResults = async () => {
+    //         try {
+    //           const results = await searchBusiness(searchTerm); // Assume this fetches data
+    //           if (isMounted) setSearchResults(results); // Update results if still mounted
+    //         } catch (e) {
+    //           if (isMounted) setError(e); // Handle errors safely
+    //         }
+    //       };
+      
+    //       fetchResults();
+      
+    //       return () => {
+    //         isMounted = false; // Cleanup for unmounted component
+    //       };
+    //     }
+    //   }, [searchTerm]);
 
     if (loading) {
         return (
@@ -122,7 +166,7 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
 
 
     return (
-        <div className={style.container} role="main" aria-labelledby="business-list-heading">
+        <div className={`${style.container} ${isSearching ? style.blurred : ''}`} role="main" aria-labelledby="business-list-heading">
             <LargeScreenNotice />
             {openErrorModal && (
                 <ModalOneButton
@@ -135,6 +179,23 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
             {openCityModal && (
                 <CitySelector stateSetter={setOpenCityModal}/>
             )}
+            {isSearching && (
+        <div className={style.resultsBox}>
+          {searchResults.length > 0 ? (
+            searchResults.map((business, index) => (
+              <div
+                key={index}
+                className={style.resultItem}
+                onClick={() => handleClick(business)}
+              >
+                {business.EM_nom_fant}{', '}{business.EM_dom_suc.toLowerCase()}{', '}{business.BL_city}
+              </div>
+            ))
+          ) : (
+            <p className={style.noResultsMessage}>No results found</p>
+          )}
+        </div>
+      )}
             <div className={style.logoContainer}>
                 <img
                     src={'/images/malbec_logo_transparente(s_reflejo).PNG'}
@@ -144,7 +205,8 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
             </div>
             <div className={style.indexContainer}>
     <div className={style.indexTitle}>
-    <h2>{`Negocios en ${city}`}</h2><motion.span 
+    <h2 className={style.cityTitle}>{`Negocios en ${city}`}</h2>
+    <motion.span 
     onClick={handleLocationClick} 
     className={style.selectLocationBtn}
     initial={{ scale: '1' }}
@@ -152,6 +214,10 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
     >
         <MapLocation  />
     </motion.span>
+    </div>
+    <div className={style.searchbarContainer}>
+            <input className={style.searchbar} placeholder={language.general_ui_text.search_businesses} onChange={handleSearch}/>
+            <span className={style.searchIcon}><MagnifyingGlass/></span>
     </div>
     {businesses && Object.keys(businesses).length > 0 ? (
         Object.keys(businesses).map((letter, index) => (

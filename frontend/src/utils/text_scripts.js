@@ -67,6 +67,7 @@ export const ES_text = {
         price: 'precio',
         quantity: 'unidades',
         receptor_input: 'Recibe:',
+        picker_input: 'Retira:',
         schedule: 'horario',
         select_home: 'Casa',
         select_other: 'Otro...',
@@ -76,7 +77,8 @@ export const ES_text = {
         highlighted_discounts: 'ofertas destacadas',
         highlighted_discount: 'oferta destacada',
         select: 'seleccionar',
-        type_your_city: 'escribe tu ciudad...'
+        type_your_city: 'escribe tu ciudad...',
+        search_businesses: 'Busca negocios aqui...',
     }
     
 

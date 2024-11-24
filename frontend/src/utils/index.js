@@ -19,5 +19,6 @@ export const index = {
     send_verification_email:   `${host}/api/send_verification_email`,
     verify_email:   `${host}/api/verify_email`,
     get_business_details:    `${host}/api/get_business_details`,
-    get_city_businessess_by_city:    `${host}/api/get_city_businesses_by_city`
+    get_city_businessess_by_city:    `${host}/api/get_city_businesses_by_city`,
+    search: `${host}/search`
 }
