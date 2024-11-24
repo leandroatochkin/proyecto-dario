@@ -26,28 +26,12 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        backdrop-filter: blur(5px); /* Applies the blur effect */
+        background-color: rgba(0,0,0,0.2);
+        backdrop-filter: blur(15px); /* Applies the blur effect */
         z-index: 1; /* Ensure it sits behind the search bar and results box */
-      }
-      
-      .searchbarContainer {
-        position: relative;
-        z-index: 10; /* Above the blurred background */
-      }
-      
-      .searchbar {
-        width: 95%;
-        height: 2rem;
-        border-radius: 16px;
-        background-color: #e0e0e0;
-        border: none;
-        box-shadow: -20px -20px 60px #bebebe, 20px 20px 60px #ffffff;
-        z-index: 999; /* Ensure it's above the blurred layer */
-        color: #212427;
-        font-weight: bolder;
-      }
-      
-      .resultsBox {
+    }
+            
+    .resultsBox {
         position: absolute;
         top: 25%;
         left: 2.5%;
@@ -57,18 +41,13 @@
         background: #fff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: 16px;
-        z-index: 999; /* Above the blurred background */
+        z-index: 2; /* Above the blurred background */
         color: #212427;
-      }
+    }
     
-      .container.blurred::before {
-  transition: backdrop-filter 0.3s ease, background 0.3s ease;
-}
-
-
-
-
-
+    .container.blurred::before{
+    transition: backdrop-filter 0.3s ease, background 0.3s ease;
+    }
 
     .logoContainer{
         width: 100%;
@@ -99,37 +78,23 @@
         padding: 0;
         margin-top: 2%;
     }
-
-    
-
-    .searchIcon{
-        position: absolute;
-        top: 60%;
-        right: 10px; /* Position the icon inside the input */
-        transform: translateY(-50%);
-        color: #212427; /* Icon color */
-        pointer-events: none; /* Prevent clicks on the icon */
-    }
-
-
       
-      .resultItem {
+    .resultItem{
         padding: 0.75rem;
         border-bottom: 1px solid #ddd;
         cursor: pointer;
-      }
+    }
       
-      .resultItem:hover {
+    .resultItem:hover{
         background: #f9f9f9;
-      }
+    }
       
-      .noResultsMessage {
+    .noResultsMessage{
         padding: 0.75rem;
         color: #999;
         text-align: center;
-      }
+    }
     
-
     .indexContainer{
         background-color: transparent;
 
@@ -155,7 +120,6 @@
     }
 
     .selectLocationBtn{
-        border: 1px solid red;
         padding: 1%;
         border-radius: 8px;
         box-shadow:  3px 3px 5px #212427;
@@ -167,7 +131,6 @@
         justify-content: space-between;
         font-weight: bolder;
     }
-
 
     .businessName:hover{
         background-color: aquamarine;
@@ -182,15 +145,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-   } 
+    } 
     
    .noResultsImage{
     height: 30%;
-   }
+    }
     
-
-
-    .loaderContainer{
+   .loaderContainer{
         background: #e0e0e0;
         display: flex;
         justify-content: center;

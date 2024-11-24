@@ -8,6 +8,8 @@ export {default as LargeScreenNotice} from './LargeScreenNotice'
 
 export {default as QuantityPicker} from './QuantityPicker'
 
+export {default as Searchbar} from './Searchbar'
+
 //--------------------MODALS--------------------//
 
 export {default as DiscountsModal} from './DiscountsModal'

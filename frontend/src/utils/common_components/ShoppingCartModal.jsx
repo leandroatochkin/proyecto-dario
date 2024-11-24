@@ -39,8 +39,6 @@ const [disabled, setDisabled] = useState(false)
 
 const needsDelivery = UIStore((state)=>state.needsDelivery)
 
-useEffect(()=>{console.log(needsDelivery)},[needsDelivery])
-
 const userId = userStore((state) => state.userId);
 
 const check = itemsToMap.length === 0 || receptor === '' || selectedAddress === null;

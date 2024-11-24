@@ -262,10 +262,10 @@ display: none;
     }
 
     .emptyDataContainer{
-        height: 100vh;
+        height: 100%;
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         flex-direction: column;
     }
@@ -277,6 +277,7 @@ display: none;
 
     .emptyDataContainer > h3 {
         color: #212427;
+        width: 80%;
     }
 
 

@@ -8,6 +8,9 @@ import './index.css'
 
 const google_id = import.meta.env.VITE_GOOGLE_ID
 
+console.warn = () => {};
+
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

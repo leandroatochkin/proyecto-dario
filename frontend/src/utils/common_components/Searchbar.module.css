@@ -1,0 +1,29 @@
+.searchbarContainer {
+    position: relative;
+    z-index: 2; /* Above the blurred background */
+  }
+
+  .searchbar {
+    width: 95%;
+    height: 2rem;
+    border-radius: 16px;
+    background-color: #e0e0e0;
+    border: none;
+    box-shadow: -20px -20px 60px #bebebe, 20px 20px 60px #ffffff;
+    z-index: 999; /* Ensure it's above the blurred layer */
+    color: #212427;
+    font-weight: bolder;
+  }
+
+  .searchbar:focus{
+    background-color: #ffffff;
+  }
+
+  .searchIcon{
+    position: absolute;
+    top: 60%;
+    right: 10px; /* Position the icon inside the input */
+    transform: translateY(-50%);
+    color: #212427; /* Icon color */
+    pointer-events: none; /* Prevent clicks on the icon */
+}
