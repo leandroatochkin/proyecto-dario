@@ -214,7 +214,7 @@
 }
 
 @media only screen and (min-width: 641px){
-    .container{
+    /* .container{
         height: 100vh;
         width: 100vw;
         display: flex;
@@ -226,5 +226,223 @@
 
     .login{
         display: none;
+    } */
+
+    .container{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #e0e0e0;
+    }
+ 
+    .login{
+        background-color: transparent;
+        backdrop-filter: blur(20px);
+        background: #e0e0e0;
+        border-radius: 16px;
+        padding: 1%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow:  -20px -20px 60px #bebebe,
+                    20px 20px 60px #ffffff; 
+        width: 50%;
+        height: 90vh;            
+    }
+
+    .title{
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .logo{
+        width: 100%;
+        object-fit: scale-down;
+        margin-top: 0;
+        padding: 0;
+    }
+       
+    .formContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 80%;
+        height: 20%;
+    }
+    
+    .legend{
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        color: #212427;
+        font-weight: bolder;
+        margin: 0;
+        padding: 0;
+    }
+
+    .createAccSpan{
+        margin-left: 1%;
+        color: #fa0;
+        font-weight: bolder;
+        cursor: pointer;
+    }
+
+    .buttonCancel{
+        cursor: pointer;
+    }
+
+    .inputContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;  
+    }
+
+    .input{
+        border-radius: 8px;
+        padding: 2%;
+        border: none;
+        font-size: 1.2rem;
+        opacity: 1;
+        height: 2rem;
+        margin-bottom: 2%;
+        background-color: #212427;
+        color: #e0e0e0;
+    }
+    
+    .inputPass{
+        border-radius: 8px 0px 0px 8px;
+        padding: 2%;
+        border: none;
+        font-size: 1.2rem;
+        opacity: 1;
+        height: 2rem;
+        background-color: #212427;
+        color: #e0e0e0;
+        width: 85%;
+    }
+
+    .eyeButton{
+        background-color: #212427;
+        border-radius: 0px 8px 8px 0px;
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        color: #e0e0e0;
+        width: 15%;
+        padding: 2%;
+    }
+      
+    .inputLine{
+        display: flex;
+        width: 100%;
+        margin-bottom: 2%;
+    }
+
+    .inputWrong{
+        border-radius: 8px;
+        border: 2px solid red;
+    }
+  
+    .inputHidden{
+        display: none;
+    }
+
+    .loginBtnContainer{
+        width: 100%;
+    }
+    
+    .button{
+        background: linear-gradient(10deg, #fa0, #ff6a00);
+        border: none;
+        width: 50%;
+        color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        height: 5vh;
+    }
+
+    .loaderContainer{
+        background: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .verificationMsg{
+        margin-top: 5%;
+        display: flex;
+        justify-content: center;
+        color: #212427;
+        background-color: #fa0;
+        border: 0.3rem solid #ff6a00;
+        border-radius: 1rem;
+        font-weight: bolder;
+    }
+
+    .createAccP{
+        color: #212427;
+    }
+
+    .footer{
+        color: #212427;
+        line-height: 1%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: end;
+    }
+ 
+    .loginBtnContainer{
+        width: 100%;
+        height: auto;
+        color-scheme: light;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .continueBtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #e0e0e0;
+        background: linear-gradient(10deg, #fa0, #ff6a00);
+        margin-bottom: 2%;
+        
+    }
+
+    .check{
+        color: aqua;
+        animation: rotate360 1s linear forwards;
+    }
+
+    .hidden{
+        display: none;
+    }
+
+    .invalidCredentials{
+        color: #ff0000;
+        font-weight: bolder;
+    }
+
+
+    @keyframes rotate360 {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
 }

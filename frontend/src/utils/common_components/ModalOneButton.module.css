@@ -5,19 +5,6 @@
     --dark-text: #212427;
   }
 
-.messageContainer{
-    height: 30%;
-    width: 40%;
-    max-width: 70%;
-    background-color: white;
-    color: var(--dark-text);
-    border-radius: 32px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
 .button{
     background: var(--orange-gradient);
     border: none
@@ -34,6 +21,54 @@
     justify-content: center;
     align-items: center;
     padding: 2%;
+  }
+
+.message{
+  color: #212427;
+  font-size: 2rem;
+}
+
+.button{
+    background: linear-gradient(10deg, #fa0, #ff6a00);
+    border: none
+}
+
+.inputContainer{
+  padding: 2%;
+  display: flex;
+  gap: 2%;
+  justify-content: center;
+}
+
+.inputCorrect{
+  border-radius: 8px;
+  border: none;
+  height: 2rem;
+  font-size: 0.8rem;
+  font-weight: bolder;
+}
+
+.inputIncorrect{
+  border-radius: 8px;
+  border: 2px solid red;
+  height: 2rem;
+  font-size: 0.8rem;
+  font-weight: bolder;
+}
+}
+
+@media only screen and (min-width: 641px){
+  .messageContainer{
+    height: auto;
+    width: 30%;
+    background-color: white;
+    color: var(--dark-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+    border-radius: 32px;
   }
 
 .message{

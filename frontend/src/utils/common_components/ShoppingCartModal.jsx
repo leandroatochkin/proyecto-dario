@@ -28,7 +28,7 @@ const ShoppingCartModal = ({setFunction, buttonText1, buttonText2, itemsToMap, r
 const language = UIStore((state)=>state.language)
 
 
-const [selectedAddress, setSelectedAddress] = useState(null);
+const [selectedAddress, setSelectedAddress] = useState('');
 const [total, setTotal] = useState(0)
 const [receptor, setReceptor] = useState('')
 const [comentary, setCommentary] = useState('')
@@ -78,13 +78,14 @@ const handleBtn = () => {
 } else if(receptor === ''){
   setInputWrong(true)
   alert(language.warning_messages.please_enter_receptor)
-} else if(hasDelivery == '1' && selectedAddress === null){
+} else if(hasDelivery == '1' && selectedAddress === null && needsDelivery === true){
   alert(language.warning_messages.please_select_address)
 } else if(itemsToMap.length === 0){
   alert(language.warning_messages.empty_shopping_cart)
 }
 
 }
+
 
 useEffect(() => {
     const timer = setTimeout(() => {

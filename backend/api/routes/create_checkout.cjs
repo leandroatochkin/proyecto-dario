@@ -15,6 +15,7 @@ const orderFilePath = process.env.CHECKOUT_PATH || path.join("C:/Malbec/Archivos
 router.post('/checkout', async (req, res, next) => {
   const { orderData } = req.body;
 
+  console.log(orderData)
   // Check if orderData is defined and is an array
   if (!orderData || !Array.isArray(orderData)) {
 

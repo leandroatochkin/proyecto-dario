@@ -16,20 +16,36 @@ const DiscountsModal = ({ products, setFunction, seeMoreFunction, setFixbackgrou
 
   // This useEffect hook listens for scroll events on the discountContainer
   useEffect(() => {
-    setFixbackground(true)
+    setFixbackground(true);
+  
+    const container = containerRef.current;
+  
     const handleScroll = () => {
-      if (containerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+      if (container) {
+        const { scrollLeft, scrollWidth, clientWidth } = container;
         // Rotate the arrow when scrolled to the far right
         setIsRotated(scrollLeft + clientWidth >= scrollWidth);
       }
     };
+  
+    const handleWheel = (event) => {
+      if (event.deltaY !== 0) {
+        event.preventDefault();
+        container.scrollLeft += event.deltaY;
+        console.log("Scroll detected: ", event.deltaY);
 
-    const container = containerRef.current;
+      }
+    };
+  
     container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-
+    container.addEventListener('wheel', handleWheel);
+  
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      container.removeEventListener('wheel', handleWheel);
+    };
   }, []);
+  
 
 
   return (

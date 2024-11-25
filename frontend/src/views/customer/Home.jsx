@@ -148,7 +148,7 @@ const Home = ({ setCodRazSoc, setSchedule, setBusinessName }) => {
           role="main"
           aria-labelledby="business-list-heading"
         >
-          <LargeScreenNotice />
+          {/* <LargeScreenNotice /> */}
           {openErrorModal && (
             <ModalOneButton
               message={language.error_messages.error_try_again_later}

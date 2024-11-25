@@ -117,3 +117,117 @@
 
 
 }
+
+@media only screen and (min-width: 641px){
+  .messageContainer{
+    height: auto;
+    background-color: white;
+    color: var(--dark-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+    border-radius: 32px;
+    max-height: 90vh;
+    width: 30%;
+  }
+
+  .topContainer{
+    width: 100%;
+    max-height: 90vh;
+  }
+
+  .noItems{
+    color: #212427;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .itemInfo{
+    width: 100%;
+    height: 30vh;
+    overflow-y: auto;
+    border-radius: 32px;
+    scrollbar-width: none;
+  }
+  
+  .item{
+    display: flex;
+    width: 100%;
+
+  }
+
+  .liInfo{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .itemLine{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+  }
+
+  .removeItem{
+    background-color: #e0e0e0;
+    color: #212427;
+    border-radius:  0 16px 16px 0;
+    height: 100%;
+    padding: 1%;
+  }
+
+
+  .button1{
+    background: transparent;
+    color: #212427;
+    border: none
+}
+
+.button2{
+    background: linear-gradient(10deg, #fa0, #ff6a00);
+    border: none
+}
+
+.totalText{
+  color: #212427  ;
+}
+
+.inputContainer{
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1%;
+  width: 100%;
+}
+
+.hidden{
+  display: none;
+}
+.p{
+  color: #212427;
+}
+
+.label{
+  color: #212427;
+}
+
+.input{
+  border-radius: 8px;
+  border: none;
+  background-color: #212427;
+  color: white;
+}
+
+
+.inputWrong{
+  border-radius: 8px;
+  border: 2px solid red;
+}
+
+
+}

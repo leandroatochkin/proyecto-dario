@@ -162,7 +162,7 @@
 }
 
 @media only screen and (min-width: 641px){
-    .container{
+    /* .container{
         height: 100vh;
         width: 100vw;
         display: flex;
@@ -174,5 +174,166 @@
 
     .indexContainer, .logoContainer{
         display: none;
+    } */
+    .container{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #e0e0e0;
+        
+    }
+
+    .containerLoader{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #e0e0e0;
+    }
+
+    .container.blurred::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0,0,0,0.2);
+        backdrop-filter: blur(15px); /* Applies the blur effect */
+        z-index: 1; /* Ensure it sits behind the search bar and results box */
+    }
+            
+    .resultsBox {
+        position: absolute;
+        top: 25%;
+        left: 15%;
+        width: 70%;
+        max-height: 200px;
+        overflow-y: auto;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        z-index: 2; /* Above the blurred background */
+        color: #212427;
+    }
+    
+    .container.blurred::before{
+    transition: backdrop-filter 0.3s ease, background 0.3s ease;
+    }
+
+    .logoContainer{
+        width: 100%;
+        height: 5%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        color: #212427;
+        font-weight: bolder;
+        margin-right: 10%;
+        margin-top: 0;
+    }
+
+    .logo{
+        height: 100%;
+        width: auto;
+    }
+
+    .indexTitle{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+    }
+
+    .cityTitle{
+        padding: 0;
+        margin-top: 2%;
+    }
+      
+    .resultItem{
+        padding: 0.75rem;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+    }
+      
+    .resultItem:hover{
+        background: #f9f9f9;
+    }
+      
+    .noResultsMessage{
+        padding: 0.75rem;
+        color: #999;
+        text-align: center;
+    }
+    
+    .indexContainer{
+        background-color: transparent;
+
+        background: #e0e0e0;
+        border-radius: 16px;
+        padding: 1%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        box-shadow:  -20px -20px 60px #bebebe,
+                    20px 20px 60px #ffffff; 
+        color: #212427;
+        width: 70%;
+        height: 90%;
+        max-height: 90%;
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+
+    .h2{
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .selectLocationBtn{
+        padding: 1%;
+        border-radius: 8px;
+        box-shadow:  3px 3px 5px #212427;
+    }
+    
+    .businessName{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bolder;
+    }
+
+    .businessName:hover{
+        background-color: aquamarine;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    
+   .noResults{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    } 
+    
+   .noResultsImage{
+    height: 30%;
+    }
+    
+   .loaderContainer{
+        background: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
     }
 }

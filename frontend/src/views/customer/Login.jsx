@@ -260,7 +260,7 @@ const Login = () => {
 
   return (
     <div className={style.container} aria-label="Login container">
-      <LargeScreenNotice />
+      {/* <LargeScreenNotice /> */}
       {
         openErrorModal && (
           <ModalOneButton 
@@ -272,9 +272,9 @@ const Login = () => {
       }
       {openModal && (
         <ModalOneButton
-          message={ES_text.phone_modal}
+          message={language.info_messages.phone_modal}
           setFunction={setOpenModal}
-          buttonText={ES_text.button_enter}
+          buttonText={language.button_text.button_enter}
           stateSetter={setPhone}  // Set the phone number
         />
       )}
@@ -320,7 +320,7 @@ const Login = () => {
             
 
             <p className={!newAccountMode ? style.createAccP : style.hidden}>{language.info_messages.create_account_preface}<span onClick={()=>setNewAccountMode(!newAccountMode)}  className={style.createAccSpan}>{language.button_text.create_account_button}</span></p>
-            <span onClick={()=>setNewAccountMode(!newAccountMode)} style={{color: '#212427', fontWeight: 'bolder'}} className={newAccountMode ? '' : style.hidden}>{language.button_text.cancel}</span>
+            <span onClick={()=>setNewAccountMode(!newAccountMode)} style={{color: '#212427', fontWeight: 'bolder'}} className={newAccountMode ? style.buttonCancel : style.hidden}>{language.button_text.cancel}</span>
           {/*-----------------------inputs container---------------------------*/}
             <div className={style.loginBtnContainer}>
             <p className={style.createAccP}>{language.info_messages.or_else}</p>

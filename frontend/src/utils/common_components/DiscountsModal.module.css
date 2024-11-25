@@ -1,111 +1,228 @@
-.container{
-    width: 100vw;
-    height: 60%;
-    display: flex;
-    flex-direction: column;
+
+@media only screen and (max-width: 640px){
+    .container{
+        width: 100vw;
+        height: 60%;
+        display: flex;
+        flex-direction: column;
+        
+        gap: 5%;
     
-    gap: 5%;
-
-    justify-content: center;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.header{
-    margin-top: 40%;
-    margin-bottom: -20%;
-}
-
-.discountContainer{
-    display: flex;
-    height: 60%;
-    gap: 5%;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-left: 5%;
-}
-
-.product{
-    height: 100%;
-    width: 80%;
-    flex-shrink: 0;
-    border-radius: 32px;
-    display: flex;
-    flex-direction: column;
+        justify-content: center;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
     
-}
-
-
-.productTitle{
-    font-size: 2rem;
-    font-family: "Fredoka", roboto, sans-serif;
-    margin-left: 3%;
-    width: 90%;
-    padding: 2%;
-    border-radius: 16px;
-    background-color: rgba(0,0,0,0.3);
-    color: #e0e0e0;
-}
-
-.button{
-    background: linear-gradient(10deg, #fa0, #ff6a00);
-    width: 40%;
-    border: none;
-    margin-bottom: 5%;
-    margin-left: 55%;
-}
-
-.headerText{
-    font-size: 2rem;
-    font-family: "Fredoka", roboto, sans-serif;
-    color: #e0e0e0;
-}
-
-.arrow{
-    animation: float 3s ease-in-out infinite;
-}
-
-.closeButton{
-    position: absolute;
-    top: 1%;
-    right: 1%;
-    background-color: transparent;
-    color: white;
-}
-
-.lowerP{
-    position: absolute;
-    bottom: 1%;
-    right: 1%;
-    font-size: 0.2rem;
-}
-
-
-.arrowContainer{
-    margin-top: 0;
-    animation: intermitent 2s ease-in-out infinite;
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0);
+    .header{
+        margin-top: 40%;
+        margin-bottom: -20%;
     }
-    50% {
-        transform: translateY(-5px); /* Adjust the distance to control the float height */
+    
+    .discountContainer{
+        display: flex;
+        height: 60%;
+        gap: 5%;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding-left: 5%;
     }
-    100% {
-        transform: translateY(0);
+    
+    .product{
+        height: 100%;
+        width: 80%;
+        flex-shrink: 0;
+        border-radius: 32px;
+        display: flex;
+        flex-direction: column;
+        
+    }
+    
+    
+    .productTitle{
+        font-size: 2rem;
+        font-family: "Fredoka", roboto, sans-serif;
+        margin-left: 3%;
+        width: 90%;
+        padding: 2%;
+        border-radius: 16px;
+        background-color: rgba(0,0,0,0.3);
+        color: #e0e0e0;
+    }
+    
+    .button{
+        background: linear-gradient(10deg, #fa0, #ff6a00);
+        width: 40%;
+        border: none;
+        margin-bottom: 5%;
+        margin-left: 55%;
+    }
+    
+    .headerText{
+        font-size: 2rem;
+        font-family: "Fredoka", roboto, sans-serif;
+        color: #e0e0e0;
+    }
+    
+    .arrow{
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .closeButton{
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        background-color: transparent;
+        color: white;
+    }
+    
+    .lowerP{
+        position: absolute;
+        bottom: 1%;
+        right: 1%;
+        font-size: 0.2rem;
+    }
+    
+    
+    .arrowContainer{
+        margin-top: 0;
+        animation: intermitent 2s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px); /* Adjust the distance to control the float height */
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes intermitent {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1; /* Adjust the distance to control the float height */
+        }
+        100% {
+          opacity: 0;
+        }
     }
 }
 
-@keyframes intermitent {
-    0% {
-      opacity: 0;
+
+@media only screen and (min-width: 641px){
+    .container{
+        width: 100vw;
+        height: 60%;
+        display: flex;
+        flex-direction: column;
+        
+        gap: 5%;
+    
+        justify-content: center;
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
-    50% {
-      opacity: 1; /* Adjust the distance to control the float height */
+    
+
+    
+    .discountContainer{
+        display: flex;
+        height: 100%;
+        gap: 5%;
+        overflow-x: auto;
+        scrollbar-width: none;
+        scroll-behavior: smooth;
+        padding-left: 5%;
+        scroll-snap-type: x mandatory;
     }
-    100% {
-      opacity: 0;
+    
+    .product{
+        height: 100%;
+        width: 30%;
+        flex-shrink: 0;
+        border-radius: 32px;
+        display: flex;
+        flex-direction: column;
+        scroll-snap-align: start;
+    }
+    
+    
+    .productTitle{
+        font-size: 2rem;
+        font-family: "Fredoka", roboto, sans-serif;
+        margin-left: 3%;
+        width: 90%;
+        padding: 2%;
+        border-radius: 16px;
+        background-color: rgba(0,0,0,0.3);
+        color: #e0e0e0;
+    }
+    
+    .button{
+        background: linear-gradient(10deg, #fa0, #ff6a00);
+        width: 40%;
+        border: none;
+        margin-bottom: 5%;
+        margin-left: 55%;
+    }
+    
+    .headerText{
+        font-size: 2rem;
+        font-family: "Fredoka", roboto, sans-serif;
+        color: #e0e0e0;
+    }
+    
+    .arrow{
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .closeButton{
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        background-color: transparent;
+        color: white;
+    }
+    
+    .lowerP{
+        position: absolute;
+        bottom: 1%;
+        right: 1%;
+        font-size: 0.2rem;
+    }
+    
+    
+    .arrowContainer{
+        margin-top: 0;
+        animation: intermitent 2s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px); /* Adjust the distance to control the float height */
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes intermitent {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1; /* Adjust the distance to control the float height */
+        }
+        100% {
+          opacity: 0;
+        }
     }
 }

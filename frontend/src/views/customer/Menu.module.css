@@ -362,7 +362,7 @@ box-shadow:  20px 20px 60px #bebebe,
     }
 }
 @media only screen and (min-width: 641px){
-    .background{
+    /* .background{
         background: #e0e0e0;
         width: 100vw;
         height: 100vh;
@@ -373,6 +373,349 @@ box-shadow:  20px 20px 60px #bebebe,
         align-items: center;
     }
 
-.container{display: none;}
-   
+.container{display: none;} */
+.background{
+    background: #e0e0e0;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.headerContainer{
+    position: sticky;
+}
+
+.categoryContainer{
+    margin-left: 10%;
+    width: 80%;
+    margin-bottom: 5%;
+    box-shadow:  -20px -20px 60px #bebebe,
+                20px 20px 60px #ffffff;
+    border-radius: 8px;
+}
+
+.ul{
+    list-style: none;
+    color: #212427;
+    font-weight: bolder;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.li{
+    display: flex;
+    background: #e0e0e0;
+    /* box-shadow:  -20px -20px 60px #bebebe,
+                20px 20px 60px #ffffff; */
+    width: 100%;
+    border-bottom: 1px solid lightsteelblue;
+    height: 10vh;
+    cursor: pointer;
+}
+
+.h3, .p{
+    font-size: 1rem;
+}
+
+.h3{
+    text-align: start;
+    padding: 0;
+    margin: 0;
+}
+
+.p{
+    text-align: end;
+    padding: 0;
+    margin: 0;
+}
+
+.listImage{
+    height: 10vh;
+    width: auto;
+}
+
+.itemInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 1%;
+    padding-right: 2%;
+    height: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.cartButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #e0e0e0;
+    box-shadow:  -20px -20px 60px #bebebe,
+    20px 20px 60px #ffffff;
+    color: #212427;
+    position: fixed;
+    right: 1%;
+    top: 1%;
+    z-index: 5;
+}
+
+.topBtnContainer{
+
+    margin-left: 1%;
+    margin-top  : 1%;
+    display: flex;
+    gap: 5%;
+    width: 10%;
+    transition: width 1s ease-in-out;
+}
+
+.topBtnContainerHidden{
+display: none;
+}
+
+.sliderContainer{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding-right: 5%;
+}
+
+
+.profileBtnContainer{
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.btnLegend{
+    margin-top: 0;
+    padding: 0;
+    color: #212427;
+    line-height: 80%;
+    font-weight:500;
+}
+
+.sidebarBtn{
+    background-color: transparent;
+    color: #212427;
+    border-radius: 50%;
+    height: 5vh;
+    width: 5vh;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    box-shadow:  -20px -20px 60px #bebebe,
+    20px 20px 60px #ffffff;
+}
+
+.hideMenu{
+    background-color: transparent;
+    color: #212427;
+}
+
+.logOutBtn{
+    color: #212427;
+    background: linear-gradient(10deg, #fa0, #ff6a00);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.backBtn{
+    color: #212427;
+    background: linear-gradient(10deg, rgb(44, 26, 209), #00ccff);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settingsBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.businessTitle{
+    color: #212427;
+    font-family: "Fredoka", roboto, sans-serif;
+    margin-bottom: 0;
+}
+
+.itemCount{
+    background-color: red;
+    font-weight: bolder;
+    color: #e0e0e0;
+    display: flex;
+    padding: 3%;
+    border-radius: 5px;
+    height: auto;
+    width: auto;
+}
+
+.loader, .notLogged{
+    color: #212427;
+    background: #e0e0e0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.liInfo{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.shoppingCartLine{
+    display: flex;
+    background: #e0e0e0;
+    width: 100%;
+    height: 10vh;
+    border-radius: 16px;
+}
+
+.liShoppingCart{
+    background-color: #e0e0e0;
+}
+
+.scInfo{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #e0e0e0;
+}
+
+.listImageSC{
+    height: 100%;
+    border-radius: 16px;
+}
+
+.h2{
+    font-weight: bolder;
+    color: #212427;
+}
+
+.h2Rubro{
+    font-weight: bolder;
+    font-family: "Fredoka", roboto, sans-serif;
+    color: #8D1A43;
+}
+.businessTitleHidden{
+    display: none;
+}
+
+.emptyDataContainer{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+.emptyDataContainer > a {
+    font-size: 0.6rem;
+    color: #212427;
+}
+
+.emptyDataContainer > h3 {
+    color: #212427;
+    width: 80%;
+}
+
+
+.emptyLogo{
+    height: 40%;
+    width: 80%;
+}
+
+.pDiscount{
+    display: flex;
+    justify-content: flex-end;
+    /* padding: 5%; */
+    color: red;
+    border-radius: 8px;
+    width: 70%;
+    margin-left: 30%;
+    /* animation: float 3s ease-in-out infinite; */
+    z-index: 4;
+}
+
+.oldPrice{
+    margin-right: 1%;
+    font-weight: 200;
+}
+
+.crossedText{
+    text-decoration: line-through;
+}
+
+.hidden{
+    display: none;
+}
+
+.filtersBtn{
+    color: #212427;
+    background-color: transparent;
+    
+}
+
+.filters{
+    display: flex;
+    margin-left: 2%;
+    border-radius: 50px;
+background: #e0e0e0;
+box-shadow:  20px 20px 60px #bebebe,
+         -20px -20px 60px #ffffff;
+}
+
+.label{
+    color: #212427;
+    font-weight: bolder;
+}
+
+.filters{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.resetFiltersBtn{
+    background-color: transparent;
+    color: #212427  ;
+}
+
+.indexTitle{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px); /* Adjust the distance to control the float height */
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
 }

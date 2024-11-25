@@ -120,3 +120,127 @@
     }
 }
   }
+
+  @media only screen and (min-width: 641px){
+
+    .container{
+        width: 100%;
+        height: 50%;
+        border: 1px solid lightsteelblue;
+        border-radius: 16px;
+        margin-bottom: 1%;
+    }
+    
+    .addressesContainer{
+        max-height: 10vh;
+        overflow-y: scroll;
+        scrollbar-width: none;   
+    }
+    
+    .topP{
+        padding-top: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        color: #212427;
+        font-weight: bolder;
+    }
+    
+    .addressLine{
+        color: black;
+    }
+    
+    .input{
+        background-color: #212427;
+        border-radius: 8px;
+        border: none;
+        color: #e0e0e0;
+        height: 20px;
+        width: 70%;
+    }
+    
+    .select{
+        background-color: #212427;
+        border-radius: 8px;
+        border: none;
+        color: #e0e0e0;
+        height: 20px;
+        font-weight: bolder;
+    }
+    
+    .addressInput{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+        gap: 5%;
+    }
+    
+    .addressLine{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .addressData{
+        min-width: 30%;
+        width: auto;
+        display: flex;
+    }
+    
+    .addressLine:hover{
+        background-color: aquamarine;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    
+    .selectedAddressRow{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 50%;
+    }
+    
+    .btnContainer{
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .btnContainer > button {
+        background-color: transparent;
+        color: #212427;
+        font-weight: bolder;
+    }
+    
+    .addAddressBtn{
+        background-color: transparent;
+        color: #212427;
+        font-weight: bolder;
+    }
+    
+    .arrowContainer{
+        color: #212427;
+        transform: rotateX('90deg');
+        padding: 0;
+        margin: 0;
+    }
+    
+    .arrow{
+        transform: rotate(90deg);
+        animation: intermitent 2s ease-in-out infinite;
+    }
+    
+    
+    @keyframes intermitent {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1; /* Adjust the distance to control the float height */
+        }
+        100% {
+          opacity: 0;
+        }
+    }
+      }

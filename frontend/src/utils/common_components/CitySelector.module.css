@@ -83,3 +83,70 @@
   font-weight: bolder;
 }
 }
+
+@media only screen and (min-width: 641px){
+  .messageContainer{
+    height: auto;
+    width: 50%;
+    background-color: white;
+    color: var(--dark-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+  }
+
+.message{
+  color: #212427;
+  font-size: 2rem;
+}
+
+.button{
+    background: linear-gradient(10deg, #fa0, #ff6a00);
+    border: none
+}
+
+.inputContainer{
+  padding: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 2%;
+  justify-content: center;
+  width: 90%;
+}
+
+.inputCorrect{
+  border-radius: 8px;
+  border: none;
+  height: 2rem;
+  font-size: 0.8rem;
+  font-weight: bolder;
+}
+
+.resultContainer{
+    max-height: 30vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.resultLine{
+    color: #212427;
+    border-bottom: 1px solid lightsteelblue;
+    padding: 5px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.resultLine:hover{
+  background-color: aquamarine;
+}
+
+.inputIncorrect{
+  border-radius: 8px;
+  border: 2px solid red;
+  height: 2rem;
+  font-size: 0.8rem;
+  font-weight: bolder;
+}
+}

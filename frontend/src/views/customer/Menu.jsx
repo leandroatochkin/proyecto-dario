@@ -44,6 +44,9 @@ const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, busi
   const { razSoc } = location.state || {}
   const {businessNameFromLogIn} =  location.state || {}
 
+  const needsDelivery = UIStore((state)=>state.needsDelivery)
+
+  const dummyAddress = {addressId: '0', address: 'none', type: '1'}
 
   useEffect(() => {
     const retrieveBusinessDetails = async () => {
@@ -108,8 +111,7 @@ const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, busi
     // Now this runs whenever razSoc changes
   
   const handleBuy = (userId, order, address, total, receptor, commentary) => {
-
-    createCheckout(userId, order, address, total, receptor, commentary);
+    createCheckout(userId, order, needsDelivery ? address : dummyAddress, total, receptor, commentary);
     setCurrentOrder([]);
   };
 
@@ -149,7 +151,7 @@ const Menu = ({ currentOrder, setCurrentOrder, codRazSoc, isOpen, schedule, busi
 
   return (
     <div className={style.background}>
-      <LargeScreenNotice />
+      {/* <LargeScreenNotice /> */}
       {openClosedModal && (<ClosedModal setFunction={setOpenClosedModal} schedule={schedule} setFixbackground={setFixbackground}/>)}
       {discountProducts.length > 0 && !openClosedModal && openDiscountModal && (<DiscountsModal products={discountProducts} setFunction={setOpenDiscountModal} seeMoreFunction={handleDiscountModal} setFixbackground={setFixbackground}/>)}
       {openLogOutModal && (<ModalTwoButtons message={language.warning_messages.log_out} setOpenModal={setOpenLogOutModal} setAccept={handleAccept} buttonText1={'ok'} buttonText2={'cancelar'} setFixbackground={setFixbackground}/>)}
